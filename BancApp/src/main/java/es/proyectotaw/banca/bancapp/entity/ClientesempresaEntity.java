@@ -1,9 +1,11 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "clientesempresa", schema = "bancodb", catalog = "")
+@Table(name = "clientesempresa", schema = "bancodb")
 @IdClass(ClientesempresaEntityPK.class)
 public class ClientesempresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,11 +58,9 @@ public class ClientesempresaEntity {
 
         ClientesempresaEntity that = (ClientesempresaEntity) o;
 
-        if (cif != null ? !cif.equals(that.cif) : that.cif != null) return false;
-        if (idEmpresa != null ? !idEmpresa.equals(that.idEmpresa) : that.idEmpresa != null) return false;
-        if (idCliente != null ? !idCliente.equals(that.idCliente) : that.idCliente != null) return false;
-
-        return true;
+        if (!Objects.equals(cif, that.cif)) return false;
+        if (!Objects.equals(idEmpresa, that.idEmpresa)) return false;
+        return Objects.equals(idCliente, that.idCliente);
     }
 
     @Override

@@ -5,7 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 public class EmpresaEntityPK implements Serializable {
     @Column(name = "CIF", nullable = false)
     @Id
@@ -39,10 +41,8 @@ public class EmpresaEntityPK implements Serializable {
 
         EmpresaEntityPK that = (EmpresaEntityPK) o;
 
-        if (cif != null ? !cif.equals(that.cif) : that.cif != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-
-        return true;
+        if (!Objects.equals(cif, that.cif)) return false;
+        return Objects.equals(id, that.id);
     }
 
     @Override

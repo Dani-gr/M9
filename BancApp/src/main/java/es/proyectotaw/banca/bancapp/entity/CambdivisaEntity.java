@@ -1,9 +1,11 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "cambdivisa", schema = "bancodb", catalog = "")
+@Table(name = "cambdivisa", schema = "bancodb")
 public class CambdivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -50,11 +52,9 @@ public class CambdivisaEntity {
 
         CambdivisaEntity that = (CambdivisaEntity) o;
 
-        if (operacion != null ? !operacion.equals(that.operacion) : that.operacion != null) return false;
-        if (origen != null ? !origen.equals(that.origen) : that.origen != null) return false;
-        if (destino != null ? !destino.equals(that.destino) : that.destino != null) return false;
-
-        return true;
+        if (!Objects.equals(operacion, that.operacion)) return false;
+        if (!Objects.equals(origen, that.origen)) return false;
+        return Objects.equals(destino, that.destino);
     }
 
     @Override
@@ -72,4 +72,5 @@ public class CambdivisaEntity {
     public void setOperacionByOperacion(OperacionEntity operacionByOperacion) {
         this.operacionByOperacion = operacionByOperacion;
     }
+
 }

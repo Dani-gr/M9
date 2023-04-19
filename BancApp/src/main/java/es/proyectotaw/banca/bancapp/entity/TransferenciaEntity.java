@@ -1,23 +1,25 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "transferencia", schema = "bancodb", catalog = "")
+@Table(name = "transferencia", schema = "bancodb")
 public class TransferenciaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "Operacion", nullable = false)
     private Integer operacion;
     @Basic
-    @Column(name = "cantidad", nullable = false, precision = 0)
+    @Column(name = "cantidad", nullable = false)
     private Double cantidad;
     @OneToOne
     @JoinColumn(name = "Operacion", referencedColumnName = "idOperacion", nullable = false)
     private OperacionEntity operacionByOperacion;
     @ManyToOne
-    @JoinColumn(name = "CuentaDestion", referencedColumnName = "numCuenta", nullable = false)
-    private CuentaEntity cuentaByCuentaDestion;
+    @JoinColumn(name = "CuentaDestino", referencedColumnName = "numCuenta", nullable = false)
+    private CuentaEntity cuentaByCuentaDestino;
 
     public Integer getOperacion() {
         return operacion;
@@ -42,10 +44,8 @@ public class TransferenciaEntity {
 
         TransferenciaEntity that = (TransferenciaEntity) o;
 
-        if (operacion != null ? !operacion.equals(that.operacion) : that.operacion != null) return false;
-        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
-
-        return true;
+        if (!Objects.equals(operacion, that.operacion)) return false;
+        return Objects.equals(cantidad, that.cantidad);
     }
 
     @Override
@@ -63,11 +63,11 @@ public class TransferenciaEntity {
         this.operacionByOperacion = operacionByOperacion;
     }
 
-    public CuentaEntity getCuentaByCuentaDestion() {
-        return cuentaByCuentaDestion;
+    public CuentaEntity getCuentaByCuentaDestino() {
+        return cuentaByCuentaDestino;
     }
 
-    public void setCuentaByCuentaDestion(CuentaEntity cuentaByCuentaDestion) {
-        this.cuentaByCuentaDestion = cuentaByCuentaDestion;
+    public void setCuentaByCuentaDestino(CuentaEntity cuentaByCuentaDestion) {
+        this.cuentaByCuentaDestino = cuentaByCuentaDestion;
     }
 }
