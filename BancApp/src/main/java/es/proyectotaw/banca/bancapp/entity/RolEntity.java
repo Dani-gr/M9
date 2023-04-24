@@ -1,22 +1,21 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "rol", schema = "bancodb")
+@Table(name = "rol", schema = "bancodb", catalog = "")
 public class RolEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idRol", nullable = false)
+    @Column(name = "idRol")
     private Integer idRol;
     @Basic
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @OneToMany(mappedBy = "rolByIdRol")
-    private Collection<RolusuarioEntity> rolusuariosByIdRol;
+    private List<RolusuarioEntity> rolusuariosByIdRol;
 
     public Integer getIdRol() {
         return idRol;
@@ -38,25 +37,20 @@ public class RolEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         RolEntity rolEntity = (RolEntity) o;
-
-        if (!Objects.equals(idRol, rolEntity.idRol)) return false;
-        return Objects.equals(nombre, rolEntity.nombre);
+        return Objects.equals(idRol, rolEntity.idRol) && Objects.equals(nombre, rolEntity.nombre);
     }
 
     @Override
     public int hashCode() {
-        int result = idRol != null ? idRol.hashCode() : 0;
-        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
-        return result;
+        return Objects.hash(idRol, nombre);
     }
 
-    public Collection<RolusuarioEntity> getRolusuariosByIdRol() {
+    public List<RolusuarioEntity> getRolusuariosByIdRol() {
         return rolusuariosByIdRol;
     }
 
-    public void setRolusuariosByIdRol(Collection<RolusuarioEntity> rolusuariosByIdRol) {
+    public void setRolusuariosByIdRol(List<RolusuarioEntity> rolusuariosByIdRol) {
         this.rolusuariosByIdRol = rolusuariosByIdRol;
     }
 }
