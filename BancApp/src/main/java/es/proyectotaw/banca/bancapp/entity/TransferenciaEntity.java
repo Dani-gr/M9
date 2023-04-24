@@ -8,16 +8,16 @@ import java.util.Objects;
 public class TransferenciaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "Operacion")
+    @Column(name = "operacion", nullable = false)
     private Integer operacion;
     @Basic
     @Column(name = "cantidad")
     private Double cantidad;
     @OneToOne
-    @JoinColumn(name = "Operacion", referencedColumnName = "idOperacion", nullable = false)
+    @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
     @ManyToOne
-    @JoinColumn(name = "CuentaDestino", referencedColumnName = "numCuenta", nullable = false)
+    @JoinColumn(name = "cuenta_destino", referencedColumnName = "num_cuenta", nullable = false)
     private CuentaEntity cuentaByCuentaDestino;
 
     public Integer getOperacion() {

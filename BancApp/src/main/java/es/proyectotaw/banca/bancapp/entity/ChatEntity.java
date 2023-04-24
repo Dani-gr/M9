@@ -4,18 +4,19 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "chat", schema = "bancodb", catalog = "")
 public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "Asistente_ID", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "asistente_id", referencedColumnName = "id", nullable = false)
     private UsuarioEntity usuarioByAsistenteId;
     @ManyToOne
-    @JoinColumn(name = "Cliente_ID_Cliente", referencedColumnName = "ID_Cliente", nullable = false)
+    @JoinColumn(name = "cliente_id_cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByClienteIdCliente;
     @OneToMany(mappedBy = "chatByChat")
     private List<MensajeEntity> mensajesById;

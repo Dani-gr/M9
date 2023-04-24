@@ -9,17 +9,17 @@ import java.util.Objects;
 public class OperacionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idOperacion")
+    @Column(name = "id_operacion", nullable = false)
     private Integer idOperacion;
     @Basic
-    @Column(name = "Fecha")
+    @Column(name = "fecha", nullable = false)
     private Date fecha;
     @OneToOne(mappedBy = "operacionByOperacion")
-    private CambdivisaEntity cambdivisaByIdOperacion;
+    private CambDivisaEntity cambDivisaByIdOperacion;
     @OneToOne(mappedBy = "operacionByOperacion")
     private ExtraccionEntity extraccionByIdOperacion;
     @ManyToOne
-    @JoinColumn(name = "CuentaRealiza", referencedColumnName = "numCuenta", nullable = false)
+    @JoinColumn(name = "cuenta_realiza", referencedColumnName = "num_cuenta", nullable = false)
     private CuentaEntity cuentaByCuentaRealiza;
     @OneToOne(mappedBy = "operacionByOperacion")
     private TransferenciaEntity transferenciaByIdOperacion;
@@ -53,12 +53,12 @@ public class OperacionEntity {
         return Objects.hash(idOperacion, fecha);
     }
 
-    public CambdivisaEntity getCambdivisaByIdOperacion() {
-        return cambdivisaByIdOperacion;
+    public CambDivisaEntity getCambDivisaByIdOperacion() {
+        return cambDivisaByIdOperacion;
     }
 
-    public void setCambdivisaByIdOperacion(CambdivisaEntity cambdivisaByIdOperacion) {
-        this.cambdivisaByIdOperacion = cambdivisaByIdOperacion;
+    public void setCambDivisaByIdOperacion(CambDivisaEntity cambDivisaByIdOperacion) {
+        this.cambDivisaByIdOperacion = cambDivisaByIdOperacion;
     }
 
     public ExtraccionEntity getExtraccionByIdOperacion() {

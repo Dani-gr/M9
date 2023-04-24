@@ -10,25 +10,25 @@ import java.util.Objects;
 public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "NIF")
+    @Column(name = "nif", nullable = false, length = 10)
     private String nif;
     @Basic
-    @Column(name = "primerNombre")
+    @Column(name = "primer_nombre", nullable = false, length = 45)
     private String primerNombre;
     @Basic
-    @Column(name = "segundoNombre")
+    @Column(name = "segundo_nombre", length = 45)
     private String segundoNombre;
     @Basic
-    @Column(name = "primerApellido")
+    @Column(name = "primer_apellido", nullable = false, length = 45)
     private String primerApellido;
     @Basic
-    @Column(name = "segundoApellido")
+    @Column(name = "segundo_apellido", length = 45)
     private String segundoApellido;
     @Basic
-    @Column(name = "fechaNacimiento")
+    @Column(name = "fecha_nacimiento", nullable = false)
     private Date fechaNacimiento;
     @Basic
     @Column(name = "email")
@@ -37,13 +37,13 @@ public class UsuarioEntity {
     @Column(name = "password")
     private String password;
     @OneToMany(mappedBy = "usuarioByAsistenteId")
-    private List<ChatEntity> chatsById;
+    private Collection<ChatEntity> chatsById;
     @OneToMany(mappedBy = "usuarioByEmisor")
-    private List<MensajeEntity> mensajesById;
-    @OneToMany(mappedBy = "usuarioByIdUsuario")
-    private List<RolusuarioEntity> rolusuariosById;
+    private Collection<MensajeEntity> mensajesById;
+    @OneToMany(mappedBy = "usuarioByIdusuario")
+    private Collection<RolusuarioEntity> rolusuariosById;
     @ManyToOne
-    @JoinColumn(name = "cliente", referencedColumnName = "ID_Cliente")
+    @JoinColumn(name = "cliente", referencedColumnName = "id_cliente")
     private ClienteEntity clienteByCliente;
 
     public Integer getId() {
@@ -123,12 +123,34 @@ public class UsuarioEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsuarioEntity that = (UsuarioEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nif, that.nif) && Objects.equals(primerNombre, that.primerNombre) && Objects.equals(segundoNombre, that.segundoNombre) && Objects.equals(primerApellido, that.primerApellido) && Objects.equals(segundoApellido, that.segundoApellido) && Objects.equals(fechaNacimiento, that.fechaNacimiento) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
+
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(nif, that.nif)) return false;
+        if (!Objects.equals(primerNombre, that.primerNombre)) return false;
+        if (!Objects.equals(segundoNombre, that.segundoNombre))
+            return false;
+        if (!Objects.equals(primerApellido, that.primerApellido))
+            return false;
+        if (!Objects.equals(segundoApellido, that.segundoApellido))
+            return false;
+        if (!Objects.equals(fechaNacimiento, that.fechaNacimiento))
+            return false;
+        if (!Objects.equals(email, that.email)) return false;
+        return Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nif, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (nif != null ? nif.hashCode() : 0);
+        result = 31 * result + (primerNombre != null ? primerNombre.hashCode() : 0);
+        result = 31 * result + (segundoNombre != null ? segundoNombre.hashCode() : 0);
+        result = 31 * result + (primerApellido != null ? primerApellido.hashCode() : 0);
+        result = 31 * result + (segundoApellido != null ? segundoApellido.hashCode() : 0);
+        result = 31 * result + (fechaNacimiento != null ? fechaNacimiento.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        return result;
     }
 
     public List<ChatEntity> getChatsById() {
@@ -139,7 +161,7 @@ public class UsuarioEntity {
         this.chatsById = chatsById;
     }
 
-    public List<MensajeEntity> getMensajesById() {
+    public Collection<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 

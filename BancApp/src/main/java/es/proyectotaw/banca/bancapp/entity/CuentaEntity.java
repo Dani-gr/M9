@@ -9,13 +9,13 @@ import java.util.Objects;
 public class CuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "numCuenta")
+    @Column(name = "num_cuenta", nullable = false)
     private Integer numCuenta;
     @Basic
     @Column(name = "saldo")
     private Double saldo;
     @ManyToOne
-    @JoinColumn(name = "cliente", referencedColumnName = "ID_Cliente", nullable = false)
+    @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByCliente;
     @OneToMany(mappedBy = "cuentaByCuentaRealiza")
     private List<OperacionEntity> operacionsByNumCuenta;

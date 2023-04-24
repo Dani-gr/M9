@@ -7,12 +7,13 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ClientesempresaEntityPK implements Serializable {
-    @Column(name = "ID_Empresa")
+@SuppressWarnings("unused")
+public class ClientesEmpresaEntityPK implements Serializable {
+    @Column(name = "id_empresa", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEmpresa;
-    @Column(name = "ID_Cliente")
+    @Column(name = "id_cliente", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCliente;
@@ -37,12 +38,17 @@ public class ClientesempresaEntityPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientesempresaEntityPK that = (ClientesempresaEntityPK) o;
-        return Objects.equals(idEmpresa, that.idEmpresa) && Objects.equals(idCliente, that.idCliente);
+
+        ClientesEmpresaEntityPK that = (ClientesEmpresaEntityPK) o;
+
+        if (!Objects.equals(idEmpresa, that.idEmpresa)) return false;
+        return Objects.equals(idCliente, that.idCliente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEmpresa, idCliente);
+        int result = idEmpresa != null ? idEmpresa.hashCode() : 0;
+        result = 31 * result + (idCliente != null ? idCliente.hashCode() : 0);
+        return result;
     }
 }

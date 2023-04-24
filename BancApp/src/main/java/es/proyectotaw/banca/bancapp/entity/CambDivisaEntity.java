@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cambdivisa", schema = "bancodb", catalog = "")
-public class CambdivisaEntity {
+@Table(name = "camb_divisa", schema = "bancodb")
+public class CambDivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "Operacion")
+    @Column(name = "operacion", nullable = false)
     private Integer operacion;
     @Basic
     @Column(name = "origen")
@@ -17,7 +17,7 @@ public class CambdivisaEntity {
     @Column(name = "destino")
     private String destino;
     @OneToOne
-    @JoinColumn(name = "Operacion", referencedColumnName = "idOperacion", nullable = false)
+    @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
 
     public Integer getOperacion() {
@@ -48,8 +48,12 @@ public class CambdivisaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CambdivisaEntity that = (CambdivisaEntity) o;
-        return Objects.equals(operacion, that.operacion) && Objects.equals(origen, that.origen) && Objects.equals(destino, that.destino);
+
+        CambDivisaEntity that = (CambDivisaEntity) o;
+
+        if (!Objects.equals(operacion, that.operacion)) return false;
+        if (!Objects.equals(origen, that.origen)) return false;
+        return Objects.equals(destino, that.destino);
     }
 
     @Override

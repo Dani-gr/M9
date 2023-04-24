@@ -2,43 +2,43 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
-
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "rolusuario", schema = "bancodb", catalog = "")
 @IdClass(RolusuarioEntityPK.class)
 public class RolusuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idRol")
-    private Integer idRol;
+    @Column(name = "idrol", nullable = false)
+    private Integer idrol;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idUsuario")
-    private Integer idUsuario;
+    @Column(name = "idusuario", nullable = false)
+    private Integer idusuario;
     @ManyToOne
-    @JoinColumn(name = "idRol", referencedColumnName = "idRol", nullable = false)
-    private RolEntity rolByIdRol;
+    @JoinColumn(name = "idrol", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private RolEntity rolByIdrol;
     @ManyToOne
-    @JoinColumn(name = "idUsuario", referencedColumnName = "ID", nullable = false)
-    private UsuarioEntity usuarioByIdUsuario;
+    @JoinColumn(name = "idusuario", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private UsuarioEntity usuarioByIdusuario;
     @ManyToOne
-    @JoinColumn(name = "idEmpresa", referencedColumnName = "ID")
-    private EmpresaEntity empresaByIdEmpresa;
+    @JoinColumn(name = "idempresa", referencedColumnName = "id")
+    private EmpresaEntity empresaByIdempresa;
 
-    public Integer getIdRol() {
-        return idRol;
+    public Integer getIdrol() {
+        return idrol;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setIdrol(Integer idrol) {
+        this.idrol = idrol;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Integer getIdusuario() {
+        return idusuario;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdusuario(Integer idusuario) {
+        this.idusuario = idusuario;
     }
 
     @Override
@@ -46,35 +46,39 @@ public class RolusuarioEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RolusuarioEntity that = (RolusuarioEntity) o;
-        return Objects.equals(idRol, that.idRol) && Objects.equals(idUsuario, that.idUsuario);
+
+        if (!Objects.equals(idrol, that.idrol)) return false;
+        return Objects.equals(idusuario, that.idusuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idRol, idUsuario);
+        int result = idrol != null ? idrol.hashCode() : 0;
+        result = 31 * result + (idusuario != null ? idusuario.hashCode() : 0);
+        return result;
     }
 
-    public RolEntity getRolByIdRol() {
-        return rolByIdRol;
+    public RolEntity getRolByIdrol() {
+        return rolByIdrol;
     }
 
-    public void setRolByIdRol(RolEntity rolByIdRol) {
-        this.rolByIdRol = rolByIdRol;
+    public void setRolByIdrol(RolEntity rolByIdrol) {
+        this.rolByIdrol = rolByIdrol;
     }
 
-    public UsuarioEntity getUsuarioByIdUsuario() {
-        return usuarioByIdUsuario;
+    public UsuarioEntity getUsuarioByIdusuario() {
+        return usuarioByIdusuario;
     }
 
-    public void setUsuarioByIdUsuario(UsuarioEntity usuarioByIdUsuario) {
-        this.usuarioByIdUsuario = usuarioByIdUsuario;
+    public void setUsuarioByIdusuario(UsuarioEntity usuarioByIdusuario) {
+        this.usuarioByIdusuario = usuarioByIdusuario;
     }
 
-    public EmpresaEntity getEmpresaByIdEmpresa() {
-        return empresaByIdEmpresa;
+    public EmpresaEntity getEmpresaByIdempresa() {
+        return empresaByIdempresa;
     }
 
-    public void setEmpresaByIdEmpresa(EmpresaEntity empresaByIdEmpresa) {
-        this.empresaByIdEmpresa = empresaByIdEmpresa;
+    public void setEmpresaByIdempresa(EmpresaEntity empresaByIdempresa) {
+        this.empresaByIdempresa = empresaByIdempresa;
     }
 }

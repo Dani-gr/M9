@@ -9,19 +9,19 @@ import java.util.Objects;
 public class MensajeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID_mensaje")
+    @Column(name = "id_mensaje", nullable = false)
     private Integer idMensaje;
     @Basic
-    @Column(name = "Fecha_hora")
+    @Column(name = "fecha_hora", nullable = false)
     private Date fechaHora;
     @Basic
-    @Column(name = "Contenido")
+    @Column(name = "contenido", nullable = false, length = 500)
     private String contenido;
     @ManyToOne
-    @JoinColumn(name = "chat", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "chat", referencedColumnName = "id", nullable = false)
     private ChatEntity chatByChat;
     @ManyToOne
-    @JoinColumn(name = "emisor", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "emisor", referencedColumnName = "id", nullable = false)
     private UsuarioEntity usuarioByEmisor;
 
     public Integer getIdMensaje() {

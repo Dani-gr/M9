@@ -4,22 +4,22 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "clientesempresa", schema = "bancodb", catalog = "")
-@IdClass(ClientesempresaEntityPK.class)
-public class ClientesempresaEntity {
+@Table(name = "clientes_empresa", schema = "bancodb")
+@IdClass(ClientesEmpresaEntityPK.class)
+public class ClientesEmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID_Empresa")
+    @Column(name = "id_empresa", nullable = false)
     private Integer idEmpresa;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID_Cliente")
+    @Column(name = "id_cliente", nullable = false)
     private Integer idCliente;
     @ManyToOne
-    @JoinColumn(name = "ID_Empresa", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "id_empresa", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private EmpresaEntity empresaByIdEmpresa;
     @ManyToOne
-    @JoinColumn(name = "ID_Cliente", referencedColumnName = "ID_Cliente", nullable = false)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false, insertable = false, updatable = false)
     private ClienteEntity clienteByIdCliente;
 
     public Integer getIdEmpresa() {
@@ -42,13 +42,18 @@ public class ClientesempresaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientesempresaEntity that = (ClientesempresaEntity) o;
-        return Objects.equals(idEmpresa, that.idEmpresa) && Objects.equals(idCliente, that.idCliente);
+
+        ClientesEmpresaEntity that = (ClientesEmpresaEntity) o;
+
+        if (!Objects.equals(idEmpresa, that.idEmpresa)) return false;
+        return Objects.equals(idCliente, that.idCliente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEmpresa, idCliente);
+        int result = idEmpresa != null ? idEmpresa.hashCode() : 0;
+        result = 31 * result + (idCliente != null ? idCliente.hashCode() : 0);
+        return result;
     }
 
     public EmpresaEntity getEmpresaByIdEmpresa() {
