@@ -4,16 +4,15 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "operacion", schema = "bancodb")
+@Table(name = "operacion", schema = "bancodb", catalog = "")
 public class OperacionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idOperacion", nullable = false)
+    @Column(name = "idOperacion")
     private Integer idOperacion;
     @Basic
-    @Column(name = "Fecha", nullable = false)
+    @Column(name = "Fecha")
     private Date fecha;
     @OneToOne(mappedBy = "operacionByOperacion")
     private CambdivisaEntity cambdivisaByIdOperacion;
@@ -45,18 +44,13 @@ public class OperacionEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         OperacionEntity that = (OperacionEntity) o;
-
-        if (!Objects.equals(idOperacion, that.idOperacion)) return false;
-        return Objects.equals(fecha, that.fecha);
+        return Objects.equals(idOperacion, that.idOperacion) && Objects.equals(fecha, that.fecha);
     }
 
     @Override
     public int hashCode() {
-        int result = idOperacion != null ? idOperacion.hashCode() : 0;
-        result = 31 * result + (fecha != null ? fecha.hashCode() : 0);
-        return result;
+        return Objects.hash(idOperacion, fecha);
     }
 
     public CambdivisaEntity getCambdivisaByIdOperacion() {

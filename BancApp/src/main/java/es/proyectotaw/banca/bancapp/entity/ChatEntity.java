@@ -1,15 +1,15 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-@SuppressWarnings("unused")
+
 @Entity
-@Table(name = "chat", schema = "bancodb")
+@Table(name = "chat", schema = "bancodb", catalog = "")
 public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID", nullable = false)
+    @Column(name = "ID")
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "Asistente_ID", referencedColumnName = "ID", nullable = false)
@@ -18,7 +18,7 @@ public class ChatEntity {
     @JoinColumn(name = "Cliente_ID_Cliente", referencedColumnName = "ID_Cliente", nullable = false)
     private ClienteEntity clienteByClienteIdCliente;
     @OneToMany(mappedBy = "chatByChat")
-    private Collection<MensajeEntity> mensajesById;
+    private List<MensajeEntity> mensajesById;
 
     public Integer getId() {
         return id;
@@ -32,15 +32,13 @@ public class ChatEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ChatEntity that = (ChatEntity) o;
-
         return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return Objects.hash(id);
     }
 
     public UsuarioEntity getUsuarioByAsistenteId() {
@@ -59,11 +57,11 @@ public class ChatEntity {
         this.clienteByClienteIdCliente = clienteByClienteIdCliente;
     }
 
-    public Collection<MensajeEntity> getMensajesById() {
+    public List<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 
-    public void setMensajesById(Collection<MensajeEntity> mensajesById) {
+    public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
     }
 }

@@ -7,28 +7,15 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class ClientesempresaEntityPK implements Serializable {
-    @Column(name = "CIF", nullable = false)
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cif;
-    @Column(name = "ID_Empresa", nullable = false)
+    @Column(name = "ID_Empresa")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEmpresa;
-    @Column(name = "ID_Cliente", nullable = false)
+    @Column(name = "ID_Cliente")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCliente;
-
-    public Integer getCif() {
-        return cif;
-    }
-
-    public void setCif(Integer cif) {
-        this.cif = cif;
-    }
 
     public Integer getIdEmpresa() {
         return idEmpresa;
@@ -50,19 +37,12 @@ public class ClientesempresaEntityPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ClientesempresaEntityPK that = (ClientesempresaEntityPK) o;
-
-        if (!Objects.equals(cif, that.cif)) return false;
-        if (!Objects.equals(idEmpresa, that.idEmpresa)) return false;
-        return Objects.equals(idCliente, that.idCliente);
+        return Objects.equals(idEmpresa, that.idEmpresa) && Objects.equals(idCliente, that.idCliente);
     }
 
     @Override
     public int hashCode() {
-        int result = cif != null ? cif.hashCode() : 0;
-        result = 31 * result + (idEmpresa != null ? idEmpresa.hashCode() : 0);
-        result = 31 * result + (idCliente != null ? idCliente.hashCode() : 0);
-        return result;
+        return Objects.hash(idEmpresa, idCliente);
     }
 }

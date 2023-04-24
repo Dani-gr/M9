@@ -1,16 +1,15 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "cuenta", schema = "bancodb")
+@Table(name = "cuenta", schema = "bancodb", catalog = "")
 public class CuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "numCuenta", nullable = false)
+    @Column(name = "numCuenta")
     private Integer numCuenta;
     @Basic
     @Column(name = "saldo")
@@ -19,9 +18,9 @@ public class CuentaEntity {
     @JoinColumn(name = "cliente", referencedColumnName = "ID_Cliente", nullable = false)
     private ClienteEntity clienteByCliente;
     @OneToMany(mappedBy = "cuentaByCuentaRealiza")
-    private Collection<OperacionEntity> operacionsByNumCuenta;
+    private List<OperacionEntity> operacionsByNumCuenta;
     @OneToMany(mappedBy = "cuentaByCuentaDestino")
-    private Collection<TransferenciaEntity> transferenciasByNumCuenta;
+    private List<TransferenciaEntity> transferenciasByNumCuenta;
 
     public Integer getNumCuenta() {
         return numCuenta;
@@ -43,18 +42,13 @@ public class CuentaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CuentaEntity that = (CuentaEntity) o;
-
-        if (!Objects.equals(numCuenta, that.numCuenta)) return false;
-        return Objects.equals(saldo, that.saldo);
+        return Objects.equals(numCuenta, that.numCuenta) && Objects.equals(saldo, that.saldo);
     }
 
     @Override
     public int hashCode() {
-        int result = numCuenta != null ? numCuenta.hashCode() : 0;
-        result = 31 * result + (saldo != null ? saldo.hashCode() : 0);
-        return result;
+        return Objects.hash(numCuenta, saldo);
     }
 
     public ClienteEntity getClienteByCliente() {
@@ -65,19 +59,19 @@ public class CuentaEntity {
         this.clienteByCliente = clienteByCliente;
     }
 
-    public Collection<OperacionEntity> getOperacionsByNumCuenta() {
+    public List<OperacionEntity> getOperacionsByNumCuenta() {
         return operacionsByNumCuenta;
     }
 
-    public void setOperacionsByNumCuenta(Collection<OperacionEntity> operacionsByNumCuenta) {
+    public void setOperacionsByNumCuenta(List<OperacionEntity> operacionsByNumCuenta) {
         this.operacionsByNumCuenta = operacionsByNumCuenta;
     }
 
-    public Collection<TransferenciaEntity> getTransferenciasByNumCuenta() {
+    public List<TransferenciaEntity> getTransferenciasByNumCuenta() {
         return transferenciasByNumCuenta;
     }
 
-    public void setTransferenciasByNumCuenta(Collection<TransferenciaEntity> transferenciasByNumCuenta) {
+    public void setTransferenciasByNumCuenta(List<TransferenciaEntity> transferenciasByNumCuenta) {
         this.transferenciasByNumCuenta = transferenciasByNumCuenta;
     }
 }

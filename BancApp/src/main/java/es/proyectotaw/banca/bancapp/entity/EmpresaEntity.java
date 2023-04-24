@@ -1,37 +1,26 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "empresa", schema = "bancodb")
-@IdClass(EmpresaEntityPK.class)
+@Table(name = "empresa", schema = "bancodb", catalog = "")
 public class EmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "CIF", nullable = false)
-    private Integer cif;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "ID", nullable = false)
+    @Column(name = "ID")
     private Integer id;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<ClientesempresaEntity> clientesempresas;
-    @ManyToOne
+    @Basic
+    @Column(name = "CIF")
+    private Integer cif;
+    @OneToMany(mappedBy = "empresaByIdEmpresa")
+    private List<ClientesempresaEntity> clientesempresasById;
+    @OneToOne
     @JoinColumn(name = "ID", referencedColumnName = "ID_Cliente", nullable = false)
     private ClienteEntity clienteById;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<RolusuarioEntity> rolusuarios;
-
-    public Integer getCif() {
-        return cif;
-    }
-
-    public void setCif(Integer cif) {
-        this.cif = cif;
-    }
+    @OneToMany(mappedBy = "empresaByIdEmpresa")
+    private List<RolusuarioEntity> rolusuariosById;
 
     public Integer getId() {
         return id;
@@ -41,30 +30,33 @@ public class EmpresaEntity {
         this.id = id;
     }
 
+    public Integer getCif() {
+        return cif;
+    }
+
+    public void setCif(Integer cif) {
+        this.cif = cif;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         EmpresaEntity that = (EmpresaEntity) o;
-
-        if (!Objects.equals(cif, that.cif)) return false;
-        return Objects.equals(id, that.id);
+        return Objects.equals(id, that.id) && Objects.equals(cif, that.cif);
     }
 
     @Override
     public int hashCode() {
-        int result = cif != null ? cif.hashCode() : 0;
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        return result;
+        return Objects.hash(id, cif);
     }
 
-    public Collection<ClientesempresaEntity> getClientesempresas() {
-        return clientesempresas;
+    public List<ClientesempresaEntity> getClientesempresasById() {
+        return clientesempresasById;
     }
 
-    public void setClientesempresas(Collection<ClientesempresaEntity> clientesempresas) {
-        this.clientesempresas = clientesempresas;
+    public void setClientesempresasById(List<ClientesempresaEntity> clientesempresasById) {
+        this.clientesempresasById = clientesempresasById;
     }
 
     public ClienteEntity getClienteById() {
@@ -75,11 +67,11 @@ public class EmpresaEntity {
         this.clienteById = clienteById;
     }
 
-    public Collection<RolusuarioEntity> getRolusuarios() {
-        return rolusuarios;
+    public List<RolusuarioEntity> getRolusuariosById() {
+        return rolusuariosById;
     }
 
-    public void setRolusuarios(Collection<RolusuarioEntity> rolusuarios) {
-        this.rolusuarios = rolusuarios;
+    public void setRolusuariosById(List<RolusuarioEntity> rolusuariosById) {
+        this.rolusuariosById = rolusuariosById;
     }
 }

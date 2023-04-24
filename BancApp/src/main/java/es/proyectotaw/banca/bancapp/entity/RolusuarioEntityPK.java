@@ -7,13 +7,12 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class RolusuarioEntityPK implements Serializable {
-    @Column(name = "idRol", nullable = false)
+    @Column(name = "idRol")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idRol;
-    @Column(name = "idUsuario", nullable = false)
+    @Column(name = "idUsuario")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsuario;
@@ -38,17 +37,12 @@ public class RolusuarioEntityPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         RolusuarioEntityPK that = (RolusuarioEntityPK) o;
-
-        if (!Objects.equals(idRol, that.idRol)) return false;
-        return Objects.equals(idUsuario, that.idUsuario);
+        return Objects.equals(idRol, that.idRol) && Objects.equals(idUsuario, that.idUsuario);
     }
 
     @Override
     public int hashCode() {
-        int result = idRol != null ? idRol.hashCode() : 0;
-        result = 31 * result + (idUsuario != null ? idUsuario.hashCode() : 0);
-        return result;
+        return Objects.hash(idRol, idUsuario);
     }
 }

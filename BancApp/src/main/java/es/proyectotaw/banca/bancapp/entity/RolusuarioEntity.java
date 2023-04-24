@@ -3,18 +3,17 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "rolusuario", schema = "bancodb")
+@Table(name = "rolusuario", schema = "bancodb", catalog = "")
 @IdClass(RolusuarioEntityPK.class)
 public class RolusuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idRol", nullable = false)
+    @Column(name = "idRol")
     private Integer idRol;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idUsuario", nullable = false)
+    @Column(name = "idUsuario")
     private Integer idUsuario;
     @ManyToOne
     @JoinColumn(name = "idRol", referencedColumnName = "idRol", nullable = false)
@@ -23,8 +22,8 @@ public class RolusuarioEntity {
     @JoinColumn(name = "idUsuario", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByIdUsuario;
     @ManyToOne
-    @JoinColumns({@JoinColumn(name = "cifEmpresa", referencedColumnName = "CIF"), @JoinColumn(name = "idEmpresa", referencedColumnName = "ID")})
-    private EmpresaEntity empresa;
+    @JoinColumn(name = "idEmpresa", referencedColumnName = "ID")
+    private EmpresaEntity empresaByIdEmpresa;
 
     public Integer getIdRol() {
         return idRol;
@@ -46,18 +45,13 @@ public class RolusuarioEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         RolusuarioEntity that = (RolusuarioEntity) o;
-
-        if (!Objects.equals(idRol, that.idRol)) return false;
-        return Objects.equals(idUsuario, that.idUsuario);
+        return Objects.equals(idRol, that.idRol) && Objects.equals(idUsuario, that.idUsuario);
     }
 
     @Override
     public int hashCode() {
-        int result = idRol != null ? idRol.hashCode() : 0;
-        result = 31 * result + (idUsuario != null ? idUsuario.hashCode() : 0);
-        return result;
+        return Objects.hash(idRol, idUsuario);
     }
 
     public RolEntity getRolByIdRol() {
@@ -76,11 +70,11 @@ public class RolusuarioEntity {
         this.usuarioByIdUsuario = usuarioByIdUsuario;
     }
 
-    public EmpresaEntity getEmpresa() {
-        return empresa;
+    public EmpresaEntity getEmpresaByIdEmpresa() {
+        return empresaByIdEmpresa;
     }
 
-    public void setEmpresa(EmpresaEntity empresa) {
-        this.empresa = empresa;
+    public void setEmpresaByIdEmpresa(EmpresaEntity empresaByIdEmpresa) {
+        this.empresaByIdEmpresa = empresaByIdEmpresa;
     }
 }

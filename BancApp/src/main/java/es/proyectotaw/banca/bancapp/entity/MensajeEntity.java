@@ -4,19 +4,18 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "mensaje", schema = "bancodb")
+@Table(name = "mensaje", schema = "bancodb", catalog = "")
 public class MensajeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID_mensaje", nullable = false)
+    @Column(name = "ID_mensaje")
     private Integer idMensaje;
     @Basic
-    @Column(name = "Fecha_hora", nullable = false)
+    @Column(name = "Fecha_hora")
     private Date fechaHora;
     @Basic
-    @Column(name = "Contenido", nullable = false, length = 500)
+    @Column(name = "Contenido")
     private String contenido;
     @ManyToOne
     @JoinColumn(name = "chat", referencedColumnName = "ID", nullable = false)
@@ -53,20 +52,13 @@ public class MensajeEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         MensajeEntity that = (MensajeEntity) o;
-
-        if (!Objects.equals(idMensaje, that.idMensaje)) return false;
-        if (!Objects.equals(fechaHora, that.fechaHora)) return false;
-        return Objects.equals(contenido, that.contenido);
+        return Objects.equals(idMensaje, that.idMensaje) && Objects.equals(fechaHora, that.fechaHora) && Objects.equals(contenido, that.contenido);
     }
 
     @Override
     public int hashCode() {
-        int result = idMensaje != null ? idMensaje.hashCode() : 0;
-        result = 31 * result + (fechaHora != null ? fechaHora.hashCode() : 0);
-        result = 31 * result + (contenido != null ? contenido.hashCode() : 0);
-        return result;
+        return Objects.hash(idMensaje, fechaHora, contenido);
     }
 
     public ChatEntity getChatByChat() {

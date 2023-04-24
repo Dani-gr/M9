@@ -3,16 +3,15 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "transferencia", schema = "bancodb")
+@Table(name = "transferencia", schema = "bancodb", catalog = "")
 public class TransferenciaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "Operacion", nullable = false)
+    @Column(name = "Operacion")
     private Integer operacion;
     @Basic
-    @Column(name = "cantidad", nullable = false)
+    @Column(name = "cantidad")
     private Double cantidad;
     @OneToOne
     @JoinColumn(name = "Operacion", referencedColumnName = "idOperacion", nullable = false)
@@ -41,18 +40,13 @@ public class TransferenciaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         TransferenciaEntity that = (TransferenciaEntity) o;
-
-        if (!Objects.equals(operacion, that.operacion)) return false;
-        return Objects.equals(cantidad, that.cantidad);
+        return Objects.equals(operacion, that.operacion) && Objects.equals(cantidad, that.cantidad);
     }
 
     @Override
     public int hashCode() {
-        int result = operacion != null ? operacion.hashCode() : 0;
-        result = 31 * result + (cantidad != null ? cantidad.hashCode() : 0);
-        return result;
+        return Objects.hash(operacion, cantidad);
     }
 
     public OperacionEntity getOperacionByOperacion() {
@@ -67,7 +61,7 @@ public class TransferenciaEntity {
         return cuentaByCuentaDestino;
     }
 
-    public void setCuentaByCuentaDestino(CuentaEntity cuentaByCuentaDestion) {
-        this.cuentaByCuentaDestino = cuentaByCuentaDestion;
+    public void setCuentaByCuentaDestino(CuentaEntity cuentaByCuentaDestino) {
+        this.cuentaByCuentaDestino = cuentaByCuentaDestino;
     }
 }
