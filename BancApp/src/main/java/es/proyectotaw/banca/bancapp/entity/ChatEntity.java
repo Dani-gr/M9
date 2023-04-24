@@ -3,19 +3,20 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
+
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "chat", schema = "bancodb")
 public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "Asistente_ID", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "asistente_id", referencedColumnName = "id", nullable = false)
     private UsuarioEntity usuarioByAsistenteId;
     @ManyToOne
-    @JoinColumn(name = "Cliente_ID_Cliente", referencedColumnName = "ID_Cliente", nullable = false)
+    @JoinColumn(name = "cliente_id_cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByClienteIdCliente;
     @OneToMany(mappedBy = "chatByChat")
     private Collection<MensajeEntity> mensajesById;

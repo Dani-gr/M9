@@ -3,35 +3,24 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
-
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "empresa", schema = "bancodb")
-@IdClass(EmpresaEntityPK.class)
 public class EmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "CIF", nullable = false)
-    private Integer cif;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<ClientesempresaEntity> clientesempresas;
-    @ManyToOne
-    @JoinColumn(name = "ID", referencedColumnName = "ID_Cliente", nullable = false)
+    @Basic
+    @Column(name = "cif", nullable = false)
+    private Integer cif;
+    @OneToMany(mappedBy = "empresaByIdEmpresa")
+    private Collection<ClientesEmpresaEntity> clientesEmpresasById;
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteById;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<RolusuarioEntity> rolusuarios;
-
-    public Integer getCif() {
-        return cif;
-    }
-
-    public void setCif(Integer cif) {
-        this.cif = cif;
-    }
+    @OneToMany(mappedBy = "empresaByIdempresa")
+    private Collection<RolusuarioEntity> rolusuariosById;
 
     public Integer getId() {
         return id;
@@ -41,6 +30,14 @@ public class EmpresaEntity {
         this.id = id;
     }
 
+    public Integer getCif() {
+        return cif;
+    }
+
+    public void setCif(Integer cif) {
+        this.cif = cif;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,23 +45,23 @@ public class EmpresaEntity {
 
         EmpresaEntity that = (EmpresaEntity) o;
 
-        if (!Objects.equals(cif, that.cif)) return false;
-        return Objects.equals(id, that.id);
+        if (!Objects.equals(id, that.id)) return false;
+        return Objects.equals(cif, that.cif);
     }
 
     @Override
     public int hashCode() {
-        int result = cif != null ? cif.hashCode() : 0;
-        result = 31 * result + (id != null ? id.hashCode() : 0);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (cif != null ? cif.hashCode() : 0);
         return result;
     }
 
-    public Collection<ClientesempresaEntity> getClientesempresas() {
-        return clientesempresas;
+    public Collection<ClientesEmpresaEntity> getClientesEmpresasById() {
+        return clientesEmpresasById;
     }
 
-    public void setClientesempresas(Collection<ClientesempresaEntity> clientesempresas) {
-        this.clientesempresas = clientesempresas;
+    public void setClientesEmpresasById(Collection<ClientesEmpresaEntity> clientesEmpresasById) {
+        this.clientesEmpresasById = clientesEmpresasById;
     }
 
     public ClienteEntity getClienteById() {
@@ -75,11 +72,11 @@ public class EmpresaEntity {
         this.clienteById = clienteById;
     }
 
-    public Collection<RolusuarioEntity> getRolusuarios() {
-        return rolusuarios;
+    public Collection<RolusuarioEntity> getRolusuariosById() {
+        return rolusuariosById;
     }
 
-    public void setRolusuarios(Collection<RolusuarioEntity> rolusuarios) {
-        this.rolusuarios = rolusuarios;
+    public void setRolusuariosById(Collection<RolusuarioEntity> rolusuariosById) {
+        this.rolusuariosById = rolusuariosById;
     }
 }

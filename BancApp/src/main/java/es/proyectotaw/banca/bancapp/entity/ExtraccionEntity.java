@@ -9,13 +9,13 @@ import java.util.Objects;
 public class ExtraccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "Operacion", nullable = false)
+    @Column(name = "operacion", nullable = false)
     private Integer operacion;
     @Basic
-    @Column(name = "Cantidad", nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private Double cantidad;
     @OneToOne
-    @JoinColumn(name = "Operacion", referencedColumnName = "idOperacion", nullable = false)
+    @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
 
     public Integer getOperacion() {

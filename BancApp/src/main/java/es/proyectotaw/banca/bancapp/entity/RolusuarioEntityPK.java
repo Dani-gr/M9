@@ -9,29 +9,29 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class RolusuarioEntityPK implements Serializable {
-    @Column(name = "idRol", nullable = false)
+    @Column(name = "idrol", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idRol;
-    @Column(name = "idUsuario", nullable = false)
+    private Integer idrol;
+    @Column(name = "idusuario", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idUsuario;
+    private Integer idusuario;
 
-    public Integer getIdRol() {
-        return idRol;
+    public Integer getIdrol() {
+        return idrol;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setIdrol(Integer idrol) {
+        this.idrol = idrol;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Integer getIdusuario() {
+        return idusuario;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdusuario(Integer idusuario) {
+        this.idusuario = idusuario;
     }
 
     @Override
@@ -41,14 +41,14 @@ public class RolusuarioEntityPK implements Serializable {
 
         RolusuarioEntityPK that = (RolusuarioEntityPK) o;
 
-        if (!Objects.equals(idRol, that.idRol)) return false;
-        return Objects.equals(idUsuario, that.idUsuario);
+        if (!Objects.equals(idrol, that.idrol)) return false;
+        return Objects.equals(idusuario, that.idusuario);
     }
 
     @Override
     public int hashCode() {
-        int result = idRol != null ? idRol.hashCode() : 0;
-        result = 31 * result + (idUsuario != null ? idUsuario.hashCode() : 0);
+        int result = idrol != null ? idrol.hashCode() : 0;
+        result = 31 * result + (idusuario != null ? idusuario.hashCode() : 0);
         return result;
     }
 }

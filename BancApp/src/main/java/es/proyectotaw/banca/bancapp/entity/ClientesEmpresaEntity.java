@@ -5,35 +5,23 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 @Entity
-@Table(name = "clientesempresa", schema = "bancodb")
-@IdClass(ClientesempresaEntityPK.class)
-public class ClientesempresaEntity {
+@Table(name = "clientes_empresa", schema = "bancodb")
+@IdClass(ClientesEmpresaEntityPK.class)
+public class ClientesEmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "CIF", nullable = false)
-    private Integer cif;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "ID_Empresa", nullable = false)
+    @Column(name = "id_empresa", nullable = false)
     private Integer idEmpresa;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID_Cliente", nullable = false)
+    @Column(name = "id_cliente", nullable = false)
     private Integer idCliente;
     @ManyToOne
-    @JoinColumns({@JoinColumn(name = "CIF", referencedColumnName = "CIF", nullable = false), @JoinColumn(name = "ID_Empresa", referencedColumnName = "ID", nullable = false)})
-    private EmpresaEntity empresa;
+    @JoinColumn(name = "id_empresa", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private EmpresaEntity empresaByIdEmpresa;
     @ManyToOne
-    @JoinColumn(name = "ID_Cliente", referencedColumnName = "ID_Cliente", nullable = false)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false, insertable = false, updatable = false)
     private ClienteEntity clienteByIdCliente;
-
-    public Integer getCif() {
-        return cif;
-    }
-
-    public void setCif(Integer cif) {
-        this.cif = cif;
-    }
 
     public Integer getIdEmpresa() {
         return idEmpresa;
@@ -56,27 +44,25 @@ public class ClientesempresaEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ClientesempresaEntity that = (ClientesempresaEntity) o;
+        ClientesEmpresaEntity that = (ClientesEmpresaEntity) o;
 
-        if (!Objects.equals(cif, that.cif)) return false;
         if (!Objects.equals(idEmpresa, that.idEmpresa)) return false;
         return Objects.equals(idCliente, that.idCliente);
     }
 
     @Override
     public int hashCode() {
-        int result = cif != null ? cif.hashCode() : 0;
-        result = 31 * result + (idEmpresa != null ? idEmpresa.hashCode() : 0);
+        int result = idEmpresa != null ? idEmpresa.hashCode() : 0;
         result = 31 * result + (idCliente != null ? idCliente.hashCode() : 0);
         return result;
     }
 
-    public EmpresaEntity getEmpresa() {
-        return empresa;
+    public EmpresaEntity getEmpresaByIdEmpresa() {
+        return empresaByIdEmpresa;
     }
 
-    public void setEmpresa(EmpresaEntity empresa) {
-        this.empresa = empresa;
+    public void setEmpresaByIdEmpresa(EmpresaEntity empresaByIdEmpresa) {
+        this.empresaByIdEmpresa = empresaByIdEmpresa;
     }
 
     public ClienteEntity getClienteByIdCliente() {

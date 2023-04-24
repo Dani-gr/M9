@@ -10,20 +10,20 @@ import java.util.Objects;
 public class RolEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idRol", nullable = false)
-    private Integer idRol;
+    @Column(name = "id", nullable = false)
+    private Integer idrol;
     @Basic
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
-    @OneToMany(mappedBy = "rolByIdRol")
-    private Collection<RolusuarioEntity> rolusuariosByIdRol;
+    @OneToMany(mappedBy = "rolByIdrol")
+    private Collection<RolusuarioEntity> rolusuariosByIdrol;
 
-    public Integer getIdRol() {
-        return idRol;
+    public Integer getIdrol() {
+        return idrol;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setIdrol(Integer idrol) {
+        this.idrol = idrol;
     }
 
     public String getNombre() {
@@ -41,22 +41,22 @@ public class RolEntity {
 
         RolEntity rolEntity = (RolEntity) o;
 
-        if (!Objects.equals(idRol, rolEntity.idRol)) return false;
+        if (!Objects.equals(idrol, rolEntity.idrol)) return false;
         return Objects.equals(nombre, rolEntity.nombre);
     }
 
     @Override
     public int hashCode() {
-        int result = idRol != null ? idRol.hashCode() : 0;
+        int result = idrol != null ? idrol.hashCode() : 0;
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         return result;
     }
 
-    public Collection<RolusuarioEntity> getRolusuariosByIdRol() {
-        return rolusuariosByIdRol;
+    public Collection<RolusuarioEntity> getRolusuariosByIdrol() {
+        return rolusuariosByIdrol;
     }
 
-    public void setRolusuariosByIdRol(Collection<RolusuarioEntity> rolusuariosByIdRol) {
-        this.rolusuariosByIdRol = rolusuariosByIdRol;
+    public void setRolusuariosByIdrol(Collection<RolusuarioEntity> rolusuariosByIdrol) {
+        this.rolusuariosByIdrol = rolusuariosByIdrol;
     }
 }

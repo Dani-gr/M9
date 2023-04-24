@@ -5,11 +5,11 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 @Entity
-@Table(name = "cambdivisa", schema = "bancodb")
-public class CambdivisaEntity {
+@Table(name = "camb_divisa", schema = "bancodb")
+public class CambDivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "Operacion", nullable = false)
+    @Column(name = "operacion", nullable = false)
     private Integer operacion;
     @Basic
     @Column(name = "origen", nullable = false, length = 45)
@@ -18,7 +18,7 @@ public class CambdivisaEntity {
     @Column(name = "destino", nullable = false, length = 45)
     private String destino;
     @OneToOne
-    @JoinColumn(name = "Operacion", referencedColumnName = "idOperacion", nullable = false)
+    @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
 
     public Integer getOperacion() {
@@ -50,7 +50,7 @@ public class CambdivisaEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CambdivisaEntity that = (CambdivisaEntity) o;
+        CambDivisaEntity that = (CambDivisaEntity) o;
 
         if (!Objects.equals(operacion, that.operacion)) return false;
         if (!Objects.equals(origen, that.origen)) return false;
@@ -72,5 +72,4 @@ public class CambdivisaEntity {
     public void setOperacionByOperacion(OperacionEntity operacionByOperacion) {
         this.operacionByOperacion = operacionByOperacion;
     }
-
 }

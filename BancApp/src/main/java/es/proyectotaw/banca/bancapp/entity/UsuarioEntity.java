@@ -11,25 +11,25 @@ import java.util.Objects;
 public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "NIF", nullable = false, length = 10)
+    @Column(name = "nif", nullable = false, length = 10)
     private String nif;
     @Basic
-    @Column(name = "primerNombre", nullable = false, length = 45)
+    @Column(name = "primer_nombre", nullable = false, length = 45)
     private String primerNombre;
     @Basic
-    @Column(name = "segundoNombre", length = 45)
+    @Column(name = "segundo_nombre", length = 45)
     private String segundoNombre;
     @Basic
-    @Column(name = "primerApellido", nullable = false, length = 45)
+    @Column(name = "primer_apellido", nullable = false, length = 45)
     private String primerApellido;
     @Basic
-    @Column(name = "segundoApellido", length = 45)
+    @Column(name = "segundo_apellido", length = 45)
     private String segundoApellido;
     @Basic
-    @Column(name = "fechaNacimiento", nullable = false)
+    @Column(name = "fecha_nacimiento", nullable = false)
     private Date fechaNacimiento;
     @Basic
     @Column(name = "email", nullable = false, length = 45)
@@ -37,20 +37,15 @@ public class UsuarioEntity {
     @Basic
     @Column(name = "password", nullable = false, length = 45)
     private String password;
-    @Basic
-    @Column(name = "idDireccion", nullable = false)
-    private Integer idDireccion;
     @OneToMany(mappedBy = "usuarioByAsistenteId")
     private Collection<ChatEntity> chatsById;
-    @OneToOne(mappedBy = "usuarioById")
-    private DireccionEntity direccionById;
     @OneToMany(mappedBy = "usuarioByEmisor")
     private Collection<MensajeEntity> mensajesById;
-    @OneToMany(mappedBy = "usuarioByIdUsuario")
+    @OneToMany(mappedBy = "usuarioByIdusuario")
     private Collection<RolusuarioEntity> rolusuariosById;
-    @OneToOne
-    @JoinColumn(name = "ID", referencedColumnName = "ID_Cliente", nullable = false)
-    private ClienteEntity clienteById;
+    @ManyToOne
+    @JoinColumn(name = "cliente", referencedColumnName = "id_cliente")
+    private ClienteEntity clienteByCliente;
 
     public Integer getId() {
         return id;
@@ -124,14 +119,6 @@ public class UsuarioEntity {
         this.password = password;
     }
 
-    public Integer getIdDireccion() {
-        return idDireccion;
-    }
-
-    public void setIdDireccion(Integer idDireccion) {
-        this.idDireccion = idDireccion;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -151,8 +138,7 @@ public class UsuarioEntity {
         if (!Objects.equals(fechaNacimiento, that.fechaNacimiento))
             return false;
         if (!Objects.equals(email, that.email)) return false;
-        if (!Objects.equals(password, that.password)) return false;
-        return Objects.equals(idDireccion, that.idDireccion);
+        return Objects.equals(password, that.password);
     }
 
     @Override
@@ -166,7 +152,6 @@ public class UsuarioEntity {
         result = 31 * result + (fechaNacimiento != null ? fechaNacimiento.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (idDireccion != null ? idDireccion.hashCode() : 0);
         return result;
     }
 
@@ -176,14 +161,6 @@ public class UsuarioEntity {
 
     public void setChatsById(Collection<ChatEntity> chatsById) {
         this.chatsById = chatsById;
-    }
-
-    public DireccionEntity getDireccionById() {
-        return direccionById;
-    }
-
-    public void setDireccionById(DireccionEntity direccionById) {
-        this.direccionById = direccionById;
     }
 
     public Collection<MensajeEntity> getMensajesById() {
@@ -202,11 +179,11 @@ public class UsuarioEntity {
         this.rolusuariosById = rolusuariosById;
     }
 
-    public ClienteEntity getClienteById() {
-        return clienteById;
+    public ClienteEntity getClienteByCliente() {
+        return clienteByCliente;
     }
 
-    public void setClienteById(ClienteEntity clienteById) {
-        this.clienteById = clienteById;
+    public void setClienteByCliente(ClienteEntity clienteByCliente) {
+        this.clienteByCliente = clienteByCliente;
     }
 }

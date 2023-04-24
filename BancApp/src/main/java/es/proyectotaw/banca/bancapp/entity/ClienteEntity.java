@@ -10,24 +10,21 @@ import java.util.Objects;
 public class ClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID_Cliente", nullable = false)
+    @Column(name = "id_cliente", nullable = false)
     private Integer idCliente;
-    @Basic
-    @Column(name = "Direcc", nullable = false, length = 45)
-    private String direcc;
     @OneToMany(mappedBy = "clienteByClienteIdCliente")
     private Collection<ChatEntity> chatsByIdCliente;
     @ManyToOne
-    @JoinColumn(name = "Direccion", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "direccion", referencedColumnName = "id", nullable = false)
     private DireccionEntity direccionByDireccion;
     @OneToMany(mappedBy = "clienteByIdCliente")
-    private Collection<ClientesempresaEntity> clientesempresasByIdCliente;
+    private Collection<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
     @OneToMany(mappedBy = "clienteByCliente")
     private Collection<CuentaEntity> cuentasByIdCliente;
-    @OneToMany(mappedBy = "clienteById")
-    private Collection<EmpresaEntity> empresasByIdCliente;
     @OneToOne(mappedBy = "clienteById")
-    private UsuarioEntity usuarioByIdCliente;
+    private EmpresaEntity empresaByIdCliente;
+    @OneToMany(mappedBy = "clienteByCliente")
+    private Collection<UsuarioEntity> usuariosByIdCliente;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -37,14 +34,6 @@ public class ClienteEntity {
         this.idCliente = idCliente;
     }
 
-    public String getDirecc() {
-        return direcc;
-    }
-
-    public void setDirecc(String direcc) {
-        this.direcc = direcc;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,15 +41,12 @@ public class ClienteEntity {
 
         ClienteEntity that = (ClienteEntity) o;
 
-        if (!Objects.equals(idCliente, that.idCliente)) return false;
-        return Objects.equals(direcc, that.direcc);
+        return Objects.equals(idCliente, that.idCliente);
     }
 
     @Override
     public int hashCode() {
-        int result = idCliente != null ? idCliente.hashCode() : 0;
-        result = 31 * result + (direcc != null ? direcc.hashCode() : 0);
-        return result;
+        return idCliente != null ? idCliente.hashCode() : 0;
     }
 
     public Collection<ChatEntity> getChatsByIdCliente() {
@@ -79,12 +65,12 @@ public class ClienteEntity {
         this.direccionByDireccion = direccionByDireccion;
     }
 
-    public Collection<ClientesempresaEntity> getClientesempresasByIdCliente() {
-        return clientesempresasByIdCliente;
+    public Collection<ClientesEmpresaEntity> getClientesEmpresasByIdCliente() {
+        return clientesEmpresasByIdCliente;
     }
 
-    public void setClientesempresasByIdCliente(Collection<ClientesempresaEntity> clientesempresasByIdCliente) {
-        this.clientesempresasByIdCliente = clientesempresasByIdCliente;
+    public void setClientesEmpresasByIdCliente(Collection<ClientesEmpresaEntity> clientesEmpresasByIdCliente) {
+        this.clientesEmpresasByIdCliente = clientesEmpresasByIdCliente;
     }
 
     public Collection<CuentaEntity> getCuentasByIdCliente() {
@@ -95,19 +81,19 @@ public class ClienteEntity {
         this.cuentasByIdCliente = cuentasByIdCliente;
     }
 
-    public Collection<EmpresaEntity> getEmpresasByIdCliente() {
-        return empresasByIdCliente;
+    public EmpresaEntity getEmpresaByIdCliente() {
+        return empresaByIdCliente;
     }
 
-    public void setEmpresasByIdCliente(Collection<EmpresaEntity> empresasByIdCliente) {
-        this.empresasByIdCliente = empresasByIdCliente;
+    public void setEmpresaByIdCliente(EmpresaEntity empresaByIdCliente) {
+        this.empresaByIdCliente = empresaByIdCliente;
     }
 
-    public UsuarioEntity getUsuarioByIdCliente() {
-        return usuarioByIdCliente;
+    public Collection<UsuarioEntity> getUsuariosByIdCliente() {
+        return usuariosByIdCliente;
     }
 
-    public void setUsuarioByIdCliente(UsuarioEntity usuarioByIdCliente) {
-        this.usuarioByIdCliente = usuarioByIdCliente;
+    public void setUsuariosByIdCliente(Collection<UsuarioEntity> usuariosByIdCliente) {
+        this.usuariosByIdCliente = usuariosByIdCliente;
     }
 }

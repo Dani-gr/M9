@@ -10,7 +10,7 @@ import java.util.Objects;
 public class DireccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
     @Column(name = "calle", nullable = false, length = 45)
@@ -31,13 +31,10 @@ public class DireccionEntity {
     @Column(name = "pais", nullable = false, length = 45)
     private String pais;
     @Basic
-    @Column(name = "codPostal", nullable = false, length = 45)
-    private String codPostal;
+    @Column(name = "codpostal", nullable = false, length = 45)
+    private String codpostal;
     @OneToMany(mappedBy = "direccionByDireccion")
     private Collection<ClienteEntity> clientesById;
-    @OneToOne
-    @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
-    private UsuarioEntity usuarioById;
 
     public Integer getId() {
         return id;
@@ -95,12 +92,12 @@ public class DireccionEntity {
         this.pais = pais;
     }
 
-    public String getCodPostal() {
-        return codPostal;
+    public String getCodpostal() {
+        return codpostal;
     }
 
-    public void setCodPostal(String codPostal) {
-        this.codPostal = codPostal;
+    public void setCodpostal(String codpostal) {
+        this.codpostal = codpostal;
     }
 
     @Override
@@ -118,7 +115,7 @@ public class DireccionEntity {
         if (!Objects.equals(ciudad, that.ciudad)) return false;
         if (!Objects.equals(region, that.region)) return false;
         if (!Objects.equals(pais, that.pais)) return false;
-        return Objects.equals(codPostal, that.codPostal);
+        return Objects.equals(codpostal, that.codpostal);
     }
 
     @Override
@@ -130,7 +127,7 @@ public class DireccionEntity {
         result = 31 * result + (ciudad != null ? ciudad.hashCode() : 0);
         result = 31 * result + (region != null ? region.hashCode() : 0);
         result = 31 * result + (pais != null ? pais.hashCode() : 0);
-        result = 31 * result + (codPostal != null ? codPostal.hashCode() : 0);
+        result = 31 * result + (codpostal != null ? codpostal.hashCode() : 0);
         return result;
     }
 
@@ -140,13 +137,5 @@ public class DireccionEntity {
 
     public void setClientesById(Collection<ClienteEntity> clientesById) {
         this.clientesById = clientesById;
-    }
-
-    public UsuarioEntity getUsuarioById() {
-        return usuarioById;
-    }
-
-    public void setUsuarioById(UsuarioEntity usuarioById) {
-        this.usuarioById = usuarioById;
     }
 }
