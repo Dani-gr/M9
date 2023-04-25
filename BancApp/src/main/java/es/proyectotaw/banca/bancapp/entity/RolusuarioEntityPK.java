@@ -5,14 +5,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Objects;
 
 public class RolusuarioEntityPK implements Serializable {
-    @Column(name = "idrol", nullable = false)
+    @Column(name = "idrol")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idrol;
-    @Column(name = "idusuario", nullable = false)
+    @Column(name = "idusuario")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idusuario;
@@ -37,10 +36,13 @@ public class RolusuarioEntityPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         RolusuarioEntityPK that = (RolusuarioEntityPK) o;
 
-        if (!Objects.equals(idrol, that.idrol)) return false;
-        return Objects.equals(idusuario, that.idusuario);
+        if (idrol != null ? !idrol.equals(that.idrol) : that.idrol != null) return false;
+        if (idusuario != null ? !idusuario.equals(that.idusuario) : that.idusuario != null) return false;
+
+        return true;
     }
 
     @Override

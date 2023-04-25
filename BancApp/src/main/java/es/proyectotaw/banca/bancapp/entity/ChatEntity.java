@@ -2,15 +2,13 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
 @Table(name = "chat", schema = "bancodb", catalog = "")
 public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "asistente_id", referencedColumnName = "id", nullable = false)
@@ -33,13 +31,17 @@ public class ChatEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ChatEntity that = (ChatEntity) o;
-        return Objects.equals(id, that.id);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return id != null ? id.hashCode() : 0;
     }
 
     public UsuarioEntity getUsuarioByAsistenteId() {

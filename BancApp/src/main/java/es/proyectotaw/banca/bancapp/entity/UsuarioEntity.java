@@ -3,32 +3,31 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "usuario", schema = "bancodb", catalog = "")
 public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
     @Basic
-    @Column(name = "nif", nullable = false, length = 10)
+    @Column(name = "nif")
     private String nif;
     @Basic
-    @Column(name = "primer_nombre", nullable = false, length = 45)
+    @Column(name = "primer_nombre")
     private String primerNombre;
     @Basic
-    @Column(name = "segundo_nombre", length = 45)
+    @Column(name = "segundo_nombre")
     private String segundoNombre;
     @Basic
-    @Column(name = "primer_apellido", nullable = false, length = 45)
+    @Column(name = "primer_apellido")
     private String primerApellido;
     @Basic
-    @Column(name = "segundo_apellido", length = 45)
+    @Column(name = "segundo_apellido")
     private String segundoApellido;
     @Basic
-    @Column(name = "fecha_nacimiento", nullable = false)
+    @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
     @Basic
     @Column(name = "email")
@@ -37,11 +36,11 @@ public class UsuarioEntity {
     @Column(name = "password")
     private String password;
     @OneToMany(mappedBy = "usuarioByAsistenteId")
-    private Collection<ChatEntity> chatsById;
+    private List<ChatEntity> chatsById;
     @OneToMany(mappedBy = "usuarioByEmisor")
-    private Collection<MensajeEntity> mensajesById;
+    private List<MensajeEntity> mensajesById;
     @OneToMany(mappedBy = "usuarioByIdusuario")
-    private Collection<RolusuarioEntity> rolusuariosById;
+    private List<RolusuarioEntity> rolusuariosById;
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente")
     private ClienteEntity clienteByCliente;
@@ -122,21 +121,24 @@ public class UsuarioEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         UsuarioEntity that = (UsuarioEntity) o;
 
-        if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(nif, that.nif)) return false;
-        if (!Objects.equals(primerNombre, that.primerNombre)) return false;
-        if (!Objects.equals(segundoNombre, that.segundoNombre))
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (nif != null ? !nif.equals(that.nif) : that.nif != null) return false;
+        if (primerNombre != null ? !primerNombre.equals(that.primerNombre) : that.primerNombre != null) return false;
+        if (segundoNombre != null ? !segundoNombre.equals(that.segundoNombre) : that.segundoNombre != null)
             return false;
-        if (!Objects.equals(primerApellido, that.primerApellido))
+        if (primerApellido != null ? !primerApellido.equals(that.primerApellido) : that.primerApellido != null)
             return false;
-        if (!Objects.equals(segundoApellido, that.segundoApellido))
+        if (segundoApellido != null ? !segundoApellido.equals(that.segundoApellido) : that.segundoApellido != null)
             return false;
-        if (!Objects.equals(fechaNacimiento, that.fechaNacimiento))
+        if (fechaNacimiento != null ? !fechaNacimiento.equals(that.fechaNacimiento) : that.fechaNacimiento != null)
             return false;
-        if (!Objects.equals(email, that.email)) return false;
-        return Objects.equals(password, that.password);
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+
+        return true;
     }
 
     @Override
@@ -161,7 +163,7 @@ public class UsuarioEntity {
         this.chatsById = chatsById;
     }
 
-    public Collection<MensajeEntity> getMensajesById() {
+    public List<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 

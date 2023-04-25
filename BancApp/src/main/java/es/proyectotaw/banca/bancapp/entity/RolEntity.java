@@ -2,20 +2,19 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "rol", schema = "bancodb", catalog = "")
 public class RolEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "idrol")
     private Integer idrol;
     @Basic
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(mappedBy = "rolByIdrol")
-    private Collection<RolusuarioEntity> rolusuariosByIdrol;
+    private List<RolusuarioEntity> rolusuariosByIdrol;
 
     public Integer getIdrol() {
         return idrol;
@@ -37,10 +36,13 @@ public class RolEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         RolEntity rolEntity = (RolEntity) o;
 
-        if (!Objects.equals(idrol, rolEntity.idrol)) return false;
-        return Objects.equals(nombre, rolEntity.nombre);
+        if (idrol != null ? !idrol.equals(rolEntity.idrol) : rolEntity.idrol != null) return false;
+        if (nombre != null ? !nombre.equals(rolEntity.nombre) : rolEntity.nombre != null) return false;
+
+        return true;
     }
 
     @Override
@@ -50,11 +52,11 @@ public class RolEntity {
         return result;
     }
 
-    public Collection<RolusuarioEntity> getRolusuariosByIdrol() {
+    public List<RolusuarioEntity> getRolusuariosByIdrol() {
         return rolusuariosByIdrol;
     }
 
-    public void setRolusuariosByIdrol(Collection<RolusuarioEntity> rolusuariosByIdrol) {
+    public void setRolusuariosByIdrol(List<RolusuarioEntity> rolusuariosByIdrol) {
         this.rolusuariosByIdrol = rolusuariosByIdrol;
     }
 }

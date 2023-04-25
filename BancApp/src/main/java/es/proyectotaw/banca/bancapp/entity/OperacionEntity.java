@@ -2,17 +2,16 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "operacion", schema = "bancodb", catalog = "")
 public class OperacionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_operacion", nullable = false)
+    @Column(name = "id_operacion")
     private Integer idOperacion;
     @Basic
-    @Column(name = "fecha", nullable = false)
+    @Column(name = "fecha")
     private Date fecha;
     @OneToOne(mappedBy = "operacionByOperacion")
     private CambDivisaEntity cambDivisaByIdOperacion;
@@ -44,13 +43,20 @@ public class OperacionEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         OperacionEntity that = (OperacionEntity) o;
-        return Objects.equals(idOperacion, that.idOperacion) && Objects.equals(fecha, that.fecha);
+
+        if (idOperacion != null ? !idOperacion.equals(that.idOperacion) : that.idOperacion != null) return false;
+        if (fecha != null ? !fecha.equals(that.fecha) : that.fecha != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idOperacion, fecha);
+        int result = idOperacion != null ? idOperacion.hashCode() : 0;
+        result = 31 * result + (fecha != null ? fecha.hashCode() : 0);
+        return result;
     }
 
     public CambDivisaEntity getCambDivisaByIdOperacion() {

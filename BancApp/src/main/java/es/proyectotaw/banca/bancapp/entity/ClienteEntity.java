@@ -2,14 +2,13 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "cliente", schema = "bancodb", catalog = "")
 public class ClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_cliente", nullable = false)
+    @Column(name = "id_cliente")
     private Integer idCliente;
     @OneToMany(mappedBy = "clienteByClienteIdCliente")
     private List<ChatEntity> chatsByIdCliente;
@@ -17,13 +16,13 @@ public class ClienteEntity {
     @JoinColumn(name = "direccion", referencedColumnName = "id", nullable = false)
     private DireccionEntity direccionByDireccion;
     @OneToMany(mappedBy = "clienteByIdCliente")
-    private Collection<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
+    private List<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
     @OneToMany(mappedBy = "clienteByCliente")
-    private Collection<CuentaEntity> cuentasByIdCliente;
+    private List<CuentaEntity> cuentasByIdCliente;
     @OneToOne(mappedBy = "clienteById")
     private EmpresaEntity empresaByIdCliente;
     @OneToMany(mappedBy = "clienteByCliente")
-    private Collection<UsuarioEntity> usuariosByIdCliente;
+    private List<UsuarioEntity> usuariosByIdCliente;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -37,8 +36,12 @@ public class ClienteEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ClienteEntity that = (ClienteEntity) o;
-        return Objects.equals(idCliente, that.idCliente);
+
+        if (idCliente != null ? !idCliente.equals(that.idCliente) : that.idCliente != null) return false;
+
+        return true;
     }
 
     @Override
@@ -62,11 +65,11 @@ public class ClienteEntity {
         this.direccionByDireccion = direccionByDireccion;
     }
 
-    public Collection<ClientesEmpresaEntity> getClientesEmpresasByIdCliente() {
+    public List<ClientesEmpresaEntity> getClientesEmpresasByIdCliente() {
         return clientesEmpresasByIdCliente;
     }
 
-    public void setClientesEmpresasByIdCliente(Collection<ClientesEmpresaEntity> clientesEmpresasByIdCliente) {
+    public void setClientesEmpresasByIdCliente(List<ClientesEmpresaEntity> clientesEmpresasByIdCliente) {
         this.clientesEmpresasByIdCliente = clientesEmpresasByIdCliente;
     }
 
@@ -86,11 +89,11 @@ public class ClienteEntity {
         this.empresaByIdCliente = empresaByIdCliente;
     }
 
-    public Collection<UsuarioEntity> getUsuariosByIdCliente() {
+    public List<UsuarioEntity> getUsuariosByIdCliente() {
         return usuariosByIdCliente;
     }
 
-    public void setUsuariosByIdCliente(Collection<UsuarioEntity> usuariosByIdCliente) {
+    public void setUsuariosByIdCliente(List<UsuarioEntity> usuariosByIdCliente) {
         this.usuariosByIdCliente = usuariosByIdCliente;
     }
 }

@@ -2,14 +2,13 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "cuenta", schema = "bancodb", catalog = "")
 public class CuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "num_cuenta", nullable = false)
+    @Column(name = "num_cuenta")
     private Integer numCuenta;
     @Basic
     @Column(name = "saldo")
@@ -42,13 +41,20 @@ public class CuentaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         CuentaEntity that = (CuentaEntity) o;
-        return Objects.equals(numCuenta, that.numCuenta) && Objects.equals(saldo, that.saldo);
+
+        if (numCuenta != null ? !numCuenta.equals(that.numCuenta) : that.numCuenta != null) return false;
+        if (saldo != null ? !saldo.equals(that.saldo) : that.saldo != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numCuenta, saldo);
+        int result = numCuenta != null ? numCuenta.hashCode() : 0;
+        result = 31 * result + (saldo != null ? saldo.hashCode() : 0);
+        return result;
     }
 
     public ClienteEntity getClienteByCliente() {
