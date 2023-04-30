@@ -1,28 +1,27 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
-@SuppressWarnings("unused")
+
 @Entity
-@Table(name = "rolusuario", schema = "bancodb")
+@Table(name = "rolusuario", schema = "bancodb", catalog = "")
 @IdClass(RolusuarioEntityPK.class)
 public class RolusuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idrol", nullable = false)
+    @Column(name = "idrol")
     private Integer idrol;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idusuario", nullable = false)
+    @Column(name = "idusuario")
     private Integer idusuario;
     @ManyToOne
-    @JoinColumn(name = "idrol", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "idrol", referencedColumnName = "idrol", nullable = false, insertable = false, updatable = false)
     private RolEntity rolByIdrol;
     @ManyToOne
     @JoinColumn(name = "idusuario", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private UsuarioEntity usuarioByIdusuario;
     @ManyToOne
-    @JoinColumn(name = "idempresa", referencedColumnName = "id")
+    @JoinColumn(name = "idempresa", referencedColumnName = "id", insertable = false, updatable = false)
     private EmpresaEntity empresaByIdempresa;
 
     public Integer getIdrol() {
@@ -48,8 +47,10 @@ public class RolusuarioEntity {
 
         RolusuarioEntity that = (RolusuarioEntity) o;
 
-        if (!Objects.equals(idrol, that.idrol)) return false;
-        return Objects.equals(idusuario, that.idusuario);
+        if (idrol != null ? !idrol.equals(that.idrol) : that.idrol != null) return false;
+        if (idusuario != null ? !idusuario.equals(that.idusuario) : that.idusuario != null) return false;
+
+        return true;
     }
 
     @Override

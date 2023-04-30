@@ -1,16 +1,14 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.List;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "cuenta", schema = "bancodb")
+@Table(name = "cuenta", schema = "bancodb", catalog = "")
 public class CuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "num_cuenta", nullable = false)
+    @Column(name = "num_cuenta")
     private Integer numCuenta;
     @Basic
     @Column(name = "saldo")
@@ -19,9 +17,9 @@ public class CuentaEntity {
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByCliente;
     @OneToMany(mappedBy = "cuentaByCuentaRealiza")
-    private Collection<OperacionEntity> operacionsByNumCuenta;
+    private List<OperacionEntity> operacionsByNumCuenta;
     @OneToMany(mappedBy = "cuentaByCuentaDestino")
-    private Collection<TransferenciaEntity> transferenciasByNumCuenta;
+    private List<TransferenciaEntity> transferenciasByNumCuenta;
 
     public Integer getNumCuenta() {
         return numCuenta;
@@ -46,8 +44,10 @@ public class CuentaEntity {
 
         CuentaEntity that = (CuentaEntity) o;
 
-        if (!Objects.equals(numCuenta, that.numCuenta)) return false;
-        return Objects.equals(saldo, that.saldo);
+        if (numCuenta != null ? !numCuenta.equals(that.numCuenta) : that.numCuenta != null) return false;
+        if (saldo != null ? !saldo.equals(that.saldo) : that.saldo != null) return false;
+
+        return true;
     }
 
     @Override
@@ -65,19 +65,19 @@ public class CuentaEntity {
         this.clienteByCliente = clienteByCliente;
     }
 
-    public Collection<OperacionEntity> getOperacionsByNumCuenta() {
+    public List<OperacionEntity> getOperacionsByNumCuenta() {
         return operacionsByNumCuenta;
     }
 
-    public void setOperacionsByNumCuenta(Collection<OperacionEntity> operacionsByNumCuenta) {
+    public void setOperacionsByNumCuenta(List<OperacionEntity> operacionsByNumCuenta) {
         this.operacionsByNumCuenta = operacionsByNumCuenta;
     }
 
-    public Collection<TransferenciaEntity> getTransferenciasByNumCuenta() {
+    public List<TransferenciaEntity> getTransferenciasByNumCuenta() {
         return transferenciasByNumCuenta;
     }
 
-    public void setTransferenciasByNumCuenta(Collection<TransferenciaEntity> transferenciasByNumCuenta) {
+    public void setTransferenciasByNumCuenta(List<TransferenciaEntity> transferenciasByNumCuenta) {
         this.transferenciasByNumCuenta = transferenciasByNumCuenta;
     }
 }
