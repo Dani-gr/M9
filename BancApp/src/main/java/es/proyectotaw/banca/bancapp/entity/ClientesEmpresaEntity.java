@@ -3,16 +3,16 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "clientes_empresa", schema = "bancodb", catalog = "")
+@Table(name = "clientes_empresa", schema = "bancodb")
 @IdClass(ClientesEmpresaEntityPK.class)
 public class ClientesEmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_empresa")
+    @Column(name = "id_empresa", nullable = false)
     private Integer idEmpresa;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_cliente")
+    @Column(name = "id_cliente", nullable = false)
     private Integer idCliente;
     @ManyToOne
     @JoinColumn(name = "id_empresa", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)

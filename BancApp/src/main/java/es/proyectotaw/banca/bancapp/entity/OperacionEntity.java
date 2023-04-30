@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "operacion", schema = "bancodb", catalog = "")
+@Table(name = "operacion", schema = "bancodb")
 public class OperacionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_operacion")
+    @Column(name = "id_operacion", nullable = false)
     private Integer idOperacion;
     @Basic
-    @Column(name = "fecha")
+    @Column(name = "fecha", nullable = false)
     private Date fecha;
     @OneToOne(mappedBy = "operacionByOperacion")
     private CambDivisaEntity cambDivisaByIdOperacion;

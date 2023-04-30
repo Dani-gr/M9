@@ -3,17 +3,17 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "camb_divisa", schema = "bancodb", catalog = "")
+@Table(name = "camb_divisa", schema = "bancodb")
 public class CambDivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion")
+    @Column(name = "operacion", nullable = false)
     private Integer operacion;
     @Basic
-    @Column(name = "origen")
+    @Column(name = "origen", nullable = false, length = 45)
     private String origen;
     @Basic
-    @Column(name = "destino")
+    @Column(name = "destino", nullable = false, length = 45)
     private String destino;
     @OneToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)

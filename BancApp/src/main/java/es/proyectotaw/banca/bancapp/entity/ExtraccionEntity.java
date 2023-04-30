@@ -3,14 +3,14 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "extraccion", schema = "bancodb", catalog = "")
+@Table(name = "extraccion", schema = "bancodb")
 public class ExtraccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion")
+    @Column(name = "operacion", nullable = false)
     private Integer operacion;
     @Basic
-    @Column(name = "cantidad")
+    @Column(name = "cantidad", nullable = false, precision = 0)
     private Double cantidad;
     @OneToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)

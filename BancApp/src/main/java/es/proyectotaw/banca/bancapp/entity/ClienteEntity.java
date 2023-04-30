@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "cliente", schema = "bancodb", catalog = "")
+@Table(name = "cliente", schema = "bancodb")
 public class ClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_cliente")
+    @Column(name = "id_cliente", nullable = false)
     private Integer idCliente;
     @OneToMany(mappedBy = "clienteByClienteIdCliente")
     private List<ChatEntity> chatsByIdCliente;

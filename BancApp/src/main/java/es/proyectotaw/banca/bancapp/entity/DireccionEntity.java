@@ -4,32 +4,32 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "direccion", schema = "bancodb", catalog = "")
+@Table(name = "direccion", schema = "bancodb")
 public class DireccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "calle")
+    @Column(name = "calle", nullable = false, length = 45)
     private String calle;
     @Basic
-    @Column(name = "numero")
+    @Column(name = "numero", nullable = false)
     private Integer numero;
     @Basic
-    @Column(name = "planta_puerta_oficina")
+    @Column(name = "planta_puerta_oficina", nullable = false, length = 45)
     private String plantaPuertaOficina;
     @Basic
-    @Column(name = "ciudad")
+    @Column(name = "ciudad", nullable = false, length = 45)
     private String ciudad;
     @Basic
-    @Column(name = "region")
+    @Column(name = "region", nullable = true, length = 45)
     private String region;
     @Basic
-    @Column(name = "pais")
+    @Column(name = "pais", nullable = false, length = 45)
     private String pais;
     @Basic
-    @Column(name = "codpostal")
+    @Column(name = "codpostal", nullable = false, length = 45)
     private String codpostal;
     @OneToMany(mappedBy = "direccionByDireccion")
     private List<ClienteEntity> clientesById;

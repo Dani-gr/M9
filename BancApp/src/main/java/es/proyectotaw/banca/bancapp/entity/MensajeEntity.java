@@ -4,17 +4,17 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "mensaje", schema = "bancodb", catalog = "")
+@Table(name = "mensaje", schema = "bancodb")
 public class MensajeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_mensaje")
+    @Column(name = "id_mensaje", nullable = false)
     private Integer idMensaje;
     @Basic
-    @Column(name = "fecha_hora")
+    @Column(name = "fecha_hora", nullable = false)
     private Date fechaHora;
     @Basic
-    @Column(name = "contenido")
+    @Column(name = "contenido", nullable = false, length = 500)
     private String contenido;
     @ManyToOne
     @JoinColumn(name = "chat", referencedColumnName = "id", nullable = false)

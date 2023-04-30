@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "empresa", schema = "bancodb", catalog = "")
+@Table(name = "empresa", schema = "bancodb")
 public class EmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "cif")
+    @Column(name = "cif", nullable = false)
     private Integer cif;
     @OneToMany(mappedBy = "empresaByIdEmpresa")
     private List<ClientesEmpresaEntity> clientesEmpresasById;

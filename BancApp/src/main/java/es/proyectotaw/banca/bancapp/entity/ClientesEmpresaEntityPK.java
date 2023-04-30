@@ -7,11 +7,11 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 public class ClientesEmpresaEntityPK implements Serializable {
-    @Column(name = "id_empresa")
+    @Column(name = "id_empresa", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEmpresa;
-    @Column(name = "id_cliente")
+    @Column(name = "id_cliente", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCliente;
