@@ -5,7 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 public class RolusuarioEntityPK implements Serializable {
     @Column(name = "idderol", nullable = false)
     @Id
@@ -39,10 +41,8 @@ public class RolusuarioEntityPK implements Serializable {
 
         RolusuarioEntityPK that = (RolusuarioEntityPK) o;
 
-        if (idderol != null ? !idderol.equals(that.idderol) : that.idderol != null) return false;
-        if (idusuario != null ? !idusuario.equals(that.idusuario) : that.idusuario != null) return false;
-
-        return true;
+        if (!Objects.equals(idderol, that.idderol)) return false;
+        return Objects.equals(idusuario, that.idusuario);
     }
 
     @Override

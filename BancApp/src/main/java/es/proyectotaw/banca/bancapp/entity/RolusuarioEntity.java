@@ -1,7 +1,9 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "rolusuario", schema = "bancodb")
 @IdClass(RolusuarioEntityPK.class)
@@ -47,10 +49,8 @@ public class RolusuarioEntity {
 
         RolusuarioEntity that = (RolusuarioEntity) o;
 
-        if (idderol != null ? !idderol.equals(that.idderol) : that.idderol != null) return false;
-        if (idusuario != null ? !idusuario.equals(that.idusuario) : that.idusuario != null) return false;
-
-        return true;
+        if (!Objects.equals(idderol, that.idderol)) return false;
+        return Objects.equals(idusuario, that.idusuario);
     }
 
     @Override

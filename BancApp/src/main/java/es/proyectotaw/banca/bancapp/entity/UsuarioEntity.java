@@ -3,7 +3,9 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "usuario", schema = "bancodb")
 public class UsuarioEntity {
@@ -18,13 +20,13 @@ public class UsuarioEntity {
     @Column(name = "primer_nombre", nullable = false, length = 45)
     private String primerNombre;
     @Basic
-    @Column(name = "segundo_nombre", nullable = true, length = 45)
+    @Column(name = "segundo_nombre", length = 45)
     private String segundoNombre;
     @Basic
     @Column(name = "primer_apellido", nullable = false, length = 45)
     private String primerApellido;
     @Basic
-    @Column(name = "segundo_apellido", nullable = true, length = 45)
+    @Column(name = "segundo_apellido", length = 45)
     private String segundoApellido;
     @Basic
     @Column(name = "fecha_nacimiento", nullable = false)
@@ -124,21 +126,19 @@ public class UsuarioEntity {
 
         UsuarioEntity that = (UsuarioEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (nif != null ? !nif.equals(that.nif) : that.nif != null) return false;
-        if (primerNombre != null ? !primerNombre.equals(that.primerNombre) : that.primerNombre != null) return false;
-        if (segundoNombre != null ? !segundoNombre.equals(that.segundoNombre) : that.segundoNombre != null)
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(nif, that.nif)) return false;
+        if (!Objects.equals(primerNombre, that.primerNombre)) return false;
+        if (!Objects.equals(segundoNombre, that.segundoNombre))
             return false;
-        if (primerApellido != null ? !primerApellido.equals(that.primerApellido) : that.primerApellido != null)
+        if (!Objects.equals(primerApellido, that.primerApellido))
             return false;
-        if (segundoApellido != null ? !segundoApellido.equals(that.segundoApellido) : that.segundoApellido != null)
+        if (!Objects.equals(segundoApellido, that.segundoApellido))
             return false;
-        if (fechaNacimiento != null ? !fechaNacimiento.equals(that.fechaNacimiento) : that.fechaNacimiento != null)
+        if (!Objects.equals(fechaNacimiento, that.fechaNacimiento))
             return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-
-        return true;
+        if (!Objects.equals(email, that.email)) return false;
+        return Objects.equals(password, that.password);
     }
 
     @Override

@@ -2,7 +2,9 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "cuenta", schema = "bancodb")
 public class CuentaEntity {
@@ -11,7 +13,7 @@ public class CuentaEntity {
     @Column(name = "num_cuenta", nullable = false)
     private Integer numCuenta;
     @Basic
-    @Column(name = "saldo", nullable = true, precision = 0)
+    @Column(name = "saldo")
     private Double saldo;
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
@@ -44,10 +46,8 @@ public class CuentaEntity {
 
         CuentaEntity that = (CuentaEntity) o;
 
-        if (numCuenta != null ? !numCuenta.equals(that.numCuenta) : that.numCuenta != null) return false;
-        if (saldo != null ? !saldo.equals(that.saldo) : that.saldo != null) return false;
-
-        return true;
+        if (!Objects.equals(numCuenta, that.numCuenta)) return false;
+        return Objects.equals(saldo, that.saldo);
     }
 
     @Override

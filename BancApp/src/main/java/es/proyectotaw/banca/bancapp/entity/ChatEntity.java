@@ -2,7 +2,9 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "chat", schema = "bancodb")
 public class ChatEntity {
@@ -34,9 +36,7 @@ public class ChatEntity {
 
         ChatEntity that = (ChatEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-
-        return true;
+        return Objects.equals(id, that.id);
     }
 
     @Override

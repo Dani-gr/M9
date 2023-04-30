@@ -1,7 +1,9 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "clientes_empresa", schema = "bancodb")
 @IdClass(ClientesEmpresaEntityPK.class)
@@ -44,10 +46,8 @@ public class ClientesEmpresaEntity {
 
         ClientesEmpresaEntity that = (ClientesEmpresaEntity) o;
 
-        if (idEmpresa != null ? !idEmpresa.equals(that.idEmpresa) : that.idEmpresa != null) return false;
-        if (idCliente != null ? !idCliente.equals(that.idCliente) : that.idCliente != null) return false;
-
-        return true;
+        if (!Objects.equals(idEmpresa, that.idEmpresa)) return false;
+        return Objects.equals(idCliente, that.idCliente);
     }
 
     @Override
