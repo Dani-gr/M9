@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`camb_divisa` (
   CONSTRAINT `operacion_fk_camb_divisa`
     FOREIGN KEY (`operacion`)
     REFERENCES `BancoDB`.`operacion` (`id_operacion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -54,13 +54,13 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`chat` (
   CONSTRAINT `fk_asistente_has_cliente_cliente1`
     FOREIGN KEY (`cliente_id_cliente`)
     REFERENCES `BancoDB`.`cliente` (`id_cliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_asistente`
     FOREIGN KEY (`asistente_id`)
     REFERENCES `BancoDB`.`usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`cliente` (
   CONSTRAINT `direccion_fk`
     FOREIGN KEY (`direccion`)
     REFERENCES `BancoDB`.`direccion` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -95,13 +95,13 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`clientes_empresa` (
   CONSTRAINT `fk_empresa_clientes`
     FOREIGN KEY (`id_empresa`)
     REFERENCES `BancoDB`.`empresa` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_cliente`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `BancoDB`.`cliente` (`id_cliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -118,8 +118,8 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`cuenta` (
   CONSTRAINT `cliente_cuenta_fk`
     FOREIGN KEY (`cliente`)
     REFERENCES `BancoDB`.`cliente` (`id_cliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -155,8 +155,8 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`empresa` (
   CONSTRAINT `id_fk`
     FOREIGN KEY (`id`)
     REFERENCES `BancoDB`.`cliente` (`id_cliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -172,8 +172,8 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`extraccion` (
   CONSTRAINT `operacion_fk_extraccion`
     FOREIGN KEY (`operacion`)
     REFERENCES `BancoDB`.`operacion` (`id_operacion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -194,13 +194,13 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`mensaje` (
   CONSTRAINT `chat_fk`
     FOREIGN KEY (`chat`)
     REFERENCES `BancoDB`.`chat` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `emisor_fk`
     FOREIGN KEY (`emisor`)
     REFERENCES `BancoDB`.`usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -218,8 +218,8 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`operacion` (
   CONSTRAINT `cuenta_fk`
     FOREIGN KEY (`cuenta_realiza`)
     REFERENCES `BancoDB`.`cuenta` (`num_cuenta`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -251,18 +251,18 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`rolusuario` (
   CONSTRAINT `fk_idrol`
     FOREIGN KEY (`idrol`)
     REFERENCES `BancoDB`.`rol` (`idrol`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_idusuario`
     FOREIGN KEY (`idusuario`)
     REFERENCES `BancoDB`.`usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_empresa_rol`
     FOREIGN KEY (`idempresa`)
     REFERENCES `BancoDB`.`empresa` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -280,13 +280,13 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`transferencia` (
   CONSTRAINT `operacion_fk_transferencia`
     FOREIGN KEY (`operacion`)
     REFERENCES `BancoDB`.`operacion` (`id_operacion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `cuenta_destino_FK`
     FOREIGN KEY (`cuenta_destino`)
     REFERENCES `BancoDB`.`cuenta` (`num_cuenta`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -312,8 +312,8 @@ CREATE TABLE IF NOT EXISTS `BancoDB`.`usuario` (
   CONSTRAINT `cliente_usuario_fk`
     FOREIGN KEY (`cliente`)
     REFERENCES `BancoDB`.`cliente` (`id_cliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
