@@ -326,3 +326,5 @@ INSERT INTO rol(nombre) VALUES ('asistente');
 INSERT INTO rol(nombre) VALUES ('socio');
 INSERT INTO rol(nombre) VALUES ('autorizado');
 INSERT INTO rol(nombre) VALUES ('cliente');
+INSERT INTO rol(nombre) VALUES ('socioBloqueado');
+INSERT INTO rol(nombre) VALUES ('autorizadoBloqueado');
