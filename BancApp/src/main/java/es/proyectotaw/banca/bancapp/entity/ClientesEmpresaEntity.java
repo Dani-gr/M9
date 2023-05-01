@@ -1,18 +1,20 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "clientes_empresa", schema = "bancodb", catalog = "")
+@Table(name = "clientes_empresa", schema = "bancodb")
 @IdClass(ClientesEmpresaEntityPK.class)
 public class ClientesEmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_empresa")
+    @Column(name = "id_empresa", nullable = false)
     private Integer idEmpresa;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_cliente")
+    @Column(name = "id_cliente", nullable = false)
     private Integer idCliente;
     @ManyToOne
     @JoinColumn(name = "id_empresa", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -44,10 +46,8 @@ public class ClientesEmpresaEntity {
 
         ClientesEmpresaEntity that = (ClientesEmpresaEntity) o;
 
-        if (idEmpresa != null ? !idEmpresa.equals(that.idEmpresa) : that.idEmpresa != null) return false;
-        if (idCliente != null ? !idCliente.equals(that.idCliente) : that.idCliente != null) return false;
-
-        return true;
+        if (!Objects.equals(idEmpresa, that.idEmpresa)) return false;
+        return Objects.equals(idCliente, that.idCliente);
     }
 
     @Override

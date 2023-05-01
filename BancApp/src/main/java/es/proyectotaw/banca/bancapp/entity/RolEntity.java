@@ -2,26 +2,28 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "rol", schema = "bancodb", catalog = "")
+@Table(name = "rol", schema = "bancodb")
 public class RolEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idrol")
+    @Column(name = "idrol", nullable = false)
     private Integer idrol;
     @Basic
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
     @OneToMany(mappedBy = "rolByIdrol")
-    private List<RolusuarioEntity> rolusuariosByIdrol;
+    private List<RolusuarioEntity> rolusuariosById;
 
     public Integer getIdrol() {
         return idrol;
     }
 
-    public void setIdrol(Integer idrol) {
-        this.idrol = idrol;
+    public void setIdrol(Integer id) {
+        this.idrol = id;
     }
 
     public String getNombre() {
@@ -39,10 +41,8 @@ public class RolEntity {
 
         RolEntity rolEntity = (RolEntity) o;
 
-        if (idrol != null ? !idrol.equals(rolEntity.idrol) : rolEntity.idrol != null) return false;
-        if (nombre != null ? !nombre.equals(rolEntity.nombre) : rolEntity.nombre != null) return false;
-
-        return true;
+        if (!Objects.equals(idrol, rolEntity.idrol)) return false;
+        return Objects.equals(nombre, rolEntity.nombre);
     }
 
     @Override
@@ -52,11 +52,11 @@ public class RolEntity {
         return result;
     }
 
-    public List<RolusuarioEntity> getRolusuariosByIdrol() {
-        return rolusuariosByIdrol;
+    public List<RolusuarioEntity> getRolusuariosById() {
+        return rolusuariosById;
     }
 
-    public void setRolusuariosByIdrol(List<RolusuarioEntity> rolusuariosByIdrol) {
-        this.rolusuariosByIdrol = rolusuariosByIdrol;
+    public void setRolusuariosById(List<RolusuarioEntity> rolusuariosById) {
+        this.rolusuariosById = rolusuariosById;
     }
 }

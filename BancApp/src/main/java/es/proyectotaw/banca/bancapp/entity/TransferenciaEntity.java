@@ -1,16 +1,18 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "transferencia", schema = "bancodb", catalog = "")
+@Table(name = "transferencia", schema = "bancodb")
 public class TransferenciaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion")
+    @Column(name = "operacion", nullable = false)
     private Integer operacion;
     @Basic
-    @Column(name = "cantidad")
+    @Column(name = "cantidad", nullable = false)
     private Double cantidad;
     @OneToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
@@ -42,10 +44,8 @@ public class TransferenciaEntity {
 
         TransferenciaEntity that = (TransferenciaEntity) o;
 
-        if (operacion != null ? !operacion.equals(that.operacion) : that.operacion != null) return false;
-        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
-
-        return true;
+        if (!Objects.equals(operacion, that.operacion)) return false;
+        return Objects.equals(cantidad, that.cantidad);
     }
 
     @Override

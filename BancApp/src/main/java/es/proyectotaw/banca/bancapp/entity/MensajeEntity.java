@@ -2,19 +2,21 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "mensaje", schema = "bancodb", catalog = "")
+@Table(name = "mensaje", schema = "bancodb")
 public class MensajeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_mensaje")
+    @Column(name = "id_mensaje", nullable = false)
     private Integer idMensaje;
     @Basic
-    @Column(name = "fecha_hora")
+    @Column(name = "fecha_hora", nullable = false)
     private Date fechaHora;
     @Basic
-    @Column(name = "contenido")
+    @Column(name = "contenido", nullable = false, length = 500)
     private String contenido;
     @ManyToOne
     @JoinColumn(name = "chat", referencedColumnName = "id", nullable = false)
@@ -54,11 +56,9 @@ public class MensajeEntity {
 
         MensajeEntity that = (MensajeEntity) o;
 
-        if (idMensaje != null ? !idMensaje.equals(that.idMensaje) : that.idMensaje != null) return false;
-        if (fechaHora != null ? !fechaHora.equals(that.fechaHora) : that.fechaHora != null) return false;
-        if (contenido != null ? !contenido.equals(that.contenido) : that.contenido != null) return false;
-
-        return true;
+        if (!Objects.equals(idMensaje, that.idMensaje)) return false;
+        if (!Objects.equals(fechaHora, that.fechaHora)) return false;
+        return Objects.equals(contenido, that.contenido);
     }
 
     @Override

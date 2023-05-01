@@ -1,21 +1,23 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "rolusuario", schema = "bancodb", catalog = "")
+@Table(name = "rolusuario", schema = "bancodb")
 @IdClass(RolusuarioEntityPK.class)
 public class RolusuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idrol")
-    private Integer idrol;
+    @Column(name = "idderol", nullable = false)
+    private Integer idderol;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idusuario")
+    @Column(name = "idusuario", nullable = false)
     private Integer idusuario;
     @ManyToOne
-    @JoinColumn(name = "idrol", referencedColumnName = "idrol", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "idderol", referencedColumnName = "idrol", nullable = false, insertable = false, updatable = false)
     private RolEntity rolByIdrol;
     @ManyToOne
     @JoinColumn(name = "idusuario", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -24,12 +26,12 @@ public class RolusuarioEntity {
     @JoinColumn(name = "idempresa", referencedColumnName = "id", insertable = false, updatable = false)
     private EmpresaEntity empresaByIdempresa;
 
-    public Integer getIdrol() {
-        return idrol;
+    public Integer getIdderol() {
+        return idderol;
     }
 
-    public void setIdrol(Integer idrol) {
-        this.idrol = idrol;
+    public void setIdderol(Integer idrol) {
+        this.idderol = idrol;
     }
 
     public Integer getIdusuario() {
@@ -47,15 +49,13 @@ public class RolusuarioEntity {
 
         RolusuarioEntity that = (RolusuarioEntity) o;
 
-        if (idrol != null ? !idrol.equals(that.idrol) : that.idrol != null) return false;
-        if (idusuario != null ? !idusuario.equals(that.idusuario) : that.idusuario != null) return false;
-
-        return true;
+        if (!Objects.equals(idderol, that.idderol)) return false;
+        return Objects.equals(idusuario, that.idusuario);
     }
 
     @Override
     public int hashCode() {
-        int result = idrol != null ? idrol.hashCode() : 0;
+        int result = idderol != null ? idderol.hashCode() : 0;
         result = 31 * result + (idusuario != null ? idusuario.hashCode() : 0);
         return result;
     }
