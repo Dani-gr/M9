@@ -1,5 +1,8 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
@@ -186,4 +189,5 @@ public class UsuarioEntity {
     public void setClienteByCliente(ClienteEntity clienteByCliente) {
         this.clienteByCliente = clienteByCliente;
     }
+
 }
