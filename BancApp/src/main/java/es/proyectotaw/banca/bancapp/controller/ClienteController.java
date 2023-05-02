@@ -1,11 +1,9 @@
 package es.proyectotaw.banca.bancapp.controller;
 
-import es.proyectotaw.banca.bancapp.dao.ClienteRepository;
+import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioRepository;
-import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ClienteController {
 
     @Autowired
-    protected ClienteRepository clienteRepository;
+    protected ClienteEntityRepository clienteEntityRepository;
 
     @Autowired
     protected UsuarioRepository usuarioRepository;

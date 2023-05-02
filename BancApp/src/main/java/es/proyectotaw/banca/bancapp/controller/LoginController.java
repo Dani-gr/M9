@@ -58,6 +58,7 @@ public class LoginController {
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
 
+
         return "registro";
     }
 
@@ -79,18 +80,6 @@ public class LoginController {
                              @ModelAttribute("direccoinPais") String pais,
                              @ModelAttribute("direccionPostal") String postal
                              ){
-        /* TODO:
-            ✔ Buscar en la BBDD
-              ✔ y comprobar si los datos son correctos.
-            ✔ Asegurarse de que la persona es autorizada / socia de la empresa que se pasa como argumento,
-              ✔ si entidad es empresa.
-            ✔ Si algún elemento no es correcto,
-              ✔ a login
-              ✔ y agregar error.
-            ✔ Añadir a la jsp de login que se guarden los datos de inicio de sesión (o al menos el usuario y cif)
-              - si son erróneos.
-         */
-
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNif(NIF);
         usuario.setPrimerNombre(nombre);
@@ -133,15 +122,7 @@ public class LoginController {
                         @ModelAttribute("user") String email,
                         @ModelAttribute("pass") String password) {
         /* TODO:
-            ✔ Buscar en la BBDD
-              ✔ y comprobar si los datos son correctos.
-            ✔ Asegurarse de que la persona es autorizada / socia de la empresa que se pasa como argumento,
-              ✔ si entidad es empresa.
-            ✔ Si algún elemento no es correcto,
-              ✔ a login
-              ✔ y agregar error.
-            ✔ Añadir a la jsp de login que se guarden los datos de inicio de sesión (o al menos el usuario y cif)
-              ✔ si son erróneos.
+            - Testear algún gestor / socio
          */
         if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
