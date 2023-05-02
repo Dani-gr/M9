@@ -2,6 +2,7 @@ package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.RolEntity;
+import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -119,7 +120,7 @@ public class LoginController {
               ✔ a login
               ✔ y agregar error.
             ✔ Añadir a la jsp de login que se guarden los datos de inicio de sesión (o al menos el usuario y cif)
-              - si son erróneos.
+              ✔ si son erróneos.
          */
         if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
@@ -132,6 +133,17 @@ public class LoginController {
 
         UsuarioEntity user = usuarioEntityRepository.findByEmailIgnoreCase(email).orElse(null);
         if (user == null) return "login";
+        //// TODO QUITAR
+        if (email.equals("amparopunto@gmail.com")) {
+            RolusuarioEntity ru = new RolusuarioEntity();
+            ru.setUsuarioByIdusuario(user);
+            RolEntity rolCliente = rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new);
+            ru.setRolByIdrol(rolCliente);
+
+            rolusuarioEntityRepository.save(ru);
+            usuarioEntityRepository.save(user);
+        }
+        ////////////////
         if (!user.getPassword().equals(password)) return "login";
 
         if ("empresa".equals(entidad)) {
@@ -153,6 +165,7 @@ public class LoginController {
             session.setAttribute("empresa", empresaEntityRepository.findByCif(Integer.valueOf(cif)));
         } else session.setAttribute("empresa", null);
         session.setAttribute("usuario", user);
+
 
         return "login";
     }
