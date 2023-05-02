@@ -41,7 +41,7 @@
     <div class="card-body">
         <h4 class="card-title">Iniciar sesión</h4>
         <jsp:useBean id="error" scope="request" type="java.lang.String"/>
-        <c:if test="${error != null}">
+        <c:if test="${!error.blank}">
             <p style="color:red;">
                     ${error}
             </p>
