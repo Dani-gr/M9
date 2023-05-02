@@ -133,17 +133,6 @@ public class LoginController {
 
         UsuarioEntity user = usuarioEntityRepository.findByEmailIgnoreCase(email).orElse(null);
         if (user == null) return "login";
-        //// TODO QUITAR
-        if (email.equals("amparopunto@gmail.com")) {
-            RolusuarioEntity ru = new RolusuarioEntity();
-            ru.setUsuarioByIdusuario(user);
-            RolEntity rolCliente = rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new);
-            ru.setRolByIdrol(rolCliente);
-
-            rolusuarioEntityRepository.save(ru);
-            usuarioEntityRepository.save(user);
-        }
-        ////////////////
         if (!user.getPassword().equals(password)) return "login";
 
         if ("empresa".equals(entidad)) {
@@ -166,8 +155,9 @@ public class LoginController {
         } else session.setAttribute("empresa", null);
         session.setAttribute("usuario", user);
 
+        session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
 
-        return "login";
+        return "redirect:/menu";
     }
 
     @GetMapping("/menu")

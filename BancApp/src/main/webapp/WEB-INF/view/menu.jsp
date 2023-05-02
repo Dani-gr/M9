@@ -1,14 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.RolEntity" %>
-<%@ page import="es.proyectotaw.banca.bancapp.entity.RolusuarioEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-    List<String> nombresRoles = usuario.getRolusuariosById().stream()
-            .map(RolusuarioEntity::getRolByIdrol)
-            .map(RolEntity::getNombre).toList();
+    @SuppressWarnings("unchecked")
+    List<RolEntity> roles = (List<RolEntity>) session.getAttribute("roles");
+    /*List<String> nombresRoles = new ArrayList<>();
+    for (RolEntity rol :
+            roles) {
+        nombresRoles.add(rol.getNombre());
+    }*/
+    List<String> nombresRoles = roles.stream().map(RolEntity::getNombre).toList();
 %>
 <html>
 <head>
