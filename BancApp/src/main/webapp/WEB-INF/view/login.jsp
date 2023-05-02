@@ -73,8 +73,7 @@
 
     </div>
     <div class="card-footer">
-        <a href="/registro?entidad=<%=entidad%>" class="btn btn-secondary disabled" disabled="true"
-           aria-disabled="true"> <!-- TODO: Habilitar -->
+        <a href="/registro?entidad=<%=entidad%>" class="btn btn-secondary">
             ¿No tienes cuenta? Reg&iacute;strate
         </a>
     </div>
