@@ -1,8 +1,8 @@
 package es.proyectotaw.banca.bancapp.controller;
 
-import es.proyectotaw.banca.bancapp.dao.RolEntityRepository;
-import es.proyectotaw.banca.bancapp.dao.RolusuarioEntityRepository;
-import es.proyectotaw.banca.bancapp.dao.UsuarioEntityRepository;
+import es.proyectotaw.banca.bancapp.dao.*;
+import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
+import es.proyectotaw.banca.bancapp.entity.DireccionEntity;
 import es.proyectotaw.banca.bancapp.entity.RolEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +26,18 @@ public class LoginController {
     @Autowired
     UsuarioEntityRepository usuarioEntityRepository;
     @Autowired
+    ClienteEntityRepository clienteEntityRepository;
+    @Autowired
     RolEntityRepository rolEntityRepository;
     @Autowired
     RolusuarioEntityRepository rolusuarioEntityRepository;
+    @Autowired
+    DireccionEntityRepository direccionEntityRepository;
 
     @GetMapping("/")
-    String doLogin(Model model, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
+    String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
+        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
         model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
@@ -42,12 +49,38 @@ public class LoginController {
     }
 
     @GetMapping("/registro")
-    String doRegistrar(Model model, @ModelAttribute("entidad") String entidad) {
+    String doRegistrar(Model model, HttpSession session, @ModelAttribute("entidad") String entidad) {
         // TODO
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
-        return "";
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setNif("12345678");
+        usuario.setPrimerNombre("prueba");
+        usuario.setSegundoNombre("amparo");
+        usuario.setPrimerApellido("ruiz");
+        usuario.setSegundoApellido("sepulveda");
+        usuario.setFechaNacimiento(new Date(1852, 12, 25));
+        usuario.setEmail("amparopunto@gmail.com");
+        usuario.setPassword("yoquieroqueaprobeistodos");
+        ClienteEntity cliente = new ClienteEntity();
+        usuario.setClienteByCliente(cliente);
+
+        DireccionEntity direccion = new DireccionEntity();
+        cliente.setDireccionByDireccion(direccion);
+        direccion.setCalle("desamparo");
+        direccion.setCiudad("Malaga");
+        direccion.setCodpostal("29014");
+        direccion.setNumero(4);
+        direccion.setPais("Españita");
+        direccion.setRegion("Andalucía");
+        direccion.setPlantaPuertaOficina("1, 2, 3");
+
+        direccionEntityRepository.save(direccion);
+        clienteEntityRepository.save(cliente);
+        usuarioEntityRepository.save(usuario);
+        session.setAttribute("usuario", usuario);
+        return "redirect:/menu";
     }
 
     @PostMapping("/")
@@ -58,7 +91,7 @@ public class LoginController {
         /* TODO:
             ✔ Buscar en la BBDD
               ✔ y comprobar si los datos son correctos.
-            - Asegurarse de que la persona es autorizada / socia de la empresa que se pasa como argumento,
+            ✔ Asegurarse de que la persona es autorizada / socia de la empresa que se pasa como argumento,
               ✔ si entidad es empresa.
             ✔ Si algún elemento no es correcto,
               ✔ a login
@@ -66,6 +99,7 @@ public class LoginController {
             ✔ Añadir a la jsp de login que se guarden los datos de inicio de sesión (o al menos el usuario y cif)
               - si son erróneos.
          */
+        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
         model.addAttribute("error", "Credenciales incorrectas");
         model.addAttribute("entidad", entidad);
@@ -89,15 +123,25 @@ public class LoginController {
             var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, cif);
 
             roles.retainAll(rolesConPermiso);
-            if(roles.isEmpty()) {
+            if (roles.isEmpty()) {
                 model.addAttribute("error", "No tienes permiso en la empresa seleccionada.");
                 return "login";
-            } 
-            
-            
+            }
         }
-
+        session.setAttribute("usuario", user);
 
         return "login";
+    }
+
+    @GetMapping("/menu")
+    String doMenu(HttpSession session) {
+        //TODO session.getAttribute("usuario") == null ? "redirect:/" :
+        return "menu";
+    }
+
+    @GetMapping("/logout")
+    String doLogout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }
