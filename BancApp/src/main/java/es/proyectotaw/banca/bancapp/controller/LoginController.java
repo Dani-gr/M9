@@ -54,12 +54,7 @@ public class LoginController {
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
 
-        model.addAttribute("empresa", new EmpresaEntity());
-        model.addAttribute("user", new UsuarioEntity());
-        model.addAttribute("cliente", new ClienteEntity());
-        model.addAttribute("direccion", new DireccionEntity());
 
-        //lo almaceno en base de datos y ya se pone la cuenta
 
         return "registro";
     }
@@ -116,6 +111,14 @@ public class LoginController {
         usuario.setClienteByCliente(cliente);
         direccionEntityRepository.save(direccion);
         clienteEntityRepository.save(cliente);
+        RolusuarioEntity rolusuario = new RolusuarioEntity();
+        rolusuario.setIdderol(5);
+        rolusuario.setIdusuario(usuario.getId());
+        rolusuario.setUsuarioByIdusuario(usuario);
+        rolusuarioEntityRepository.save(rolusuario);
+        List<RolusuarioEntity> lista = new ArrayList<>();
+        lista.add(rolusuario);
+        usuario.setRolusuariosById(lista);
         usuarioEntityRepository.save(usuario);
         session.setAttribute("usuario", usuario);
 
