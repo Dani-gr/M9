@@ -3,6 +3,7 @@ package es.proyectotaw.banca.bancapp.controller;
 import es.proyectotaw.banca.bancapp.dao.RolEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.RolusuarioEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioEntityRepository;
+import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.RolEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +50,16 @@ public class LoginController {
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setNif("12345");
+        usuario.setPrimerNombre("prueba");
+        usuario.setSegundoNombre("amparo");
+        usuario.setPrimerApellido("ruiz");
+        usuario.setSegundoApellido("sepulveda");
+        usuario.setFechaNacimiento((Date) Date.from(Instant.now()));
+        usuario.setEmail("amparopunto@gmail.com");
+        usuario.setPassword("yoquieroqueaprobeistodos");
+        usuario.setClienteByCliente(new ClienteEntity());
         return "";
     }
 
