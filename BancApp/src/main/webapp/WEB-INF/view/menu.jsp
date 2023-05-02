@@ -35,7 +35,7 @@
                 </div>
             </div>
             <%
-                if (usuario.getRolusuariosById() == )
+                //if (usuario.getRolusuariosById() == )
             %>
             <div class="row">
                 <div class="col pt-3">
