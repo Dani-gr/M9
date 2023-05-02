@@ -1,21 +1,19 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "camb_divisa", schema = "bancodb")
+@Table(name = "camb_divisa", schema = "bancodb", catalog = "")
 public class CambDivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion", nullable = false)
+    @Column(name = "operacion")
     private Integer operacion;
     @Basic
-    @Column(name = "origen", nullable = false, length = 45)
+    @Column(name = "origen")
     private String origen;
     @Basic
-    @Column(name = "destino", nullable = false, length = 45)
+    @Column(name = "destino")
     private String destino;
     @OneToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
@@ -52,9 +50,11 @@ public class CambDivisaEntity {
 
         CambDivisaEntity that = (CambDivisaEntity) o;
 
-        if (!Objects.equals(operacion, that.operacion)) return false;
-        if (!Objects.equals(origen, that.origen)) return false;
-        return Objects.equals(destino, that.destino);
+        if (operacion != null ? !operacion.equals(that.operacion) : that.operacion != null) return false;
+        if (origen != null ? !origen.equals(that.origen) : that.origen != null) return false;
+        if (destino != null ? !destino.equals(that.destino) : that.destino != null) return false;
+
+        return true;
     }
 
     @Override
