@@ -1,8 +1,6 @@
 package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.*;
-import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
-import es.proyectotaw.banca.bancapp.entity.DireccionEntity;
 import es.proyectotaw.banca.bancapp.entity.RolEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +29,8 @@ public class LoginController {
     RolusuarioEntityRepository rolusuarioEntityRepository;
     @Autowired
     DireccionEntityRepository direccionEntityRepository;
+    @Autowired
+    EmpresaEntityRepository empresaEntityRepository;
 
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
@@ -50,10 +48,28 @@ public class LoginController {
 
     @GetMapping("/registro")
     String doRegistrar(Model model, HttpSession session, @ModelAttribute("entidad") String entidad) {
-        // TODO
-        model.addAttribute("entidad",
-                "empresa".equals(entidad) ? "empresa" : "persona"
-        );
+        /*
+        TODO redirigir a un form de registro; en el caso de usuario persona:
+         *** USUARIO ***
+         - NIF
+         - Primer y segundo nombre
+         - Primer y segundo apellido
+         - Fecha de nacimiento (Date)
+         - Email
+         - Contraseña (podemos poner requisitos si tenemos tiempo).
+         - *** CLIENTE ***
+           - *** DIRECCION ***
+             - Calle
+             - Ciudad
+             - Código Postal
+             - Número (Integer)
+             - País
+             - Región
+             - Planta-Puerta-Oficina
+
+         TODO *A ser posible, hacer el form en una jsp embebida para poder usarla al usar el registro de empresa
+        */
+        /* Ejemplo de código:
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNif("12345678");
         usuario.setPrimerNombre("prueba");
@@ -80,6 +96,12 @@ public class LoginController {
         clienteEntityRepository.save(cliente);
         usuarioEntityRepository.save(usuario);
         session.setAttribute("usuario", usuario);
+         */
+
+        model.addAttribute("entidad",
+                "empresa".equals(entidad) ? "empresa" : "persona"
+        );
+
         return "redirect:/menu";
     }
 
@@ -120,14 +142,16 @@ public class LoginController {
             rolesConPermiso.add(rolEntityRepository.findByNombre("socio").orElseThrow(RuntimeException::new));
             rolesConPermiso.add(rolEntityRepository.findByNombre("socioBloqueado").orElseThrow(RuntimeException::new));
 
-            var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, cif);
+            var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, Integer.valueOf(cif));
 
             roles.retainAll(rolesConPermiso);
             if (roles.isEmpty()) {
                 model.addAttribute("error", "No tienes permiso en la empresa seleccionada.");
                 return "login";
             }
-        }
+
+            session.setAttribute("empresa", empresaEntityRepository.findByCif(Integer.valueOf(cif)));
+        } else session.setAttribute("empresa", null);
         session.setAttribute("usuario", user);
 
         return "login";
@@ -135,8 +159,7 @@ public class LoginController {
 
     @GetMapping("/menu")
     String doMenu(HttpSession session) {
-        //TODO session.getAttribute("usuario") == null ? "redirect:/" :
-        return "menu";
+        return session.getAttribute("usuario") == null ? "redirect:/" : "menu";
     }
 
     @GetMapping("/logout")
