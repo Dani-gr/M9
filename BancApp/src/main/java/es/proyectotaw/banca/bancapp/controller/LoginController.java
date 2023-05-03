@@ -38,7 +38,7 @@ public class LoginController {
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
-        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
+        //if (session.getAttribute("usuario") != null) return "redirect:/menu/";
         model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
@@ -51,9 +51,8 @@ public class LoginController {
 
     @GetMapping("/registro")
     String doRegistrar(Model model, HttpSession session, @RequestParam("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif) {
-        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
+        //if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
-        model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
@@ -64,13 +63,13 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    String doGuardarRegistro(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("userNif") String NIF,
+    String doGuardarRegistro(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("userNIF") String NIF,
                              @ModelAttribute("userNombre") String nombre, @ModelAttribute("userNombreSegundo") String segundoNombre, @ModelAttribute("userApellidoPrimero") String primerApellido,
                              @ModelAttribute("userApellidoSegundo") String segundoApellido, @ModelAttribute("userFechaNacimiento") Date fechaNacimiento, @ModelAttribute("userEmail") String email,
                              @ModelAttribute("userPassword") String password, @ModelAttribute("direccionCalle") String calle, @ModelAttribute("direccionNumero") String numero,
                              @ModelAttribute("direccionPlanta") String planta, @ModelAttribute("direccionCiudad") String ciudad, @ModelAttribute("direccionRegion") String region,
                              @ModelAttribute("direccoinPais") String pais, @ModelAttribute("direccionPostal") String postal,
-                             @ModelAttribute("cif") String cif, @ModelAttribute("rol") String rolSeleccionado){
+                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado){
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
 
@@ -107,24 +106,21 @@ public class LoginController {
 
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
-
-            rolusuario.setIdrol(rol.getIdrol());
             rolusuario.setRolByIdrol(rol);
             rolusuario.setUsuarioByIdusuario(usuarioEmpresa);
-            Integer id = usuarioEmpresa.getId();
-            rolusuario.setIdusuario(id);
+            rolusuario.setEmpresaByIdempresa(empresa);
             rolusuarioEntityRepository.save(rolusuario);
-            List<RolusuarioEntity> lista = new ArrayList<>();
+            List<RolusuarioEntity> lista = empresaEntityRepository.findAllRoles(empresa.getId());
             lista.add(rolusuario);
             usuarioEmpresa.setRolusuariosById(lista);
+            empresa.setRolusuariosById(lista);
             /*List<UsuarioEntity> usuarios = new ArrayList<>();
             usuarios.add(usuarioEmpresa);
             cliente.setUsuariosByIdCliente(usuarios);
             usuarioEmpresa.setClienteByCliente(cliente);
             clienteEntityRepository.save(cliente);*/
             usuarioEntityRepository.save(usuarioEmpresa);
-
-            session.setAttribute("empresa", empresa);
+            empresaEntityRepository.save(empresa);
         } else {
             session.setAttribute("empresa", null);
             UsuarioEntity usuario = new UsuarioEntity();
@@ -136,6 +132,7 @@ public class LoginController {
             usuario.setFechaNacimiento(fechaNacimiento);
             usuario.setEmail(email);
             usuario.setPassword(password);
+            usuarioEntityRepository.save(usuario);
 
             ClienteEntity cliente = new ClienteEntity();
             DireccionEntity direccion = new DireccionEntity();
@@ -148,15 +145,13 @@ public class LoginController {
             direccion.setPlantaPuertaOficina(planta);
             cliente.setDireccionByDireccion(direccion);
             direccionEntityRepository.save(direccion);
+            clienteEntityRepository.save(cliente);
 
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new);
-
-            rolusuario.setIdrol(rol.getIdrol());
             rolusuario.setRolByIdrol(rol);
             rolusuario.setUsuarioByIdusuario(usuario);
-            Integer id = usuario.getId();
-            rolusuario.setIdusuario(id);
+            rolusuario.setBloqueado((byte) 0);
             rolusuarioEntityRepository.save(rolusuario);
             List<RolusuarioEntity> lista = new ArrayList<>();
             lista.add(rolusuario);
@@ -168,7 +163,7 @@ public class LoginController {
             clienteEntityRepository.save(cliente);
             usuarioEntityRepository.save(usuario);
         }
-        session.setAttribute("usuario", entidad);
+
 
         model.addAttribute("cifEmpresa", cif);
 

@@ -59,5 +59,4 @@ public class RolEntity {
     public void setRolusuariosByIdrol(List<RolusuarioEntity> rolusuariosByIdrol) {
         this.rolusuariosByIdrol = rolusuariosByIdrol;
     }
-
 }

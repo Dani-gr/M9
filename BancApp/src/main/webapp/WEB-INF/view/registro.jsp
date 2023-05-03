@@ -39,18 +39,12 @@
     </div>
     <div class="card-body">
         <h4 class="card-title">Registrarse</h4>
-        <jsp:useBean id="error" scope="request" type="java.lang.String"/>
-        <c:if test="${!error.blank}">
-            <p style="color:red;">
-                    ${error}
-            </p>
-        </c:if>
         <!-- TODO Añadir control de errores (máximo/mínimo de caracteres) -->
         <form action="/registro" method="post" class="text-start">
             <jsp:useBean id="cifEmpresa" scope="request" type="java.lang.String"/>
             <c:choose>
                 <c:when test="${\"empresa\".equals(entidad)}">
-                    Datos de la empresa:
+                    Datos de la empresa: <br>
                     <label for="cif" class="form-label">CIF</label>
                     <input type="text" id="cif" name="cifEmpresa" class="form-control"
                             value="<%=cifEmpresa == null ? "" : cifEmpresa%>" maxlength="9" minlength="9" size="9"/>
@@ -63,6 +57,7 @@
                     <label for="autorizado" class="form-label">autorizado</label>
                     <input id="autorizado" type="radio" name="rol" value="autorizado">
                     <br>
+                </c:when>
                 <c:otherwise>
                 </c:otherwise>
             </c:choose>
@@ -137,7 +132,7 @@
             <c:choose>
                 <c:when test="${\"empresa\".equals(entidad)}">
                     <button class="btn btn-primary">
-                        <a style="color: white" href="https://ejemplo.com">Registrar otro socio/autorizado</a>
+                        <a style="color: white" href="/registro">Registrar otro socio/autorizado</a>
                     </button>
                 </c:when>
                 <c:otherwise>

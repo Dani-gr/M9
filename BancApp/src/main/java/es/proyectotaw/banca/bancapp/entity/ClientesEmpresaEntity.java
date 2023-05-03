@@ -4,37 +4,24 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "clientes_empresa", schema = "bancodb", catalog = "")
-@IdClass(ClientesEmpresaEntityPK.class)
 public class ClientesEmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_empresa")
-    private Integer idEmpresa;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id_cliente")
-    private Integer idCliente;
+    @Column(name = "id")
+    private Integer id;
     @ManyToOne
-    @JoinColumn(name = "id_empresa", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "id_empresa", referencedColumnName = "id", nullable = false)
     private EmpresaEntity empresaByIdEmpresa;
     @ManyToOne
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByIdCliente;
 
-    public Integer getIdEmpresa() {
-        return idEmpresa;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdEmpresa(Integer idEmpresa) {
-        this.idEmpresa = idEmpresa;
-    }
-
-    public Integer getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
@@ -44,17 +31,14 @@ public class ClientesEmpresaEntity {
 
         ClientesEmpresaEntity that = (ClientesEmpresaEntity) o;
 
-        if (idEmpresa != null ? !idEmpresa.equals(that.idEmpresa) : that.idEmpresa != null) return false;
-        if (idCliente != null ? !idCliente.equals(that.idCliente) : that.idCliente != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = idEmpresa != null ? idEmpresa.hashCode() : 0;
-        result = 31 * result + (idCliente != null ? idCliente.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
     public EmpresaEntity getEmpresaByIdEmpresa() {
