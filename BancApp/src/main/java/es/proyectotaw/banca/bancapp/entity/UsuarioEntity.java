@@ -1,8 +1,5 @@
 package es.proyectotaw.banca.bancapp.entity;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
@@ -125,21 +122,22 @@ public class UsuarioEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UsuarioEntity that = (UsuarioEntity) o;
+        UsuarioEntity usuario = (UsuarioEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (nif != null ? !nif.equals(that.nif) : that.nif != null) return false;
-        if (primerNombre != null ? !primerNombre.equals(that.primerNombre) : that.primerNombre != null) return false;
-        if (segundoNombre != null ? !segundoNombre.equals(that.segundoNombre) : that.segundoNombre != null)
+        if (id != null ? !id.equals(usuario.id) : usuario.id != null) return false;
+        if (nif != null ? !nif.equals(usuario.nif) : usuario.nif != null) return false;
+        if (primerNombre != null ? !primerNombre.equals(usuario.primerNombre) : usuario.primerNombre != null)
             return false;
-        if (primerApellido != null ? !primerApellido.equals(that.primerApellido) : that.primerApellido != null)
+        if (segundoNombre != null ? !segundoNombre.equals(usuario.segundoNombre) : usuario.segundoNombre != null)
             return false;
-        if (segundoApellido != null ? !segundoApellido.equals(that.segundoApellido) : that.segundoApellido != null)
+        if (primerApellido != null ? !primerApellido.equals(usuario.primerApellido) : usuario.primerApellido != null)
             return false;
-        if (fechaNacimiento != null ? !fechaNacimiento.equals(that.fechaNacimiento) : that.fechaNacimiento != null)
+        if (segundoApellido != null ? !segundoApellido.equals(usuario.segundoApellido) : usuario.segundoApellido != null)
             return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (fechaNacimiento != null ? !fechaNacimiento.equals(usuario.fechaNacimiento) : usuario.fechaNacimiento != null)
+            return false;
+        if (email != null ? !email.equals(usuario.email) : usuario.email != null) return false;
+        if (password != null ? !password.equals(usuario.password) : usuario.password != null) return false;
 
         return true;
     }
@@ -189,5 +187,4 @@ public class UsuarioEntity {
     public void setClienteByCliente(ClienteEntity clienteByCliente) {
         this.clienteByCliente = clienteByCliente;
     }
-
 }

@@ -2,6 +2,7 @@ package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioRepository;
+import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,17 +23,18 @@ public class ClienteController {
 
     @GetMapping("/")
     public String doPasarAlMenu(Model model){
-        //se pasa al menú solo y solo si tenemos el email y la contraseña almacenado
+        //se pasa al menú solo y solo si tenemos el email y la contraseña
         String urlTo="menu";
-        model.addAttribute("usuario", new UsuarioEntity());
-        //un cliente se pasa por el model
+
         return urlTo;
     }
 
     @GetMapping("/perfil")
-    public String doVerPerfil(Model model, @RequestParam("idUsuario") Integer id) {
-        UsuarioEntity usuario = usuarioRepository.buscarPorID(id);
-        model.addAttribute("usuario", usuario);
+    public String doVerPerfil(Model model) {
+        //@RequestParam("idUsuario") Integer id
+        //UsuarioEntity usuario = usuarioRepository.buscarPorID(id);
+        model.addAttribute("usuario", new UsuarioEntity());
+        model.addAttribute("cliente", new ClienteEntity());
         return "cliente";
     }
 }

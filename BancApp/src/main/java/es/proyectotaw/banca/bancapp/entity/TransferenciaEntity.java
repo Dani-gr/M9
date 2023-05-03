@@ -12,10 +12,6 @@ public class TransferenciaEntity {
     @Basic
     @Column(name = "cantidad")
     private Double cantidad;
-
-    /**
-     * Es el iban de la cuenta destino externa.
-     */
     @Basic
     @Column(name = "IBAN_destino")
     private String ibanDestino;
