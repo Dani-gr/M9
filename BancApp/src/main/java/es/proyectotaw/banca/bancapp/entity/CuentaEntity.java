@@ -2,19 +2,20 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "cuenta", schema = "bancodb")
+@Table(name = "cuenta", schema = "bancodb", catalog = "")
 public class CuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "num_cuenta", nullable = false)
+    @Column(name = "num_cuenta")
     private Integer numCuenta;
     @Basic
     @Column(name = "saldo")
     private Double saldo;
+    @Basic
+    @Column(name = "activa")
+    private Byte activa;
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByCliente;
@@ -39,6 +40,14 @@ public class CuentaEntity {
         this.saldo = saldo;
     }
 
+    public Byte getActiva() {
+        return activa;
+    }
+
+    public void setActiva(Byte activa) {
+        this.activa = activa;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,14 +55,18 @@ public class CuentaEntity {
 
         CuentaEntity that = (CuentaEntity) o;
 
-        if (!Objects.equals(numCuenta, that.numCuenta)) return false;
-        return Objects.equals(saldo, that.saldo);
+        if (numCuenta != null ? !numCuenta.equals(that.numCuenta) : that.numCuenta != null) return false;
+        if (saldo != null ? !saldo.equals(that.saldo) : that.saldo != null) return false;
+        if (activa != null ? !activa.equals(that.activa) : that.activa != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = numCuenta != null ? numCuenta.hashCode() : 0;
         result = 31 * result + (saldo != null ? saldo.hashCode() : 0);
+        result = 31 * result + (activa != null ? activa.hashCode() : 0);
         return result;
     }
 
