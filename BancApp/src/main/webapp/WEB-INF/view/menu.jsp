@@ -1,8 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
-<%@ page import="es.proyectotaw.banca.bancapp.entity.RolEntity" %>
-<%@ page import="es.proyectotaw.banca.bancapp.entity.RolusuarioEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %><%--
   Created by IntelliJ IDEA.
   User: Dani
   Date: 02/05/2023
@@ -10,12 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%
-    UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-    List<String> nombresRoles = usuario.getRolusuariosById().stream()
-            .map(RolusuarioEntity::getRolByIdrol)
-            .map(RolEntity::getNombre).toList();
-%>
+<% UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario"); %>
+
 <html>
 <head>
     <title>Empresa</title>
@@ -23,7 +15,9 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body class="bg-gradient bg-dark">
-<jsp:include page="cabecera.jsp"/>
+<nav class="navbar navbar-light bg-light ps-4">
+    <span class="navbar-brand mb-0 h1">BancApp</span>
+</nav>
 <div class="m-3">&nbsp;</div>
 
 <div class="d-flex justify-content-center">
@@ -40,14 +34,14 @@
                     <div class="btn btn-lg btn-outline-secondary">Cajero</div>
                 </div>
             </div>
-            <c:if test="${nombresRoles.contains(\"gestor\")}">
-                <div class="row">
-                    <div class="col pt-3">
-                        <div class="btn btn-lg btn-outline-secondary">Gestión de socios y autorizados</div>
-                    </div>
+            <%
+                //if (usuario.getRolusuariosById() == )
+            %>
+            <div class="row">
+                <div class="col pt-3">
+                    <div class="btn btn-lg btn-outline-secondary">Gestión de socios y autorizados</div>
                 </div>
-            </c:if>
-
+            </div>
             <div class="row m-3"></div>
             <div class="row">
                 <div class="col">
