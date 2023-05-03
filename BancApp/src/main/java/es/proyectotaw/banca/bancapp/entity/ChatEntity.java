@@ -2,16 +2,17 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "chat", schema = "bancodb")
+@Table(name = "chat", schema = "bancodb", catalog = "")
 public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
+    @Basic
+    @Column(name = "activo")
+    private Byte activo;
     @ManyToOne
     @JoinColumn(name = "asistente_id", referencedColumnName = "id", nullable = false)
     private UsuarioEntity usuarioByAsistenteId;
@@ -29,6 +30,14 @@ public class ChatEntity {
         this.id = id;
     }
 
+    public Byte getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Byte activo) {
+        this.activo = activo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,12 +45,17 @@ public class ChatEntity {
 
         ChatEntity that = (ChatEntity) o;
 
-        return Objects.equals(id, that.id);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (activo != null ? !activo.equals(that.activo) : that.activo != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (activo != null ? activo.hashCode() : 0);
+        return result;
     }
 
     public UsuarioEntity getUsuarioByAsistenteId() {

@@ -1,24 +1,29 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "transferencia", schema = "bancodb")
+@Table(name = "transferencia", schema = "bancodb", catalog = "")
 public class TransferenciaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion", nullable = false)
+    @Column(name = "operacion")
     private Integer operacion;
     @Basic
-    @Column(name = "cantidad", nullable = false)
+    @Column(name = "cantidad")
     private Double cantidad;
+
+    /**
+     * Es el iban de la cuenta destino externa.
+     */
+    @Basic
+    @Column(name = "IBAN_destino")
+    private String ibanDestino;
     @OneToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
     @ManyToOne
-    @JoinColumn(name = "cuenta_destino", referencedColumnName = "num_cuenta", nullable = false)
+    @JoinColumn(name = "cuenta_destino", referencedColumnName = "num_cuenta")
     private CuentaEntity cuentaByCuentaDestino;
 
     public Integer getOperacion() {
@@ -37,6 +42,14 @@ public class TransferenciaEntity {
         this.cantidad = cantidad;
     }
 
+    public String getIbanDestino() {
+        return ibanDestino;
+    }
+
+    public void setIbanDestino(String ibanDestino) {
+        this.ibanDestino = ibanDestino;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,14 +57,18 @@ public class TransferenciaEntity {
 
         TransferenciaEntity that = (TransferenciaEntity) o;
 
-        if (!Objects.equals(operacion, that.operacion)) return false;
-        return Objects.equals(cantidad, that.cantidad);
+        if (operacion != null ? !operacion.equals(that.operacion) : that.operacion != null) return false;
+        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
+        if (ibanDestino != null ? !ibanDestino.equals(that.ibanDestino) : that.ibanDestino != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = operacion != null ? operacion.hashCode() : 0;
         result = 31 * result + (cantidad != null ? cantidad.hashCode() : 0);
+        result = 31 * result + (ibanDestino != null ? ibanDestino.hashCode() : 0);
         return result;
     }
 

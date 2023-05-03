@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <html>
 <head>
@@ -9,6 +9,7 @@
 <body>
 
 <h1>Datos de la transferencia:</h1>
+<%--@elvariable id="cambioDivisa" type="es.proyectotaw.banca.bancapp.entity.CambDivisaEntity"--%>
 <form:form action="/operacion/guardar" modelAttribute="cambioDivisa" method="post">
     <form:hidden path="operacion"/>
     Cantidad: <input type="text" id="cantidad"> <br/>

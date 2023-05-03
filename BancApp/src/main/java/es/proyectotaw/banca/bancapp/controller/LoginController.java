@@ -5,6 +5,9 @@ import es.proyectotaw.banca.bancapp.dao.RolusuarioEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioEntityRepository;
 import es.proyectotaw.banca.bancapp.entity.*;
 import es.proyectotaw.banca.bancapp.dao.*;
+import es.proyectotaw.banca.bancapp.entity.RolEntity;
+import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
+import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class LoginController {
     RolusuarioEntityRepository rolusuarioEntityRepository;
     @Autowired
     DireccionEntityRepository direccionEntityRepository;
+    @Autowired
+    EmpresaEntityRepository empresaEntityRepository;
 
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
@@ -55,12 +59,11 @@ public class LoginController {
         );
 
 
-
         return "registro";
     }
 
     @PostMapping("/registro")
-    String doGuardarRegistro(Model model, HttpSession session, @ModelAttribute("entidad") String entidad,
+    String doGuardarRegistro(HttpSession session, @ModelAttribute("entidad") String entidad,
                              @ModelAttribute("userNif") String NIF,
                              @ModelAttribute("userNombre") String nombre,
                              @ModelAttribute("userNombreSegundo") String segundoNombre,
@@ -77,18 +80,6 @@ public class LoginController {
                              @ModelAttribute("direccoinPais") String pais,
                              @ModelAttribute("direccionPostal") String postal
                              ){
-        /* TODO:
-            ✔ Buscar en la BBDD
-              ✔ y comprobar si los datos son correctos.
-            ✔ Asegurarse de que la persona es autorizada / socia de la empresa que se pasa como argumento,
-              ✔ si entidad es empresa.
-            ✔ Si algún elemento no es correcto,
-              ✔ a login
-              ✔ y agregar error.
-            ✔ Añadir a la jsp de login que se guarden los datos de inicio de sesión (o al menos el usuario y cif)
-              - si son erróneos.
-         */
-
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNif(NIF);
         usuario.setPrimerNombre(nombre);
@@ -131,15 +122,7 @@ public class LoginController {
                         @ModelAttribute("user") String email,
                         @ModelAttribute("pass") String password) {
         /* TODO:
-            ✔ Buscar en la BBDD
-              ✔ y comprobar si los datos son correctos.
-            ✔ Asegurarse de que la persona es autorizada / socia de la empresa que se pasa como argumento,
-              ✔ si entidad es empresa.
-            ✔ Si algún elemento no es correcto,
-              ✔ a login
-              ✔ y agregar error.
-            ✔ Añadir a la jsp de login que se guarden los datos de inicio de sesión (o al menos el usuario y cif)
-              - si son erróneos.
+            - Testear algún gestor / socio
          */
         if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
@@ -162,24 +145,27 @@ public class LoginController {
             rolesConPermiso.add(rolEntityRepository.findByNombre("socio").orElseThrow(RuntimeException::new));
             rolesConPermiso.add(rolEntityRepository.findByNombre("socioBloqueado").orElseThrow(RuntimeException::new));
 
-            var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, cif);
+            var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, Integer.valueOf(cif));
 
             roles.retainAll(rolesConPermiso);
             if (roles.isEmpty()) {
                 model.addAttribute("error", "No tienes permiso en la empresa seleccionada.");
                 return "login";
             }
-        }
+
+            session.setAttribute("empresa", empresaEntityRepository.findByCif(Integer.valueOf(cif)));
+        } else session.setAttribute("empresa", null);
         session.setAttribute("usuario", user);
 
-        return "login";
+        session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
+
+        return "redirect:/menu";
     }
 
 
     @GetMapping("/menu")
     String doMenu(HttpSession session) {
-        //TODO session.getAttribute("usuario") == null ? "redirect:/" :
-        return "menu";
+        return session.getAttribute("usuario") == null ? "redirect:/" : "menu";
     }
 
     @GetMapping("/logout")

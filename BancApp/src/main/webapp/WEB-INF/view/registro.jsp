@@ -8,6 +8,7 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body class="bg-gradient bg-dark">
+<!-- TODO Agregar botón para volver al login -->
 <div class="card text-center w-50" style="margin: 5% auto auto;">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
@@ -40,14 +41,11 @@
                     ${error}
             </p>
         </c:if>
+        <!-- TODO Añadir control de errores (máximo/mínimo de caracteres) -->
         <form action="/registro" method="post" class="text-start">
-            <jsp:useBean id="empresa" scope="request" type="es.proyectotaw.banca.bancapp.entity.EmpresaEntity"/>
-            <jsp:useBean id="user" scope="request" type="es.proyectotaw.banca.bancapp.entity.UsuarioEntity"/>
-            <jsp:useBean id="cliente" scope="request" type="es.proyectotaw.banca.bancapp.entity.ClienteEntity"/>
-            <jsp:useBean id="direccion" scope="request" type="es.proyectotaw.banca.bancapp.entity.DireccionEntity"/>
             <c:choose>
                 <c:when test="${\"empresa\".equals(entidad)}">
-
+                    <!-- TODO -->
                 </c:when>
                 <c:otherwise>
                     <input type="hidden" name="cifEmpresa" id="cif" aria-hidden="true"/>
@@ -91,33 +89,33 @@
                     <input type="password" id="password" name="userPassword" class="form-control"/>
                     <br/>
 
-                    Dirección: <br>
+                    <b>Dirección:</b> <br>
                     <label for="direccionCalle" class="form-label">Calle</label>
-                    <input type="test" id="direccionCalle" name="direccionCalle" class="form-control"/>
+                    <input type="text" id="direccionCalle" name="direccionCalle" class="form-control"/>
                     <br/>
 
                     <label for="direccionNumero" class="form-label">Número</label>
-                    <input type="test" id="direccionNumero" name="direccionNumero" class="form-control"/>
+                    <input type="number" id="direccionNumero" name="direccionNumero" class="form-control"/>
                     <br/>
 
                     <label for="direccionPlanta" class="form-label">Planta/Puerta/Oficina</label>
-                    <input type="test" id="direccionPlanta" name="direccionPlanta" class="form-control"/>
+                    <input type="text" id="direccionPlanta" name="direccionPlanta" class="form-control"/>
                     <br/>
 
                     <label for="direccionCiudad" class="form-label">Ciudad</label>
-                    <input type="test" id="direccionCiudad" name="direccionCiudad" class="form-control"/>
+                    <input type="text" id="direccionCiudad" name="direccionCiudad" class="form-control"/>
                     <br/>
 
                     <label for="direccionRegion" class="form-label">Región</label>
-                    <input type="test" id="direccionRegion" name="direccionRegion" class="form-control"/>
+                    <input type="text" id="direccionRegion" name="direccionRegion" class="form-control"/>
                     <br/>
 
                     <label for="direccionPais" class="form-label">País</label>
-                    <input type="test" id="direccionPais" name="direccoinPais" class="form-control"/>
+                    <input type="text" id="direccionPais" name="direccoinPais" class="form-control"/>
                     <br/>
 
                     <label for="direccionCodPostal" class="form-label">Código Postal</label>
-                    <input type="test" id="direccionCodPostal" name="direccionPostal" class="form-control"/>
+                    <input type="text" id="direccionCodPostal" name="direccionPostal" class="form-control"/>
                     <br/>
                 </c:otherwise>
             </c:choose>
