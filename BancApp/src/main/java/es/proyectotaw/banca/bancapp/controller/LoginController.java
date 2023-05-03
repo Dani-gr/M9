@@ -112,7 +112,7 @@ public class LoginController {
             rolusuario.setUsuarioByIdusuario(usuarioEmpresa);
             rolusuario.setEmpresaByIdempresa(empresa);
             rolusuarioEntityRepository.save(rolusuario);
-            List<RolusuarioEntity> lista = empresaEntityRepository.findAllRoles(empresa.getId());
+            List<RolusuarioEntity> lista = empresa.getRolusuariosById();
             lista.add(rolusuario);
             usuarioEmpresa.setRolusuariosById(lista);
             empresa.setRolusuariosById(lista);

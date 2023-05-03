@@ -3,9 +3,11 @@ package es.proyectotaw.banca.bancapp.entity;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "usuario", schema = "bancodb", catalog = "")
+@Table(name = "usuario", schema = "bancodb")
 public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -124,22 +126,20 @@ public class UsuarioEntity {
 
         UsuarioEntity usuario = (UsuarioEntity) o;
 
-        if (id != null ? !id.equals(usuario.id) : usuario.id != null) return false;
-        if (nif != null ? !nif.equals(usuario.nif) : usuario.nif != null) return false;
-        if (primerNombre != null ? !primerNombre.equals(usuario.primerNombre) : usuario.primerNombre != null)
+        if (!Objects.equals(id, usuario.id)) return false;
+        if (!Objects.equals(nif, usuario.nif)) return false;
+        if (!Objects.equals(primerNombre, usuario.primerNombre))
             return false;
-        if (segundoNombre != null ? !segundoNombre.equals(usuario.segundoNombre) : usuario.segundoNombre != null)
+        if (!Objects.equals(segundoNombre, usuario.segundoNombre))
             return false;
-        if (primerApellido != null ? !primerApellido.equals(usuario.primerApellido) : usuario.primerApellido != null)
+        if (!Objects.equals(primerApellido, usuario.primerApellido))
             return false;
-        if (segundoApellido != null ? !segundoApellido.equals(usuario.segundoApellido) : usuario.segundoApellido != null)
+        if (!Objects.equals(segundoApellido, usuario.segundoApellido))
             return false;
-        if (fechaNacimiento != null ? !fechaNacimiento.equals(usuario.fechaNacimiento) : usuario.fechaNacimiento != null)
+        if (!Objects.equals(fechaNacimiento, usuario.fechaNacimiento))
             return false;
-        if (email != null ? !email.equals(usuario.email) : usuario.email != null) return false;
-        if (password != null ? !password.equals(usuario.password) : usuario.password != null) return false;
-
-        return true;
+        if (!Objects.equals(email, usuario.email)) return false;
+        return Objects.equals(password, usuario.password);
     }
 
     @Override

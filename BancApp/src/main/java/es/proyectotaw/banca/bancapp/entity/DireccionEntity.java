@@ -2,9 +2,11 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "direccion", schema = "bancodb", catalog = "")
+@Table(name = "direccion", schema = "bancodb")
 public class DireccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -105,17 +107,15 @@ public class DireccionEntity {
 
         DireccionEntity that = (DireccionEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (calle != null ? !calle.equals(that.calle) : that.calle != null) return false;
-        if (numero != null ? !numero.equals(that.numero) : that.numero != null) return false;
-        if (plantaPuertaOficina != null ? !plantaPuertaOficina.equals(that.plantaPuertaOficina) : that.plantaPuertaOficina != null)
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(calle, that.calle)) return false;
+        if (!Objects.equals(numero, that.numero)) return false;
+        if (!Objects.equals(plantaPuertaOficina, that.plantaPuertaOficina))
             return false;
-        if (ciudad != null ? !ciudad.equals(that.ciudad) : that.ciudad != null) return false;
-        if (region != null ? !region.equals(that.region) : that.region != null) return false;
-        if (pais != null ? !pais.equals(that.pais) : that.pais != null) return false;
-        if (codpostal != null ? !codpostal.equals(that.codpostal) : that.codpostal != null) return false;
-
-        return true;
+        if (!Objects.equals(ciudad, that.ciudad)) return false;
+        if (!Objects.equals(region, that.region)) return false;
+        if (!Objects.equals(pais, that.pais)) return false;
+        return Objects.equals(codpostal, that.codpostal);
     }
 
     @Override
