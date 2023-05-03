@@ -2,28 +2,28 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "rol", schema = "bancodb")
+@Table(name = "rol", schema = "bancodb", catalog = "")
 public class RolEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idrol", nullable = false)
+    @Column(name = "idrol")
     private Integer idrol;
     @Basic
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @OneToMany(mappedBy = "rolByIdrol")
-    private List<RolusuarioEntity> rolusuariosById;
+    private List<RolusuarioEntity> rolusuariosByIdrol;
+    @OneToMany(mappedBy = "rolByIdderol")
+    private List<RolusuarioEntity> rolusuariosByIdrol_0;
 
     public Integer getIdrol() {
         return idrol;
     }
 
-    public void setIdrol(Integer id) {
-        this.idrol = id;
+    public void setIdrol(Integer idrol) {
+        this.idrol = idrol;
     }
 
     public String getNombre() {
@@ -41,8 +41,10 @@ public class RolEntity {
 
         RolEntity rolEntity = (RolEntity) o;
 
-        if (!Objects.equals(idrol, rolEntity.idrol)) return false;
-        return Objects.equals(nombre, rolEntity.nombre);
+        if (idrol != null ? !idrol.equals(rolEntity.idrol) : rolEntity.idrol != null) return false;
+        if (nombre != null ? !nombre.equals(rolEntity.nombre) : rolEntity.nombre != null) return false;
+
+        return true;
     }
 
     @Override
@@ -52,11 +54,19 @@ public class RolEntity {
         return result;
     }
 
-    public List<RolusuarioEntity> getRolusuariosById() {
-        return rolusuariosById;
+    public List<RolusuarioEntity> getRolusuariosByIdrol() {
+        return rolusuariosByIdrol;
     }
 
-    public void setRolusuariosById(List<RolusuarioEntity> rolusuariosById) {
-        this.rolusuariosById = rolusuariosById;
+    public void setRolusuariosByIdrol(List<RolusuarioEntity> rolusuariosByIdrol) {
+        this.rolusuariosByIdrol = rolusuariosByIdrol;
+    }
+
+    public List<RolusuarioEntity> getRolusuariosByIdrol_0() {
+        return rolusuariosByIdrol_0;
+    }
+
+    public void setRolusuariosByIdrol_0(List<RolusuarioEntity> rolusuariosByIdrol_0) {
+        this.rolusuariosByIdrol_0 = rolusuariosByIdrol_0;
     }
 }
