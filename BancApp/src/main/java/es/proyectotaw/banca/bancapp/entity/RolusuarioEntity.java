@@ -38,9 +38,7 @@ public class RolusuarioEntity {
         return idusuario;
     }
 
-    public void setIdusuario(Integer idusuario) {
-        this.idusuario = idusuario;
-    }
+    public void setIdusuario(Integer idusuario) { this.idusuario = idusuario;}
 
     @Override
     public boolean equals(Object o) {

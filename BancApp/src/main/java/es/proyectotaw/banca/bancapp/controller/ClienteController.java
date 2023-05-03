@@ -1,6 +1,7 @@
 package es.proyectotaw.banca.bancapp.controller;
 
-import es.proyectotaw.banca.bancapp.dao.ClienteRepository;
+import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
+import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioRepository;
 import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ClienteController {
 
     @Autowired
-    protected ClienteRepository clienteRepository;
+    protected ClienteEntityRepository clienteRepository;
 
     @Autowired
     protected UsuarioRepository usuarioRepository;
@@ -26,8 +27,7 @@ public class ClienteController {
     public String doPasarAlMenu(Model model){
         //se pasa al menú solo y solo si tenemos el email y la contraseña almacenado
         String urlTo="menu";
-        model.addAttribute("usuario", new UsuarioEntity());
-        //un cliente se pasa por el model
+
         return urlTo;
     }
 
