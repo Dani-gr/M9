@@ -103,7 +103,7 @@ public class LoginController {
         direccionEntityRepository.save(direccion);
         clienteEntityRepository.save(cliente);
         RolusuarioEntity rolusuario = new RolusuarioEntity();
-        rolusuario.setIdderol(5);
+        rolusuario.setIdrol(5);
         rolusuario.setIdusuario(usuario.getId());
         rolusuario.setUsuarioByIdusuario(usuario);
         rolusuarioEntityRepository.save(rolusuario);
