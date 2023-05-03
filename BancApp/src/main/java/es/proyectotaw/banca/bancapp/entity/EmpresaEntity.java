@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 @Table(name = "empresa", schema = "bancodb", catalog = "")
 public class EmpresaEntity {
-   
     @Id
     @Column(name = "id")
     private Integer id;
