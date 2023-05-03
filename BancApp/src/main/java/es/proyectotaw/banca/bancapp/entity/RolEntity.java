@@ -15,8 +15,6 @@ public class RolEntity {
     private String nombre;
     @OneToMany(mappedBy = "rolByIdrol")
     private List<RolusuarioEntity> rolusuariosByIdrol;
-    @OneToMany(mappedBy = "rolByIdderol")
-    private List<RolusuarioEntity> rolusuariosByIdrol_0;
 
     public Integer getIdrol() {
         return idrol;
@@ -62,11 +60,4 @@ public class RolEntity {
         this.rolusuariosByIdrol = rolusuariosByIdrol;
     }
 
-    public List<RolusuarioEntity> getRolusuariosByIdrol_0() {
-        return rolusuariosByIdrol_0;
-    }
-
-    public void setRolusuariosByIdrol_0(List<RolusuarioEntity> rolusuariosByIdrol_0) {
-        this.rolusuariosByIdrol_0 = rolusuariosByIdrol_0;
-    }
 }
