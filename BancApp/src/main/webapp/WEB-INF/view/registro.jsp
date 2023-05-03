@@ -12,7 +12,6 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body class="bg-gradient bg-dark">
-<!-- TODO Agregar botón para volver al login -->
 <div class="card text-center w-50" style="margin: 5% auto auto;">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">

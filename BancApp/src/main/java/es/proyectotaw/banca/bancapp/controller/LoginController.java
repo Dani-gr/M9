@@ -91,7 +91,7 @@ public class LoginController {
             usuarioEmpresa.setEmail(email);
             usuarioEmpresa.setPassword(password);
 
-            /*Diferencia entre cliente de la empresa
+
             ClienteEntity cliente = new ClienteEntity();
             DireccionEntity direccion = new DireccionEntity();
             direccion.setCalle(calle);
@@ -102,7 +102,9 @@ public class LoginController {
             direccion.setRegion(region);
             direccion.setPlantaPuertaOficina(planta);
             cliente.setDireccionByDireccion(direccion);
-            direccionEntityRepository.save(direccion);*/
+            direccionEntityRepository.save(direccion);
+            cliente.setDireccionByDireccion(direccion);
+            clienteEntityRepository.save(cliente);
 
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
@@ -114,11 +116,8 @@ public class LoginController {
             lista.add(rolusuario);
             usuarioEmpresa.setRolusuariosById(lista);
             empresa.setRolusuariosById(lista);
-            /*List<UsuarioEntity> usuarios = new ArrayList<>();
-            usuarios.add(usuarioEmpresa);
-            cliente.setUsuariosByIdCliente(usuarios);
-            usuarioEmpresa.setClienteByCliente(cliente);
-            clienteEntityRepository.save(cliente);*/
+            clienteEntityRepository.save(cliente);
+            empresa.setClienteById(cliente);
             usuarioEntityRepository.save(usuarioEmpresa);
             empresaEntityRepository.save(empresa);
         } else {
@@ -143,8 +142,8 @@ public class LoginController {
             direccion.setPais(pais);
             direccion.setRegion(region);
             direccion.setPlantaPuertaOficina(planta);
-            cliente.setDireccionByDireccion(direccion);
             direccionEntityRepository.save(direccion);
+            cliente.setDireccionByDireccion(direccion);
             clienteEntityRepository.save(cliente);
 
             RolusuarioEntity rolusuario = new RolusuarioEntity();
