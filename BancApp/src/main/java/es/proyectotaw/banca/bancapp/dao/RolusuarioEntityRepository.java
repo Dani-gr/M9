@@ -12,5 +12,5 @@ import java.util.List;
 public interface RolusuarioEntityRepository extends JpaRepository<RolusuarioEntity, Integer> {
     @Query("select rolusuariosById.rolByIdrol from RolusuarioEntity rolusuariosById " +
             "where rolusuariosById.usuarioByIdusuario=:user and rolusuariosById.empresaByIdempresa.cif = :cif")
-    List<RolEntity> findRolesByUsuarioAndEmpresaByCif(@Param("user") UsuarioEntity user, @Param("cif") String cif);
+    List<RolEntity> findRolesByUsuarioAndEmpresaByCif(@Param("user") UsuarioEntity user, @Param("cif") Integer cif);
 }

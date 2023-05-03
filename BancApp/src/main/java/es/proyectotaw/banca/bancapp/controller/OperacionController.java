@@ -1,7 +1,6 @@
 package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.TransferenciaRepository;
-import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.CuentaEntity;
 import es.proyectotaw.banca.bancapp.entity.TransferenciaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
