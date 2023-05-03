@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `bancodb`.`chat` (
   `activo` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `fk_Asistente_has_Cliente_Cliente1_idx` (`cliente_id_cliente` ASC),
-  INDEX `fk_Asistente_idx` (`asistente_id` ASC) VISIBLE,
+  INDEX `fk_Asistente_idx` (`asistente_id` ASC),
   CONSTRAINT `fk_asistente`
     FOREIGN KEY (`asistente_id`)
     REFERENCES `bancodb`.`usuario` (`id`)

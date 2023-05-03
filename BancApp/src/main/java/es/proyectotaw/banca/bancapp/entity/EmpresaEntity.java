@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 @Table(name = "empresa", schema = "bancodb", catalog = "")
 public class EmpresaEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   
     @Id
     @Column(name = "id")
     private Integer id;
