@@ -26,9 +26,6 @@ public class RolusuarioEntity {
     @ManyToOne
     @JoinColumn(name = "idempresa", referencedColumnName = "id")
     private EmpresaEntity empresaByIdempresa;
-    @ManyToOne
-    @JoinColumn(name = "idderol", referencedColumnName = "idrol", nullable = false)
-    private RolEntity rolByIdderol;
 
     public Integer getIdrol() {
         return idrol;
@@ -98,13 +95,5 @@ public class RolusuarioEntity {
 
     public void setEmpresaByIdempresa(EmpresaEntity empresaByIdempresa) {
         this.empresaByIdempresa = empresaByIdempresa;
-    }
-
-    public RolEntity getRolByIdderol() {
-        return rolByIdderol;
-    }
-
-    public void setRolByIdderol(RolEntity rolByIdderol) {
-        this.rolByIdderol = rolByIdderol;
     }
 }
