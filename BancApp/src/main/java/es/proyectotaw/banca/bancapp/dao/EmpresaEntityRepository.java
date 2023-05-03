@@ -14,9 +14,4 @@ public interface EmpresaEntityRepository extends JpaRepository<EmpresaEntity, In
     @Query("select e from EmpresaEntity e where UPPER(e.cif) = UPPER(?1)")
     Optional<EmpresaEntity> findByCif(@NonNull Integer cif);
 
-    @Query("select a.rolusuariosById from EmpresaEntity a where a.id = :id")
-    public List<RolusuarioEntity> findAllRoles(@RequestParam("id") Integer id);
-
-    @Query("select a.clientesEmpresasById from EmpresaEntity a where a.id = :id")
-    public List<RolusuarioEntity> findAllCliente(@RequestParam("id") Integer id);
 }

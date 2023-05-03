@@ -46,7 +46,8 @@ public class ClienteController {
         CuentaEntity cuenta = cuentas.get(0);
         model.addAttribute("usuario", usuario);
         model.addAttribute("cliente", new ClienteEntity());
-        List<OperacionEntity> operaciones = cuentaEntityRepository.buscarTodasLasOperaciones(cuenta.getNumCuenta());
+        List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
+        //todo
         return "cliente";
     }
 }
