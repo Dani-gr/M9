@@ -38,7 +38,7 @@ public class LoginController {
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
-        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
+        //if (session.getAttribute("usuario") != null) return "redirect:/menu/";
         model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
@@ -50,68 +50,121 @@ public class LoginController {
     }
 
     @GetMapping("/registro")
-    String doRegistrar(Model model, HttpSession session, @RequestParam("entidad") String entidad) {
-        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
+    String doRegistrar(Model model, HttpSession session, @RequestParam("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif) {
+        //if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
-        model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
 
+        model.addAttribute("cifEmpresa", cif);
 
         return "registro";
     }
 
     @PostMapping("/registro")
-    String doGuardarRegistro(HttpSession session, @ModelAttribute("entidad") String entidad,
-                             @ModelAttribute("userNif") String NIF,
-                             @ModelAttribute("userNombre") String nombre,
-                             @ModelAttribute("userNombreSegundo") String segundoNombre,
-                             @ModelAttribute("userApellidoPrimero") String primerApellido,
-                             @ModelAttribute("userApellidoSegundo") String segundoApellido,
-                             @ModelAttribute("userFechaNacimiento") Date fechaNacimiento,
-                             @ModelAttribute("userEmail") String email,
-                             @ModelAttribute("userPassword") String password,
-                             @ModelAttribute("direccionCalle") String calle,
-                             @ModelAttribute("direccionNumero") String numero,
-                             @ModelAttribute("direccionPlanta") String planta,
-                             @ModelAttribute("direccionCiudad") String ciudad,
-                             @ModelAttribute("direccionRegion") String region,
-                             @ModelAttribute("direccoinPais") String pais,
-                             @ModelAttribute("direccionPostal") String postal
-                             ){
-        UsuarioEntity usuario = new UsuarioEntity();
-        usuario.setNif(NIF);
-        usuario.setPrimerNombre(nombre);
-        usuario.setSegundoNombre(segundoNombre);
-        usuario.setPrimerApellido(primerApellido);
-        usuario.setSegundoApellido(segundoApellido);
-        usuario.setFechaNacimiento(fechaNacimiento);
-        usuario.setEmail(email);
-        usuario.setPassword(password);
-        ClienteEntity cliente = new ClienteEntity();
-        DireccionEntity direccion = new DireccionEntity();
-        direccion.setCalle(calle);
-        direccion.setCiudad(ciudad);
-        direccion.setCodpostal(postal);
-        direccion.setNumero(Integer.valueOf(numero));
-        direccion.setPais(pais);
-        direccion.setRegion(region);
-        direccion.setPlantaPuertaOficina(planta);
-        cliente.setDireccionByDireccion(direccion);
-        usuario.setClienteByCliente(cliente);
-        direccionEntityRepository.save(direccion);
-        clienteEntityRepository.save(cliente);
-        RolusuarioEntity rolusuario = new RolusuarioEntity();
-        rolusuario.setIdderol(5);
-        rolusuario.setIdusuario(usuario.getId());
-        rolusuario.setUsuarioByIdusuario(usuario);
-        rolusuarioEntityRepository.save(rolusuario);
-        List<RolusuarioEntity> lista = new ArrayList<>();
-        lista.add(rolusuario);
-        usuario.setRolusuariosById(lista);
-        usuarioEntityRepository.save(usuario);
-        session.setAttribute("usuario", usuario);
+    String doGuardarRegistro(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("userNIF") String NIF,
+                             @ModelAttribute("userNombre") String nombre, @ModelAttribute("userNombreSegundo") String segundoNombre, @ModelAttribute("userApellidoPrimero") String primerApellido,
+                             @ModelAttribute("userApellidoSegundo") String segundoApellido, @ModelAttribute("userFechaNacimiento") Date fechaNacimiento, @ModelAttribute("userEmail") String email,
+                             @ModelAttribute("userPassword") String password, @ModelAttribute("direccionCalle") String calle, @ModelAttribute("direccionNumero") String numero,
+                             @ModelAttribute("direccionPlanta") String planta, @ModelAttribute("direccionCiudad") String ciudad, @ModelAttribute("direccionRegion") String region,
+                             @ModelAttribute("direccoinPais") String pais, @ModelAttribute("direccionPostal") String postal,
+                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado){
+
+        if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
+
+        if ("empresa".equals(entidad)) {
+            if (cif == null || cif.isBlank()) return "registro";
+            EmpresaEntity empresa = empresaEntityRepository.findByCif(Integer.valueOf(cif)).orElse(null);
+            if(empresa == null) {
+                empresa = new EmpresaEntity();
+                empresa.setCif(Integer.valueOf(cif));
+            }
+            //Creo al socio/autorizado
+            UsuarioEntity usuarioEmpresa = new UsuarioEntity();
+            usuarioEmpresa.setNif(NIF);
+            usuarioEmpresa.setPrimerNombre(nombre);
+            usuarioEmpresa.setSegundoNombre(segundoNombre);
+            usuarioEmpresa.setPrimerApellido(primerApellido);
+            usuarioEmpresa.setSegundoApellido(segundoApellido);
+            usuarioEmpresa.setFechaNacimiento(fechaNacimiento);
+            usuarioEmpresa.setEmail(email);
+            usuarioEmpresa.setPassword(password);
+
+
+            ClienteEntity cliente = new ClienteEntity();
+            DireccionEntity direccion = new DireccionEntity();
+            direccion.setCalle(calle);
+            direccion.setCiudad(ciudad);
+            direccion.setCodpostal(postal);
+            direccion.setNumero(Integer.valueOf(numero));
+            direccion.setPais(pais);
+            direccion.setRegion(region);
+            direccion.setPlantaPuertaOficina(planta);
+            cliente.setDireccionByDireccion(direccion);
+            direccionEntityRepository.save(direccion);
+            cliente.setDireccionByDireccion(direccion);
+            clienteEntityRepository.save(cliente);
+
+            RolusuarioEntity rolusuario = new RolusuarioEntity();
+            RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
+            rolusuario.setRolByIdrol(rol);
+            rolusuario.setUsuarioByIdusuario(usuarioEmpresa);
+            rolusuario.setEmpresaByIdempresa(empresa);
+            rolusuarioEntityRepository.save(rolusuario);
+            List<RolusuarioEntity> lista = empresaEntityRepository.findAllRoles(empresa.getId());
+            lista.add(rolusuario);
+            usuarioEmpresa.setRolusuariosById(lista);
+            empresa.setRolusuariosById(lista);
+            clienteEntityRepository.save(cliente);
+            empresa.setClienteById(cliente);
+            usuarioEntityRepository.save(usuarioEmpresa);
+            empresaEntityRepository.save(empresa);
+        } else {
+            session.setAttribute("empresa", null);
+            UsuarioEntity usuario = new UsuarioEntity();
+            usuario.setNif(NIF);
+            usuario.setPrimerNombre(nombre);
+            usuario.setSegundoNombre(segundoNombre);
+            usuario.setPrimerApellido(primerApellido);
+            usuario.setSegundoApellido(segundoApellido);
+            usuario.setFechaNacimiento(fechaNacimiento);
+            usuario.setEmail(email);
+            usuario.setPassword(password);
+            usuarioEntityRepository.save(usuario);
+
+            ClienteEntity cliente = new ClienteEntity();
+            DireccionEntity direccion = new DireccionEntity();
+            direccion.setCalle(calle);
+            direccion.setCiudad(ciudad);
+            direccion.setCodpostal(postal);
+            direccion.setNumero(Integer.valueOf(numero));
+            direccion.setPais(pais);
+            direccion.setRegion(region);
+            direccion.setPlantaPuertaOficina(planta);
+            direccionEntityRepository.save(direccion);
+            cliente.setDireccionByDireccion(direccion);
+            clienteEntityRepository.save(cliente);
+
+            RolusuarioEntity rolusuario = new RolusuarioEntity();
+            RolEntity rol = rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new);
+            rolusuario.setRolByIdrol(rol);
+            rolusuario.setUsuarioByIdusuario(usuario);
+            rolusuario.setBloqueado((byte) 0);
+            rolusuarioEntityRepository.save(rolusuario);
+            List<RolusuarioEntity> lista = new ArrayList<>();
+            lista.add(rolusuario);
+            usuario.setRolusuariosById(lista);
+            List<UsuarioEntity> usuarios = new ArrayList<>();
+            usuarios.add(usuario);
+            cliente.setUsuariosByIdCliente(usuarios);
+            usuario.setClienteByCliente(cliente);
+            clienteEntityRepository.save(cliente);
+            usuarioEntityRepository.save(usuario);
+        }
+
+
+        model.addAttribute("cifEmpresa", cif);
 
         return "enespera";
     }
