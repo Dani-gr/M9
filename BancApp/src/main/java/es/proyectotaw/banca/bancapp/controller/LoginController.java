@@ -108,7 +108,7 @@ public class LoginController {
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
 
-            rolusuario.setIdderol(rol.getIdrol());
+            rolusuario.setIdrol(rol.getIdrol());
             rolusuario.setRolByIdrol(rol);
             rolusuario.setUsuarioByIdusuario(usuarioEmpresa);
             Integer id = usuarioEmpresa.getId();
@@ -152,7 +152,7 @@ public class LoginController {
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new);
 
-            rolusuario.setIdderol(rol.getIdrol());
+            rolusuario.setIdrol(rol.getIdrol());
             rolusuario.setRolByIdrol(rol);
             rolusuario.setUsuarioByIdusuario(usuario);
             Integer id = usuario.getId();
@@ -181,15 +181,7 @@ public class LoginController {
                         @ModelAttribute("user") String email,
                         @ModelAttribute("pass") String password) {
         /* TODO:
-            ✔ Buscar en la BBDD
-              ✔ y comprobar si los datos son correctos.
-            ✔ Asegurarse de que la persona es autorizada / socia de la empresa que se pasa como argumento,
-              ✔ si entidad es empresa.
-            ✔ Si algún elemento no es correcto,
-              ✔ a login
-              ✔ y agregar error.
-            ✔ Añadir a la jsp de login que se guarden los datos de inicio de sesión (o al menos el usuario y cif)
-              - si son erróneos.
+            - Testear algún gestor / socio
          */
         if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
@@ -212,24 +204,27 @@ public class LoginController {
             rolesConPermiso.add(rolEntityRepository.findByNombre("socio").orElseThrow(RuntimeException::new));
             rolesConPermiso.add(rolEntityRepository.findByNombre("socioBloqueado").orElseThrow(RuntimeException::new));
 
-            var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, cif);
+            var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, Integer.valueOf(cif));
 
             roles.retainAll(rolesConPermiso);
             if (roles.isEmpty()) {
                 model.addAttribute("error", "No tienes permiso en la empresa seleccionada.");
                 return "login";
             }
-        }
+
+            session.setAttribute("empresa", empresaEntityRepository.findByCif(Integer.valueOf(cif)));
+        } else session.setAttribute("empresa", null);
         session.setAttribute("usuario", user);
 
-        return "login";
+        session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
+
+        return "redirect:/menu";
     }
 
 
     @GetMapping("/menu")
     String doMenu(HttpSession session) {
-        //TODO session.getAttribute("usuario") == null ? "redirect:/" :
-        return "menu";
+        return session.getAttribute("usuario") == null ? "redirect:/" : "menu";
     }
 
     @GetMapping("/logout")

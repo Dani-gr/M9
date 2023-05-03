@@ -12,6 +12,7 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body class="bg-gradient bg-dark">
+<!-- TODO Agregar botón para volver al login -->
 <div class="card text-center w-50" style="margin: 5% auto auto;">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
@@ -44,6 +45,7 @@
                     ${error}
             </p>
         </c:if>
+        <!-- TODO Añadir control de errores (máximo/mínimo de caracteres) -->
         <form action="/registro" method="post" class="text-start">
             <jsp:useBean id="cifEmpresa" scope="request" type="java.lang.String"/>
             <c:choose>
@@ -61,9 +63,7 @@
                     <label for="autorizado" class="form-label">autorizado</label>
                     <input id="autorizado" type="radio" name="rol" value="autorizado">
                     <br>
-                </c:when>
                 <c:otherwise>
-
                 </c:otherwise>
             </c:choose>
             <label for="userNIF" class="form-label">ID/NIF</label>

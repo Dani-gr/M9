@@ -52,12 +52,12 @@
             <c:choose>
                 <c:when test="${\"empresa\".equals(entidad)}">
                     <label for="cif" class="form-label">CIF de la empresa</label>
-                    <input type="text" class="form-control" name="cifEmpresa" id="cif"
+                    <input type="number" class="form-control" name="cifEmpresa" id="cif"
                            value="<%=cifEmpresa == null ? "" : cifEmpresa%>" maxlength="9" minlength="9" size="9"/>
                     <br/>
                 </c:when>
                 <c:otherwise>
-                    <input type="hidden" name="cifEmpresa" id="cif" aria-hidden="true"/>
+                    <input type="hidden" name="cifEmpresa" id="cif" aria-hidden="true" value=""/>
                 </c:otherwise>
             </c:choose>
             <label for="userEmail" class="form-label">Correo electr&oacute;nico</label>
