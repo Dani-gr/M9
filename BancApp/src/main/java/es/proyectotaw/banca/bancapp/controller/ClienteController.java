@@ -132,8 +132,7 @@ public class ClienteController {
                         }
                     } else {
                         if (nombre.equals("Cambio de divisa")) {
-                            //TODO CAMBIAR A CANTIDAD CUANDO ESTÉ
-                            List<CambDivisaEntity> cambios = cambDivisaEntityRepository.findAll();
+                            List<CambDivisaEntity> cambios = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                             for (CambDivisaEntity cambio : cambios) {
                                 operaciones.add(cambio.getOperacionByOperacion());
                             }
@@ -151,10 +150,10 @@ public class ClienteController {
                     for (TransferenciaEntity trans : transferencias) {
                         operaciones.add(trans.getOperacionByOperacion());
                     }
-                    //List<CambDivisaEntity> cambios = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                    //for (CambDivisaEntity cambio : cambios) {
-                    //    operaciones.add(cambio.getOperacionByOperacion());
-                    //}
+                    List<CambDivisaEntity> cambios = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
+                    for (CambDivisaEntity cambio : cambios) {
+                        operaciones.add(cambio.getOperacionByOperacion());
+                    }
                     List<ExtraccionEntity> extracciones = extraccionEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                     for (ExtraccionEntity extraccion : extracciones) {
                         operaciones.add(extraccion.getOperacionByOperacion());
