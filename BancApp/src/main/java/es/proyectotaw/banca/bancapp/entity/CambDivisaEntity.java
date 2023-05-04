@@ -74,6 +74,6 @@ public class CambDivisaEntity {
     }
 
     public String nombre() {
-        return this.getClass().getSimpleName();
+        return "Cambio de divisa";
     }
 }

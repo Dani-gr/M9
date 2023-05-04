@@ -85,6 +85,6 @@ public class TransferenciaEntity {
     }
 
     public String nombre() {
-        return this.getClass().getSimpleName();
+        return "Transferencia";
     }
 }

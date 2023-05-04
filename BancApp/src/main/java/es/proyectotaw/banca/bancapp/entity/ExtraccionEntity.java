@@ -61,6 +61,6 @@ public class ExtraccionEntity {
     }
 
     public String nombre() {
-        return this.getClass().getSimpleName();
+        return "Extraccion";
     }
 }

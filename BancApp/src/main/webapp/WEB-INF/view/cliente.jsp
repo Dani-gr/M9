@@ -25,7 +25,7 @@
                 <!-- TODO Agregar bean del modelAttribute -->
                 <div>
                     Datos personales: <br>
-                    <form action="/guardar" method="post" class="text-start">
+                    <form action="/cliente/guardar" method="post" class="text-start">
                         <label for="userNIF" class="form-label">ID/NIF</label>
                         <input type="text" id="userNIF" name="userNIF" class="form-control"
                                value=""/>
@@ -99,53 +99,86 @@
                 </div>
             </div>
 
-            <p>El saldo actual de cuenta es <%=cuenta.getSaldo()%></p>
+            <div>
+                <h4>El saldo actual de cuenta es <%=cuenta.getSaldo()%></h4>
 
-            <div class="row mt-3">
-                <div>
-                    Listado de operaciones <br>
-                    <form action="/guardarOperaciones" method="post" class="text-start">
-                        <table border="1">
-                            <tr>
-                                <th>ID</th>
-                                <th>FECHA</th>
-                                <th>NOMBRE</th>
-                                <th>CREDIT LIMIT</th>
-                                <th>DISCOUNT CODE</th>
-                                <th>CITY</th>
-                                <th>MICROMARKET</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <%
-                                for (OperacionEntity ope: operaciones) {
-                            %>
-                            <tr>
+                <form:form action="/cliente/filtrar" method="post" modelAttribute="filtro">
+                    Buscar por: <br/>
+                    Nombre de operación:
+                    <form:select multiple="false" path="nombreOperacion">
+                        <form:option value="ninguno" label="------" />
+                        <form:option value="Transferencia" label="Transferencia"/>
+                        <form:option value="Cambio de divisa" label="Cambio de divisa"/>
+                        <form:option value="Extraccion" label="Extraccion"/>
+                    </form:select>
+                    Cantidad >=: <form:input path="cantidadFiltro" />
+                    <button>Filtrar</button>
+                </form:form>
+                <form:form action="/cliente/ordenar" method="post" modelAttribute="ordenar">
+                    Ordenar por: <br/>
+                    Fecha <form:input path="fecha"/>
+                    <button>Ordenar</button>
+                </form:form>
+                <div class="row mt-3">
+                    <div>
+                        Listado de operaciones <br>
+                        <form action="/guardarOperaciones" method="post" class="text-start">
+                            <table border="1">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>FECHA</th>
+                                    <th>NOMBRE</th>
+                                    <th>CANTIDAD</th>
+                                    <th>Cuenta a la que se realiza</th>
+                                </tr>
+                                <%
+                                    for (OperacionEntity ope: operaciones) {
+                                %>
+                                <tr>
                                 <td><%= ope.getIdOperacion()%></td>
                                 <td><%=ope.getFecha()%></td>
-                                <td>
-                                    <c:choose>
-                                    <c:when test="${ope.getCambDivisaByIdOperacion().equals(null)}">
-
-                                    </c:when>
-                                    </c:choose>
-                                </td>
-                                <td><%=%></td>
-                                <td><%=%></td>
-                                <td><%= %></td>
-                                <td><%=%></td>
-                                <td><%= %></td>
-                                <td><a href="/customer/editar?id=<%= cliente.getCustomerId() %>"> Editar</a></td>
-                                <td><a href="/customer/borrar?id=<%= cliente.getCustomerId() %>"> Borrar</a></td>
-                                <td><a href="/purchaseOrder/listar?idcliente=<%= cliente.getCustomerId() %>"> Pedidos</a></td>
-                            </tr>
-
-
-                            <%
-                                }
-                            %>
-                        </table border="1">
-                    </form>
+                                    <% if (ope.getCambDivisaByIdOperacion() != null) { %>
+                                    <td><%=ope.getCambDivisaByIdOperacion().nombre()%> </td>
+                                    <td><%=ope.getCambDivisaByIdOperacion()%></td>
+                                    <td><%=ope.getCuentaByCuentaRealiza().getNumCuenta()%></td>
+                                    <% } else {
+                                        if (ope.getTransferenciaByIdOperacion() != null) {
+                                    %>
+                                    <td><%=ope.getTransferenciaByIdOperacion().nombre()%></td>
+                                    <td><%=ope.getTransferenciaByIdOperacion().getCantidad()%></td>
+                                    <%
+                                        if(ope.getTransferenciaByIdOperacion().getCuentaByCuentaDestino() == null) {
+                                    %>
+                                    <td><%=ope.getTransferenciaByIdOperacion().getIbanDestino()%></td>
+                                    <%
+                                        } else {
+                                    %>
+                                    <td><%=ope.getTransferenciaByIdOperacion().getCuentaByCuentaDestino().getNumCuenta()%></td>
+                                    <%
+                                        }
+                                        } else {
+                                                if (ope.getExtraccionByIdOperacion() != null) {
+                                        %>
+                                        <td><%=ope.getExtraccionByIdOperacion().nombre()%></td>
+                                        <td><%=ope.getExtraccionByIdOperacion().getCantidad()%></td>
+                                        <td><%=ope.getCuentaByCuentaRealiza().getNumCuenta()%></td>
+                                        <%
+                                                }
+                                                }
+                                            }
+                                        %>
+                                <%
+                                    }
+                                %>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div>
+                        <form action="bloquear">
+                            <button class="btn btn-primary">Bloqueame por favor</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
