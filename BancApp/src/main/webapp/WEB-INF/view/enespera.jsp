@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: nurir
-  Date: 02/05/2023
-  Time: 19:35
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -17,7 +10,7 @@
   <div class="card-body">
     <h1 class="card-title" style="color:red;">Estás en espera de aprobación</h1>
     <div class="card-footer">
-      <a href="/" class="btn btn-primary">
+      <a href="/logout" class="btn btn-primary">
         Volver al login
       </a>
     </div>
