@@ -212,7 +212,7 @@ public class LoginController {
     String doMenu(HttpSession session) {
         UsuarioEntity user = (UsuarioEntity) session.getAttribute("usuario");
         if (user == null) return "redirect:/";
-        List<RolusuarioEntity> ru = null;
+        List<RolusuarioEntity> ru = user.getRolusuariosById();
 
         // Si pasa, se ha hecho mal alguna inserción
         if (ru == null || ru.isEmpty()) return "redirect:/";
