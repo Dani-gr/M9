@@ -7,11 +7,6 @@
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
     @SuppressWarnings("unchecked")
     List<RolEntity> roles = (List<RolEntity>) session.getAttribute("roles");
-    /*List<String> nombresRoles = new ArrayList<>();
-    for (RolEntity rol :
-            roles) {
-        nombresRoles.add(rol.getNombre());
-    }*/
     List<String> nombresRoles = roles.stream().map(RolEntity::getNombre).toList();
 %>
 <html>
@@ -21,45 +16,60 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body class="bg-gradient bg-dark">
-<jsp:include page="cabecera.jsp"/>
+<jsp:include page="cabeceraMenu.jsp"/>
 <div class="m-3">&nbsp;</div>
 
 <div class="d-flex justify-content-center">
     <div class="card text-center w-75" style="margin: 5% auto auto;">
         <div class="card-header">
-            <div class="row mt-3">
-                <div class="col col-4">
-                    <div class="btn btn-lg btn-outline-secondary">Transferencia</div>
-                </div>
-                <div class="col col-4">
-                    <div class="btn btn-lg btn-outline-secondary">Cambio de divisa</div>
-                </div>
-                <div class="col">
-                    <div class="btn btn-lg btn-outline-secondary">Cajero</div>
-                </div>
-            </div>
-            <c:if test="${nombresRoles.contains(\"gestor\")}">
+            <jsp:useBean id="menu" scope="session" type="java.lang.String"/>
+            <c:choose>
+                <c:when test="${\"cajero\".equalsIgnoreCase(menu)}">
+                    <!-- TODO -->
+                    <div class="row mt-3">
+                        <div class="col col-4">
+                            <div class="btn btn-lg btn-outline-secondary disabled">Transferencia</div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="row mt-3">
+                        <div class="col col-4">
+                            <div class="btn btn-lg btn-outline-secondary disabled">Transferencia</div>
+                        </div>
+                        <div class="col col-4">
+                            <div class="btn btn-lg btn-outline-secondary disabled">Cambio de divisa</div>
+                        </div>
+                        <div class="col">
+                            <div class="btn btn-lg btn-outline-secondary disabled">?</div>
+                        </div>
+                    </div>
+                    <c:if test="${nombresRoles.contains(\"gestor\")}">
+                        <div class="row">
+                            <div class="col pt-3">
+                                <div class="btn btn-lg btn-outline-secondary disabled">Gestión de socios y autorizados</div>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+            <div class="row m-3"></div>
+        </div>
+        <c:if test="${\"normal\".equalsIgnoreCase(menu)}">
+            <div class="card-footer">
                 <div class="row">
-                    <div class="col pt-3">
-                        <div class="btn btn-lg btn-outline-secondary">Gestión de socios y autorizados</div>
+                    <div class="col">
+                        <p>¿Necesitas ayuda?</p>
                     </div>
                 </div>
-            </c:if>
-
-            <div class="row m-3"></div>
-            <div class="row">
-                <div class="col">
-                    <p>¿Necesitas ayuda?</p>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="btn btn-lg btn-outline-secondary disabled">Busca chat con un asistente</div>
+                    </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <div class="btn btn-lg btn-outline-secondary">Busca chat con un asistente</div>
-                </div>
-            </div>
-        </div>
+        </c:if>
     </div>
-
 </div>
 <div class="mt-5">
 

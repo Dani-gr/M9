@@ -12,7 +12,7 @@ public class RolusuarioEntity {
     @Column(name = "id")
     private Integer id;
     @Basic
-    @Column(name = "bloqueado")
+    @Column(name = "bloqueado", nullable = false)
     private Byte bloqueado;
     @ManyToOne
     @JoinColumn(name = "idrol", referencedColumnName = "idrol", nullable = false)

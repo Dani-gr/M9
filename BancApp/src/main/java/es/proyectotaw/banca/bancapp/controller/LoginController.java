@@ -212,12 +212,26 @@ public class LoginController {
     String doMenu(HttpSession session) {
         UsuarioEntity user = (UsuarioEntity) session.getAttribute("usuario");
         if (user == null) return "redirect:/";
-        var ru = user.getRolusuariosById();
+        List<RolusuarioEntity> ru = null;
+
+        // Si pasa, se ha hecho mal alguna inserción
         if (ru == null || ru.isEmpty()) return "redirect:/";
+
+        if (session.getAttribute("menu") == null)
+            session.setAttribute("menu", "normal");
         var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
         if (nombresRoles.contains("gestor") || nombresRoles.contains("asistente"))
             return "menu";
+
         return user.getClienteByCliente().getCuentasByIdCliente().isEmpty() ? "enespera" : "menu";
+    }
+
+    @PostMapping("/menu")
+    String doToggleMenu(HttpSession session) {
+        session.setAttribute("menu",
+                "normal".equals(session.getAttribute("menu")) ? "cajero" : "normal"
+        );
+        return "redirect:/menu";
     }
 
     @GetMapping("/logout")
