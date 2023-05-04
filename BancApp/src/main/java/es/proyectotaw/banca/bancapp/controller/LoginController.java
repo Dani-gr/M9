@@ -69,6 +69,9 @@ public class LoginController {
                              @ModelAttribute("userPassword") String password, @ModelAttribute("direccionCalle") String calle, @ModelAttribute("direccionNumero") String numero,
                              @ModelAttribute("direccionPlanta") String planta, @ModelAttribute("direccionCiudad") String ciudad, @ModelAttribute("direccionRegion") String region,
                              @ModelAttribute("direccoinPais") String pais, @ModelAttribute("direccionPostal") String postal,
+                             @ModelAttribute("direccionCalleEmpresa") String calleEmpresa, @ModelAttribute("direccionNumeroEmpresa") String numeroEmpresa,
+                             @ModelAttribute("direccionPlantaEmpresa") String plantaEmpresa, @ModelAttribute("direccionCiudadEmpresa") String ciudadEmpresa, @ModelAttribute("direccionRegionEmpresa") String regionEmpresa,
+                             @ModelAttribute("direccoinPaisEmpresa") String paisEmpresa, @ModelAttribute("direccionPostalEmpresa") String postalEmpresa,
                              @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado, @RequestParam("btnRegistro") String boton) {
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
@@ -81,22 +84,29 @@ public class LoginController {
                 empresa = new EmpresaEntity();
                 empresa.setCif(Integer.valueOf(cif));
 
-                ClienteEntity cliente = new ClienteEntity();
+                ClienteEntity clienteEmpresa = new ClienteEntity();
                 DireccionEntity direccion = new DireccionEntity();
-                direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
-                cliente.setDireccionByDireccion(direccion);
+                direccion.construct(calleEmpresa, Integer.valueOf(numeroEmpresa), plantaEmpresa, ciudadEmpresa, regionEmpresa, paisEmpresa, postalEmpresa);
+                clienteEmpresa.setDireccionByDireccion(direccion);
                 direccionEntityRepository.save(direccion);
-                cliente.setDireccionByDireccion(direccion);
-                clienteEntityRepository.save(cliente);
-                empresa.setId(cliente.getIdCliente());
+                clienteEmpresa.setDireccionByDireccion(direccion);
+                clienteEntityRepository.save(clienteEmpresa);
+                empresa.setId(clienteEmpresa.getIdCliente());
             }
             if(boton.equals("registrarSocio")) {
                 model.addAttribute("entidad", "empresa");
-                urlTo = "redirect:/registro?entidad=empresa";
+                urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
             //Creo al socio/autorizado
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
             usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
+
+            ClienteEntity cliente = new ClienteEntity();
+            DireccionEntity direccion = new DireccionEntity();
+            direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
+            direccionEntityRepository.save(direccion);
+            cliente.setDireccionByDireccion(direccion);
+            clienteEntityRepository.save(cliente);
 
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
@@ -118,6 +128,12 @@ public class LoginController {
             empresa.setRolusuariosById(lista);
             usuarioEntityRepository.save(usuarioEmpresa);
             empresaEntityRepository.save(empresa);
+            List<UsuarioEntity> usuarios = new ArrayList<>();
+            usuarios.add(usuarioEmpresa);
+            cliente.setUsuariosByIdCliente(usuarios);
+            usuarioEmpresa.setClienteByCliente(cliente);
+            clienteEntityRepository.save(cliente);
+            usuarioEntityRepository.save(usuarioEmpresa);
         } else {
             session.setAttribute("empresa", null);
             UsuarioEntity usuario = new UsuarioEntity();

@@ -83,4 +83,8 @@ public class TransferenciaEntity {
     public void setCuentaByCuentaDestino(CuentaEntity cuentaByCuentaDestino) {
         this.cuentaByCuentaDestino = cuentaByCuentaDestino;
     }
+
+    public String nombre() {
+        return this.getClass().getSimpleName();
+    }
 }

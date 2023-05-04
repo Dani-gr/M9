@@ -50,4 +50,9 @@ public class ClienteController {
         //todo
         return "cliente";
     }
+
+    @GetMapping("/guardar")
+    public String doGuardarPerfil(Model model) {
+        return "";
+    }
 }

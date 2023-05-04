@@ -1,10 +1,13 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.OperacionEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.proyectotaw.banca.bancapp.entity.CuentaEntity" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    List<OperacionEntity> pedidos = (List<OperacionEntity>) request.getAttribute("operaciones");
+    List<OperacionEntity> operaciones = (List<OperacionEntity>) request.getAttribute("operaciones");
+    CuentaEntity cuenta = (CuentaEntity) request.getAttribute("cuenta");
 %>
 <html>
 <head>
@@ -22,7 +25,7 @@
                 <!-- TODO Agregar bean del modelAttribute -->
                 <div>
                     Datos personales: <br>
-                    <form action="/registro" method="post" class="text-start">
+                    <form action="/guardar" method="post" class="text-start">
                         <label for="userNIF" class="form-label">ID/NIF</label>
                         <input type="text" id="userNIF" name="userNIF" class="form-control"
                                value=""/>
@@ -90,17 +93,58 @@
                         <label for="direccionCodPostal" class="form-label">Código Postal</label>
                         <input type="test" id="direccionCodPostal" name="direccionPostal" class="form-control"/>
                         <br/>
+
+                        <button class="btn btn-primary">Guardar perfil</button>
                     </form>
                 </div>
             </div>
 
+            <p>El saldo actual de cuenta es <%=cuenta.getSaldo()%></p>
+
             <div class="row mt-3">
                 <div>
                     Listado de operaciones <br>
-                    <form action="/registro" method="post" class="text-start">
-                       <select>
+                    <form action="/guardarOperaciones" method="post" class="text-start">
+                        <table border="1">
+                            <tr>
+                                <th>ID</th>
+                                <th>FECHA</th>
+                                <th>NOMBRE</th>
+                                <th>CREDIT LIMIT</th>
+                                <th>DISCOUNT CODE</th>
+                                <th>CITY</th>
+                                <th>MICROMARKET</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <%
+                                for (OperacionEntity ope: operaciones) {
+                            %>
+                            <tr>
+                                <td><%= ope.getIdOperacion()%></td>
+                                <td><%=ope.getFecha()%></td>
+                                <td>
+                                    <c:choose>
+                                    <c:when test="${ope.getCambDivisaByIdOperacion().equals(null)}">
 
-                       </select>
+                                    </c:when>
+                                    </c:choose>
+                                </td>
+                                <td><%=%></td>
+                                <td><%=%></td>
+                                <td><%= %></td>
+                                <td><%=%></td>
+                                <td><%= %></td>
+                                <td><a href="/customer/editar?id=<%= cliente.getCustomerId() %>"> Editar</a></td>
+                                <td><a href="/customer/borrar?id=<%= cliente.getCustomerId() %>"> Borrar</a></td>
+                                <td><a href="/purchaseOrder/listar?idcliente=<%= cliente.getCustomerId() %>"> Pedidos</a></td>
+                            </tr>
+
+
+                            <%
+                                }
+                            %>
+                        </table border="1">
                     </form>
                 </div>
             </div>

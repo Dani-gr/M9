@@ -72,4 +72,8 @@ public class CambDivisaEntity {
     public void setOperacionByOperacion(OperacionEntity operacionByOperacion) {
         this.operacionByOperacion = operacionByOperacion;
     }
+
+    public String nombre() {
+        return this.getClass().getSimpleName();
+    }
 }

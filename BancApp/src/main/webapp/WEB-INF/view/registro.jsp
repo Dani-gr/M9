@@ -45,6 +45,42 @@
                             value="<%=cifEmpresa == null ? "" : cifEmpresa%>" maxlength="9" minlength="9" size="9"/>
                     <br/>
 
+                    Dirección de la empresa: <br>
+                    <label for="direccionCalleEmpresa" class="form-label">Calle</label>
+                    <input type="text" id="direccionCalleEmpresa" name="direccionCalleEmpresa" class="form-control"
+                           value="" maxlength="30" minlength="1" size="30"/>
+                    <br/>
+
+                    <label for="direccionNumeroEmpresa" class="form-label">Número</label>
+                    <input type="text" id="direccionNumeroEmpresa" name="direccionNumeroEmpresa" class="form-control"
+                           value="" maxlength="10" minlength="1" size="10"/>
+                    <br/>
+
+                    <label for="direccionPlantaEmpresa" class="form-label">Planta/Puerta/Oficina</label>
+                    <input type="text" id="direccionPlantaEmpresa" name="direccionPlantaEmpresa" class="form-control"
+                           value="" maxlength="30" minlength="1" size="30"/>
+                    <br/>
+
+                    <label for="direccionCiudadEmpresa" class="form-label">Ciudad</label>
+                    <input type="text" id="direccionCiudadEmpresa" name="direccionCiudadEmpresa" class="form-control"
+                           value="" maxlength="20" minlength="1" size="20"/>
+                    <br/>
+
+                    <label for="direccionRegionEmpresa" class="form-label">Región</label>
+                    <input type="text" id="direccionRegionEmpresa" name="direccionRegionEmpresa" class="form-control"
+                           value="" maxlength="20" minlength="1" size="20"/>
+                    <br/>
+
+                    <label for="direccionPaisEmpresa" class="form-label">País</label>
+                    <input type="text" id="direccionPaisEmpresa" name="direccoinPaisEmpresa" class="form-control"
+                           value="" maxlength="20" minlength="1" size="20"/>
+                    <br/>
+
+                    <label for="direccionCodPostalEmpresa" class="form-label">Código Postal</label>
+                    <input type="text" id="direccionCodPostalEmpresa" name="direccionPostalEmpresa" class="form-control"
+                           maxlength="5" minlength="5" size="5"/>
+                    <br/>
+
                     Datos del
                     <label for="socio" class="form-label">socio</label>
                         <input id="socio" type="radio" name="rol" value="socio" checked>
