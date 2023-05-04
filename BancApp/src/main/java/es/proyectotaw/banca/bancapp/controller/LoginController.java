@@ -69,42 +69,53 @@ public class LoginController {
                              @ModelAttribute("userPassword") String password, @ModelAttribute("direccionCalle") String calle, @ModelAttribute("direccionNumero") String numero,
                              @ModelAttribute("direccionPlanta") String planta, @ModelAttribute("direccionCiudad") String ciudad, @ModelAttribute("direccionRegion") String region,
                              @ModelAttribute("direccoinPais") String pais, @ModelAttribute("direccionPostal") String postal,
-                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado) {
+                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado, @RequestParam("btnRegistro") String boton) {
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
         //TODO añadir control de errores para los parámetros que no deberían ser nulos
+        String urlTo = "enespera";
         if ("empresa".equals(entidad)) {
             if (cif == null || cif.isBlank()) return "registro";
             EmpresaEntity empresa = empresaEntityRepository.findByCif(Integer.valueOf(cif)).orElse(null);
             if (empresa == null) {
                 empresa = new EmpresaEntity();
                 empresa.setCif(Integer.valueOf(cif));
+
+                ClienteEntity cliente = new ClienteEntity();
+                DireccionEntity direccion = new DireccionEntity();
+                direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
+                cliente.setDireccionByDireccion(direccion);
+                direccionEntityRepository.save(direccion);
+                cliente.setDireccionByDireccion(direccion);
+                clienteEntityRepository.save(cliente);
+                empresa.setId(cliente.getIdCliente());
+            }
+            if(boton.equals("registrarSocio")) {
+                model.addAttribute("entidad", "empresa");
+                urlTo = "redirect:/registro?entidad=empresa";
             }
             //Creo al socio/autorizado
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
             usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
 
-
-            ClienteEntity cliente = new ClienteEntity();
-            DireccionEntity direccion = new DireccionEntity();
-            direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
-            cliente.setDireccionByDireccion(direccion);
-            direccionEntityRepository.save(direccion);
-            cliente.setDireccionByDireccion(direccion);
-            clienteEntityRepository.save(cliente);
-
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
             rolusuario.setRolByIdrol(rol);
+            usuarioEntityRepository.save(usuarioEmpresa);
             rolusuario.setUsuarioByIdusuario(usuarioEmpresa);
+            empresaEntityRepository.save(empresa);
             rolusuario.setEmpresaByIdempresa(empresa);
+            rolusuario.setBloqueado((byte) 0);
             rolusuarioEntityRepository.save(rolusuario);
-            List<RolusuarioEntity> lista = empresa.getRolusuariosById();
+            List<RolusuarioEntity> rolUsuario = new ArrayList<>();
+            rolUsuario.add(rolusuario);
+            usuarioEmpresa.setRolusuariosById(rolUsuario);
+            List<RolusuarioEntity> lista = new ArrayList<>();
+            if(empresa.getRolusuariosById() != null) {
+                lista.addAll(empresa.getRolusuariosById());
+            }
             lista.add(rolusuario);
-            usuarioEmpresa.setRolusuariosById(lista);
             empresa.setRolusuariosById(lista);
-            clienteEntityRepository.save(cliente);
-            empresa.setClienteById(cliente);
             usuarioEntityRepository.save(usuarioEmpresa);
             empresaEntityRepository.save(empresa);
         } else {
@@ -137,10 +148,9 @@ public class LoginController {
             usuarioEntityRepository.save(usuario);
         }
 
-
         model.addAttribute("cifEmpresa", cif);
 
-        return "enespera";
+        return urlTo;
     }
 
     @PostMapping("/")
