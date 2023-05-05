@@ -8,5 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-public interface OperacionEntityRepository extends JpaRepository<OperacionEntity, Integer> {
+public interface ExtraccionEntityRepository extends JpaRepository<ExtraccionEntity, Integer> {
+
+    @Query("select e from ExtraccionEntity e where e.cantidad >= :cantidad")
+    List<ExtraccionEntity> filtrarPorCantidad(@RequestParam("cantidad") float cantidad);
 }

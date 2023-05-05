@@ -1,11 +1,9 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "camb_divisa", schema = "bancodb")
+@Table(name = "camb_divisa", schema = "bancodb", catalog = "")
 public class CambDivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -17,6 +15,9 @@ public class CambDivisaEntity {
     @Basic
     @Column(name = "destino")
     private String destino;
+    @Basic
+    @Column(name = "cantidad")
+    private Double cantidad;
     @OneToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
@@ -45,6 +46,14 @@ public class CambDivisaEntity {
         this.destino = destino;
     }
 
+    public Double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Double cantidad) {
+        this.cantidad = cantidad;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,9 +61,12 @@ public class CambDivisaEntity {
 
         CambDivisaEntity that = (CambDivisaEntity) o;
 
-        if (!Objects.equals(operacion, that.operacion)) return false;
-        if (!Objects.equals(origen, that.origen)) return false;
-        return Objects.equals(destino, that.destino);
+        if (operacion != null ? !operacion.equals(that.operacion) : that.operacion != null) return false;
+        if (origen != null ? !origen.equals(that.origen) : that.origen != null) return false;
+        if (destino != null ? !destino.equals(that.destino) : that.destino != null) return false;
+        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
+
+        return true;
     }
 
     @Override
@@ -62,6 +74,7 @@ public class CambDivisaEntity {
         int result = operacion != null ? operacion.hashCode() : 0;
         result = 31 * result + (origen != null ? origen.hashCode() : 0);
         result = 31 * result + (destino != null ? destino.hashCode() : 0);
+        result = 31 * result + (cantidad != null ? cantidad.hashCode() : 0);
         return result;
     }
 
