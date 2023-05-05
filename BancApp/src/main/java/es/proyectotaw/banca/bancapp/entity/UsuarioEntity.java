@@ -2,7 +2,7 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario", schema = "bancodb", catalog = "")
@@ -36,11 +36,11 @@ public class UsuarioEntity {
     @Column(name = "password")
     private String password;
     @OneToMany(mappedBy = "usuarioByAsistenteId")
-    private Collection<ChatEntity> chatsById;
+    private List<ChatEntity> chatsById;
     @OneToMany(mappedBy = "usuarioByEmisor")
-    private Collection<MensajeEntity> mensajesById;
+    private List<MensajeEntity> mensajesById;
     @OneToMany(mappedBy = "usuarioByIdusuario")
-    private Collection<RolusuarioEntity> rolusuariosById;
+    private List<RolusuarioEntity> rolusuariosById;
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente")
     private ClienteEntity clienteByCliente;
@@ -156,27 +156,27 @@ public class UsuarioEntity {
         return result;
     }
 
-    public Collection<ChatEntity> getChatsById() {
+    public List<ChatEntity> getChatsById() {
         return chatsById;
     }
 
-    public void setChatsById(Collection<ChatEntity> chatsById) {
+    public void setChatsById(List<ChatEntity> chatsById) {
         this.chatsById = chatsById;
     }
 
-    public Collection<MensajeEntity> getMensajesById() {
+    public List<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 
-    public void setMensajesById(Collection<MensajeEntity> mensajesById) {
+    public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
     }
 
-    public Collection<RolusuarioEntity> getRolusuariosById() {
+    public List<RolusuarioEntity> getRolusuariosById() {
         return rolusuariosById;
     }
 
-    public void setRolusuariosById(Collection<RolusuarioEntity> rolusuariosById) {
+    public void setRolusuariosById(List<RolusuarioEntity> rolusuariosById) {
         this.rolusuariosById = rolusuariosById;
     }
 

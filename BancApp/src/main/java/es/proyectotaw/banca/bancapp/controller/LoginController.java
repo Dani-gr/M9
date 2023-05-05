@@ -37,6 +37,9 @@ public class LoginController {
     @Autowired
     CambDivisaEntityRepository cambDivisaEntityRepository;
 
+    @Autowired
+    ChatEntityRepository chatEntityRepository;
+
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
@@ -225,7 +228,8 @@ public class LoginController {
         // Si es un asistente redirije a chats.jsp
         RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElse(null);
         if(rolAsistente!=null && user.getRolusuariosById().get(0).equals(rolAsistente.getRolusuariosByIdrol().get(0))){
-            return "chats";
+           // return "chats";
+            return "redirect:/chats/";
         }
 
 

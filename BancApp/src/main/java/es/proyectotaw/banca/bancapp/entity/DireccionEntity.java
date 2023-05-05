@@ -1,7 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "direccion", schema = "bancodb", catalog = "")
@@ -32,7 +32,7 @@ public class DireccionEntity {
     @Column(name = "codpostal")
     private String codpostal;
     @OneToMany(mappedBy = "direccionByDireccion")
-    private Collection<ClienteEntity> clientesById;
+    private List<ClienteEntity> clientesById;
 
     public Integer getId() {
         return id;
@@ -131,11 +131,11 @@ public class DireccionEntity {
         return result;
     }
 
-    public Collection<ClienteEntity> getClientesById() {
+    public List<ClienteEntity> getClientesById() {
         return clientesById;
     }
 
-    public void setClientesById(Collection<ClienteEntity> clientesById) {
+    public void setClientesById(List<ClienteEntity> clientesById) {
         this.clientesById = clientesById;
     }
 }
