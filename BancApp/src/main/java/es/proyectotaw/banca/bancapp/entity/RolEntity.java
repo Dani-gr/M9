@@ -1,7 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "rol", schema = "bancodb", catalog = "")
@@ -14,7 +14,7 @@ public class RolEntity {
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(mappedBy = "rolByIdrol")
-    private Collection<RolusuarioEntity> rolusuariosByIdrol;
+    private List<RolusuarioEntity> rolusuariosByIdrol;
 
     public Integer getIdrol() {
         return idrol;
@@ -52,11 +52,11 @@ public class RolEntity {
         return result;
     }
 
-    public Collection<RolusuarioEntity> getRolusuariosByIdrol() {
+    public List<RolusuarioEntity> getRolusuariosByIdrol() {
         return rolusuariosByIdrol;
     }
 
-    public void setRolusuariosByIdrol(Collection<RolusuarioEntity> rolusuariosByIdrol) {
+    public void setRolusuariosByIdrol(List<RolusuarioEntity> rolusuariosByIdrol) {
         this.rolusuariosByIdrol = rolusuariosByIdrol;
     }
 }

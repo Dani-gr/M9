@@ -1,7 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "cuenta", schema = "bancodb", catalog = "")
@@ -20,9 +20,9 @@ public class CuentaEntity {
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByCliente;
     @OneToMany(mappedBy = "cuentaByCuentaRealiza")
-    private Collection<OperacionEntity> operacionsByNumCuenta;
+    private List<OperacionEntity> operacionsByNumCuenta;
     @OneToMany(mappedBy = "cuentaByCuentaDestino")
-    private Collection<TransferenciaEntity> transferenciasByNumCuenta;
+    private List<TransferenciaEntity> transferenciasByNumCuenta;
 
     public Integer getNumCuenta() {
         return numCuenta;
@@ -78,19 +78,19 @@ public class CuentaEntity {
         this.clienteByCliente = clienteByCliente;
     }
 
-    public Collection<OperacionEntity> getOperacionsByNumCuenta() {
+    public List<OperacionEntity> getOperacionsByNumCuenta() {
         return operacionsByNumCuenta;
     }
 
-    public void setOperacionsByNumCuenta(Collection<OperacionEntity> operacionsByNumCuenta) {
+    public void setOperacionsByNumCuenta(List<OperacionEntity> operacionsByNumCuenta) {
         this.operacionsByNumCuenta = operacionsByNumCuenta;
     }
 
-    public Collection<TransferenciaEntity> getTransferenciasByNumCuenta() {
+    public List<TransferenciaEntity> getTransferenciasByNumCuenta() {
         return transferenciasByNumCuenta;
     }
 
-    public void setTransferenciasByNumCuenta(Collection<TransferenciaEntity> transferenciasByNumCuenta) {
+    public void setTransferenciasByNumCuenta(List<TransferenciaEntity> transferenciasByNumCuenta) {
         this.transferenciasByNumCuenta = transferenciasByNumCuenta;
     }
 }

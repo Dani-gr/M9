@@ -1,7 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "empresa", schema = "bancodb", catalog = "")
@@ -14,12 +14,12 @@ public class EmpresaEntity {
     @Column(name = "cif")
     private Integer cif;
     @OneToMany(mappedBy = "empresaByIdEmpresa")
-    private Collection<ClientesEmpresaEntity> clientesEmpresasById;
+    private List<ClientesEmpresaEntity> clientesEmpresasById;
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteById;
     @OneToMany(mappedBy = "empresaByIdempresa")
-    private Collection<RolusuarioEntity> rolusuariosById;
+    private List<RolusuarioEntity> rolusuariosById;
 
     public Integer getId() {
         return id;
@@ -57,11 +57,11 @@ public class EmpresaEntity {
         return result;
     }
 
-    public Collection<ClientesEmpresaEntity> getClientesEmpresasById() {
+    public List<ClientesEmpresaEntity> getClientesEmpresasById() {
         return clientesEmpresasById;
     }
 
-    public void setClientesEmpresasById(Collection<ClientesEmpresaEntity> clientesEmpresasById) {
+    public void setClientesEmpresasById(List<ClientesEmpresaEntity> clientesEmpresasById) {
         this.clientesEmpresasById = clientesEmpresasById;
     }
 
@@ -73,11 +73,11 @@ public class EmpresaEntity {
         this.clienteById = clienteById;
     }
 
-    public Collection<RolusuarioEntity> getRolusuariosById() {
+    public List<RolusuarioEntity> getRolusuariosById() {
         return rolusuariosById;
     }
 
-    public void setRolusuariosById(Collection<RolusuarioEntity> rolusuariosById) {
+    public void setRolusuariosById(List<RolusuarioEntity> rolusuariosById) {
         this.rolusuariosById = rolusuariosById;
     }
 }

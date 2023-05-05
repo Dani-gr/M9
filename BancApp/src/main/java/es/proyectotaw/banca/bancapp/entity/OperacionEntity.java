@@ -2,7 +2,7 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "operacion", schema = "bancodb", catalog = "")
@@ -15,14 +15,14 @@ public class OperacionEntity {
     @Column(name = "fecha")
     private Date fecha;
     @OneToMany(mappedBy = "operacionByOperacion")
-    private Collection<CambDivisaEntity> cambDivisasByIdOperacion;
+    private List<CambDivisaEntity> cambDivisasByIdOperacion;
     @OneToMany(mappedBy = "operacionByOperacion")
-    private Collection<ExtraccionEntity> extraccionsByIdOperacion;
+    private List<ExtraccionEntity> extraccionsByIdOperacion;
     @ManyToOne
     @JoinColumn(name = "cuenta_realiza", referencedColumnName = "num_cuenta", nullable = false)
     private CuentaEntity cuentaByCuentaRealiza;
     @OneToMany(mappedBy = "operacionByOperacion")
-    private Collection<TransferenciaEntity> transferenciasByIdOperacion;
+    private List<TransferenciaEntity> transferenciasByIdOperacion;
 
     public Integer getIdOperacion() {
         return idOperacion;
@@ -60,19 +60,19 @@ public class OperacionEntity {
         return result;
     }
 
-    public Collection<CambDivisaEntity> getCambDivisasByIdOperacion() {
+    public List<CambDivisaEntity> getCambDivisasByIdOperacion() {
         return cambDivisasByIdOperacion;
     }
 
-    public void setCambDivisasByIdOperacion(Collection<CambDivisaEntity> cambDivisasByIdOperacion) {
+    public void setCambDivisasByIdOperacion(List<CambDivisaEntity> cambDivisasByIdOperacion) {
         this.cambDivisasByIdOperacion = cambDivisasByIdOperacion;
     }
 
-    public Collection<ExtraccionEntity> getExtraccionsByIdOperacion() {
+    public List<ExtraccionEntity> getExtraccionsByIdOperacion() {
         return extraccionsByIdOperacion;
     }
 
-    public void setExtraccionsByIdOperacion(Collection<ExtraccionEntity> extraccionsByIdOperacion) {
+    public void setExtraccionsByIdOperacion(List<ExtraccionEntity> extraccionsByIdOperacion) {
         this.extraccionsByIdOperacion = extraccionsByIdOperacion;
     }
 
@@ -84,11 +84,11 @@ public class OperacionEntity {
         this.cuentaByCuentaRealiza = cuentaByCuentaRealiza;
     }
 
-    public Collection<TransferenciaEntity> getTransferenciasByIdOperacion() {
+    public List<TransferenciaEntity> getTransferenciasByIdOperacion() {
         return transferenciasByIdOperacion;
     }
 
-    public void setTransferenciasByIdOperacion(Collection<TransferenciaEntity> transferenciasByIdOperacion) {
+    public void setTransferenciasByIdOperacion(List<TransferenciaEntity> transferenciasByIdOperacion) {
         this.transferenciasByIdOperacion = transferenciasByIdOperacion;
     }
 }

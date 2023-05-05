@@ -17,7 +17,7 @@ public class MensajeEntity {
     @Column(name = "contenido")
     private String contenido;
     @Basic
-    @Column(name = "emisor")
+    @Column(name = "emisor", insertable=false, updatable=false)
     private Integer emisor;
     @ManyToOne
     @JoinColumn(name = "chat", referencedColumnName = "id", nullable = false)
