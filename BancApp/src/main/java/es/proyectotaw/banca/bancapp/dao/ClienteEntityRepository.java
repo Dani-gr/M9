@@ -11,4 +11,7 @@ import java.util.List;
 
 public interface ClienteEntityRepository extends JpaRepository<ClienteEntity, Integer> {
 
+    @Query("select c from ClienteEntity c where c.cuentasByIdCliente.size > 0 and" +
+            " (c.empresaByIdCliente is not null)")
+    List<ClienteEntity> obtenerClientesDadosDeAlta();
 }
