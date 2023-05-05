@@ -39,8 +39,13 @@ public class LoginController {
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
-        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
-        model.addAttribute("error", "");
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario != null) {
+            List<RolusuarioEntity> ru = usuario.getRolusuariosById();
+            // Si pasa, se ha hecho mal alguna inserción
+            if (ru == null || ru.isEmpty()) model.addAttribute("error", "Error de BBDD: El usuario no tiene roles");
+            else return "redirect:/menu";
+        } else model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
