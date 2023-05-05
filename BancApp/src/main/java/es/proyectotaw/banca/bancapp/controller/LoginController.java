@@ -275,7 +275,7 @@ public class LoginController {
         direccionEntityRepository.save(d3);
 
         // Clientes
-        //clienteEntityRepository.deleteAll(clienteEntityRepository.findAll());
+        clienteEntityRepository.deleteAll(clienteEntityRepository.findAll());
         ClienteEntity c1 = new ClienteEntity(), c2 = new ClienteEntity(), c3 = new ClienteEntity();
         c1.setDireccionByDireccion(d1);
         c2.setDireccionByDireccion(d2);
@@ -285,7 +285,7 @@ public class LoginController {
         clienteEntityRepository.save(c3);
 
         // Usuarios
-        //usuarioEntityRepository.deleteAll(usuarioEntityRepository.findAll());
+        usuarioEntityRepository.deleteAll(usuarioEntityRepository.findAll());
         UsuarioEntity u1 = new UsuarioEntity(), u2 = new UsuarioEntity(), u3 = new UsuarioEntity();
         u1.construct("12345678A", "Juan", "Antonio", "García", "Pérez", Date.valueOf("1980-01-01"), "juan.garcia@bancapp.es", "contraseña");
         u2.construct("23456789B", "María", null, "Rodríguez", "Fernández", Date.valueOf("1990-05-12"), "maria.rodriguez@bancapp.es", "contraseña");
@@ -298,7 +298,7 @@ public class LoginController {
         usuarioEntityRepository.save(u3);
 
         // Cuentas
-        //cuentaEntityRepository.deleteAll(cuentaEntityRepository.findAll());
+        cuentaEntityRepository.deleteAll(cuentaEntityRepository.findAll());
         CuentaEntity cu1 = new CuentaEntity(), cu2 = new CuentaEntity(), cu3 = new CuentaEntity();
         cu1.setClienteByCliente(c1);
         cu2.setClienteByCliente(c2);
@@ -326,7 +326,7 @@ public class LoginController {
         */
 
         // Operaciones
-        //operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
+        operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
         OperacionEntity o1 = new OperacionEntity(), o2 = new OperacionEntity(), o3 = new OperacionEntity();
 
         o1.setCuentaByCuentaRealiza(cu1);
