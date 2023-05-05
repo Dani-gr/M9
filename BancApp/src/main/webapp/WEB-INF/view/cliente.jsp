@@ -25,6 +25,10 @@
                 <!-- TODO Agregar bean del modelAttribute -->
                 <div>
                     Datos personales: <br>
+                    <%--@elvariable id="usuario" type="es.proyectotaw.banca.bancapp.entity.UsuarioEntity"--%>
+                    <form:form modelAttribute="usuario" method="post" action="/cliente/guardar">
+                        
+                    </form:form>
                     <form action="/cliente/guardar" method="post" class="text-start">
                         <label for="userNIF" class="form-label">ID/NIF</label>
                         <input type="text" id="userNIF" name="userNIF" class="form-control"
@@ -67,31 +71,31 @@
 
                         Dirección: <br>
                         <label for="direccionCalle" class="form-label">Calle</label>
-                        <input type="test" id="direccionCalle" name="direccionCalle" class="form-control"/>
+                        <input type="text" id="direccionCalle" name="direccionCalle" class="form-control"/>
                         <br/>
 
                         <label for="direccionNumero" class="form-label">Número</label>
-                        <input type="test" id="direccionNumero" name="direccionNumero" class="form-control"/>
+                        <input type="text" id="direccionNumero" name="direccionNumero" class="form-control"/>
                         <br/>
 
                         <label for="direccionPlanta" class="form-label">Planta/Puerta/Oficina</label>
-                        <input type="test" id="direccionPlanta" name="direccionPlanta" class="form-control"/>
+                        <input type="text" id="direccionPlanta" name="direccionPlanta" class="form-control"/>
                         <br/>
 
                         <label for="direccionCiudad" class="form-label">Ciudad</label>
-                        <input type="test" id="direccionCiudad" name="direccionCiudad" class="form-control"/>
+                        <input type="text" id="direccionCiudad" name="direccionCiudad" class="form-control"/>
                         <br/>
 
                         <label for="direccionRegion" class="form-label">Región</label>
-                        <input type="test" id="direccionRegion" name="direccionRegion" class="form-control"/>
+                        <input type="text" id="direccionRegion" name="direccionRegion" class="form-control"/>
                         <br/>
 
                         <label for="direccionPais" class="form-label">País</label>
-                        <input type="test" id="direccionPais" name="direccoinPais" class="form-control"/>
+                        <input type="text" id="direccionPais" name="direccoinPais" class="form-control"/>
                         <br/>
 
                         <label for="direccionCodPostal" class="form-label">Código Postal</label>
-                        <input type="test" id="direccionCodPostal" name="direccionPostal" class="form-control"/>
+                        <input type="text" id="direccionCodPostal" name="direccionPostal" class="form-control"/>
                         <br/>
 
                         <button class="btn btn-primary">Guardar perfil</button>
@@ -102,6 +106,7 @@
             <div>
                 <h4>El saldo actual de cuenta es <%=cuenta.getSaldo()%></h4>
 
+                <%--@elvariable id="filtro" type="es.proyectotaw.banca.bancapp.ui.FiltroOperaciones"--%>
                 <form:form action="/cliente/filtrar" method="post" modelAttribute="filtro">
                     Buscar por: <br/>
                     Nombre de operación:
@@ -114,6 +119,7 @@
                     Cantidad >=: <form:input path="cantidadFiltro" />
                     <button>Filtrar</button>
                 </form:form>
+                <%--@elvariable id="ordenar" type="es.proyectotaw.banca.bancapp.ui.OrdenarOperaciones"--%>
                 <form:form action="/cliente/ordenar" method="post" modelAttribute="ordenar">
                     Ordenar por: <br/>
                     Fecha <form:input path="fecha"/>
