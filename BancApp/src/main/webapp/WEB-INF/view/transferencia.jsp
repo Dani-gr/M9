@@ -10,9 +10,11 @@
 
 <h1>Datos de la transferencia:</h1>
 <%--@elvariable id="transferenciaARealizar" type="es.proyectotaw.banca.bancapp.entity.TransferenciaEntity"--%>
-<form:form action="/operacion/guardar" modelAttribute="transferenciaARealizar" method="post">
+<form:form action="/operacion/guardarTransferencia" modelAttribute="transferenciaARealizar" method="post">
     <form:hidden path="operacion"/>
+    <form:hidden path="operacionByOperacion"></form:hidden>
     Cuenta destino: <form:input path="cuentaByCuentaDestino" size="30" maxlength="30" /><br/>
+    Si es una cuenta externa, ponga el IBAN: <form:input path="ibanDestino" size="30" maxlength="30"></form:input>
     Cantidad: <form:input path="cantidad" size="10"  maxlength="10"/> euros <br/>
     <form:button>Guardar</form:button>
 </form:form>
