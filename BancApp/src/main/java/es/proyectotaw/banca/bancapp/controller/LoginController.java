@@ -211,7 +211,7 @@ public class LoginController {
 
         session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
 
-        // Si el usuario es asistente, redirigir a chats
+        // Si el usuario es asistente, redirigir a chats //
         RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElse(null);
         if(rolAsistente!=null && user.getRolusuariosById().get(0).equals(rolAsistente.getRolusuariosByIdrol().get(0))){
             return "chats";
