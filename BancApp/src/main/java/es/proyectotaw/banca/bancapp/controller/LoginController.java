@@ -178,7 +178,17 @@ public class LoginController {
         /* TODO:
             - Testear algún gestor / socio
          */
-        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
+
+        // Comprueba si la sesion del usuario existe
+        if (session.getAttribute("usuario") != null){
+            UsuarioEntity asistente =(UsuarioEntity)session.getAttribute("usuario");
+            // Comprueba si es un asistente para redirigirlo a los chats
+            if (asistente!= null && asistente.getRolusuariosById().get(0).getRolByIdrol().getNombre().equals("asistente")){
+                return "chats";
+            }else {
+                return "redirect:/menu/";
+            }
+        }
 
         model.addAttribute("error", "Credenciales incorrectas");
         model.addAttribute("entidad", entidad);
@@ -211,7 +221,7 @@ public class LoginController {
 
         session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
 
-        // Si el usuario es asistente, redirigir a chats //
+        // Si es un asistente redirije a chats.jsp
         RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElse(null);
         if(rolAsistente!=null && user.getRolusuariosById().get(0).equals(rolAsistente.getRolusuariosByIdrol().get(0))){
             return "chats";
