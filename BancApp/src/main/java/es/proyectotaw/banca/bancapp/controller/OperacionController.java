@@ -5,12 +5,16 @@ import es.proyectotaw.banca.bancapp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
+@SuppressWarnings("DuplicatedCode")
 @Controller
 @RequestMapping("/operacion")
 public class OperacionController {
@@ -31,8 +35,8 @@ public class OperacionController {
     protected ExtraccionEntityRepository extraccionEntityRepository;
 
     @GetMapping("/")
-    public String doAlmacenarOperacion(Model model){
-        model.addAttribute("fecha", new Date());
+    public String doAlmacenarOperacion(Model model) {
+        model.addAttribute("fecha", new Date(System.currentTimeMillis()));
 
         return "menu";
     }
@@ -46,7 +50,7 @@ public class OperacionController {
 
         OperacionEntity operacion = new OperacionEntity();
         operacion.setCuentaByCuentaRealiza(cuenta);
-        operacion.setFecha((java.sql.Date) new Date());
+        operacion.setFecha(new Date(System.currentTimeMillis()));
         operacionEntityRepository.save(operacion);
         TransferenciaEntity transferencia = new TransferenciaEntity();
         transferencia.setOperacion(operacion.getIdOperacion());
@@ -63,20 +67,20 @@ public class OperacionController {
         operacion.setTransferenciaByIdOperacion(transferencia);
         operacionEntityRepository.save(operacion);
 
-        if(transferencia.getIbanDestino() == null) {
+        if (transferencia.getIbanDestino() == null) {
             CuentaEntity mia = operacion.getCuentaByCuentaRealiza();
             CuentaEntity otro = transferencia.getCuentaByCuentaDestino();
             Double cantidad = transferencia.getCantidad();
 
-            if(mia.getSaldo()-cantidad >= 0) {
-                mia.setSaldo(mia.getSaldo()-cantidad);
-                otro.setSaldo(otro.getSaldo()+cantidad);
+            if (mia.getSaldo() - cantidad >= 0) {
+                mia.setSaldo(mia.getSaldo() - cantidad);
+                otro.setSaldo(otro.getSaldo() + cantidad);
                 //que diga algo "Felicidades, ahora estás más probre"
                 //No sé si es necesario, por si acaso
                 cuentaEntityRepository.save(mia);
                 cuentaEntityRepository.save(otro);
             } else {
-                //estas probre
+                //TODO estas probre
             }
         }
         return "menu";
@@ -91,7 +95,7 @@ public class OperacionController {
 
         OperacionEntity operacion = new OperacionEntity();
         operacion.setCuentaByCuentaRealiza(cuenta);
-        operacion.setFecha((java.sql.Date) new Date());
+        operacion.setFecha(new Date(System.currentTimeMillis()));
         operacionEntityRepository.save(operacion);
         CambDivisaEntity cambio = new CambDivisaEntity();
         cambio.setOperacion(operacion.getIdOperacion());
@@ -109,8 +113,8 @@ public class OperacionController {
         operacionEntityRepository.save(operacion);
 
         /*
-        * Por hacer porque me tengo que estudiar los cambios de monedas a monedas
-        * */
+         * TODO Por hacer porque me tengo que estudiar los cambios de monedas a monedas
+         */
         return "menu";
     }
 
@@ -123,7 +127,7 @@ public class OperacionController {
 
         OperacionEntity operacion = new OperacionEntity();
         operacion.setCuentaByCuentaRealiza(cuenta);
-        operacion.setFecha((java.sql.Date) new Date());
+        operacion.setFecha(new Date(System.currentTimeMillis()));
         operacionEntityRepository.save(operacion);
         ExtraccionEntity extraccion = new ExtraccionEntity();
         extraccion.setOperacion(operacion.getIdOperacion());
@@ -142,11 +146,11 @@ public class OperacionController {
 
         CuentaEntity mia = operacion.getCuentaByCuentaRealiza();
         Double cantidad = extra.getCantidad();
-        if(mia.getSaldo()-cantidad >= 0) {
-            mia.setSaldo(mia.getSaldo()-cantidad);
+        if (mia.getSaldo() - cantidad >= 0) {
+            mia.setSaldo(mia.getSaldo() - cantidad);
             cuentaEntityRepository.save(mia);
         } else {
-            //estas probre
+            //TODO estas pobre
         }
         return "menu";
     }

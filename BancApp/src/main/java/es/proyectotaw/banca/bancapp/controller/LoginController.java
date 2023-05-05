@@ -38,7 +38,7 @@ public class LoginController {
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
-        //if (session.getAttribute("usuario") != null) return "redirect:/menu/"; TODO quitar
+        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
         model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
@@ -51,7 +51,7 @@ public class LoginController {
 
     @GetMapping("/registro")
     String doRegistrar(Model model, HttpSession session, @RequestParam("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif) {
-        //if (session.getAttribute("usuario") != null) return "redirect:/menu/"; TODO quitar
+        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
@@ -123,7 +123,7 @@ public class LoginController {
             List<RolusuarioEntity> lista = new ArrayList<>();
 
             if (empresa.getRolusuariosById() != null) lista.addAll(empresa.getRolusuariosById());
-            
+
             lista.add(rolusuario);
             empresa.setRolusuariosById(lista);
             usuarioEntityRepository.save(usuarioEmpresa);
