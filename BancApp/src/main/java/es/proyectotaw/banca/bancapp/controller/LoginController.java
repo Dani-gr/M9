@@ -177,7 +177,9 @@ public class LoginController {
         /* TODO:
             - Testear algún gestor / socio
          */
+
         if (session.getAttribute("usuario") != null) return "redirect:/menu/";
+
 
         model.addAttribute("error", "Credenciales incorrectas");
         model.addAttribute("entidad", entidad);

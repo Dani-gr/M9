@@ -1,6 +1,5 @@
 package es.proyectotaw.banca.bancapp.controller;
 
-import com.sun.xml.bind.v2.TODO;
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.*;
 import es.proyectotaw.banca.bancapp.ui.FiltroOperaciones;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+
 import java.util.ArrayList;
+
 import java.util.List;
 
 @Controller
@@ -86,6 +87,7 @@ public class ClienteController {
         model.addAttribute("operaciones", operaciones);
         return "cliente";
     }
+
 
     @PostMapping("/filtrar")
     public String doFiltrar (@ModelAttribute("filtro") FiltroOperaciones filtro,
@@ -186,6 +188,14 @@ public class ClienteController {
     public String doGuardarPerfil(HttpSession session, @ModelAttribute("usuario") UsuarioEntity usur) {
         //si es particular
         usuarioEntityRepository.save(usur);
-        return "redirect:/customer/";
+        return "redirect:/cliente/";
     }
+
+    @GetMapping("/datosUsuario")
+    public String doVerMisDatos(HttpSession session, Model model){;
+        model.addAttribute("usuario", session.getAttribute("usuario"));
+        return "datosUsuario";
+    }
+
+
 }
