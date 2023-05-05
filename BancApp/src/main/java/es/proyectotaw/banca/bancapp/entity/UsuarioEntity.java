@@ -2,19 +2,17 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.Collection;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "usuario", schema = "bancodb")
+@Table(name = "usuario", schema = "bancodb", catalog = "")
 public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private Integer id;
     @Basic
-    @Column(name = "nif", nullable = false)
+    @Column(name = "nif")
     private String nif;
     @Basic
     @Column(name = "primer_nombre")
@@ -38,11 +36,11 @@ public class UsuarioEntity {
     @Column(name = "password")
     private String password;
     @OneToMany(mappedBy = "usuarioByAsistenteId")
-    private List<ChatEntity> chatsById;
+    private Collection<ChatEntity> chatsById;
     @OneToMany(mappedBy = "usuarioByEmisor")
-    private List<MensajeEntity> mensajesById;
+    private Collection<MensajeEntity> mensajesById;
     @OneToMany(mappedBy = "usuarioByIdusuario")
-    private List<RolusuarioEntity> rolusuariosById;
+    private Collection<RolusuarioEntity> rolusuariosById;
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente")
     private ClienteEntity clienteByCliente;
@@ -126,20 +124,22 @@ public class UsuarioEntity {
 
         UsuarioEntity usuario = (UsuarioEntity) o;
 
-        if (!Objects.equals(id, usuario.id)) return false;
-        if (!Objects.equals(nif, usuario.nif)) return false;
-        if (!Objects.equals(primerNombre, usuario.primerNombre))
+        if (id != null ? !id.equals(usuario.id) : usuario.id != null) return false;
+        if (nif != null ? !nif.equals(usuario.nif) : usuario.nif != null) return false;
+        if (primerNombre != null ? !primerNombre.equals(usuario.primerNombre) : usuario.primerNombre != null)
             return false;
-        if (!Objects.equals(segundoNombre, usuario.segundoNombre))
+        if (segundoNombre != null ? !segundoNombre.equals(usuario.segundoNombre) : usuario.segundoNombre != null)
             return false;
-        if (!Objects.equals(primerApellido, usuario.primerApellido))
+        if (primerApellido != null ? !primerApellido.equals(usuario.primerApellido) : usuario.primerApellido != null)
             return false;
-        if (!Objects.equals(segundoApellido, usuario.segundoApellido))
+        if (segundoApellido != null ? !segundoApellido.equals(usuario.segundoApellido) : usuario.segundoApellido != null)
             return false;
-        if (!Objects.equals(fechaNacimiento, usuario.fechaNacimiento))
+        if (fechaNacimiento != null ? !fechaNacimiento.equals(usuario.fechaNacimiento) : usuario.fechaNacimiento != null)
             return false;
-        if (!Objects.equals(email, usuario.email)) return false;
-        return Objects.equals(password, usuario.password);
+        if (email != null ? !email.equals(usuario.email) : usuario.email != null) return false;
+        if (password != null ? !password.equals(usuario.password) : usuario.password != null) return false;
+
+        return true;
     }
 
     @Override
@@ -156,27 +156,27 @@ public class UsuarioEntity {
         return result;
     }
 
-    public List<ChatEntity> getChatsById() {
+    public Collection<ChatEntity> getChatsById() {
         return chatsById;
     }
 
-    public void setChatsById(List<ChatEntity> chatsById) {
+    public void setChatsById(Collection<ChatEntity> chatsById) {
         this.chatsById = chatsById;
     }
 
-    public List<MensajeEntity> getMensajesById() {
+    public Collection<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 
-    public void setMensajesById(List<MensajeEntity> mensajesById) {
+    public void setMensajesById(Collection<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
     }
 
-    public List<RolusuarioEntity> getRolusuariosById() {
+    public Collection<RolusuarioEntity> getRolusuariosById() {
         return rolusuariosById;
     }
 
-    public void setRolusuariosById(List<RolusuarioEntity> rolusuariosById) {
+    public void setRolusuariosById(Collection<RolusuarioEntity> rolusuariosById) {
         this.rolusuariosById = rolusuariosById;
     }
 
@@ -186,16 +186,5 @@ public class UsuarioEntity {
 
     public void setClienteByCliente(ClienteEntity clienteByCliente) {
         this.clienteByCliente = clienteByCliente;
-    }
-
-    public void construct(String nif, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, Date fechaNacimiento, String email, String password) {
-        setNif(nif);
-        setPrimerNombre(primerNombre);
-        setSegundoNombre(segundoNombre);
-        setPrimerApellido(primerApellido);
-        setSegundoApellido(segundoApellido);
-        setFechaNacimiento(fechaNacimiento);
-        setEmail(email);
-        setPassword(password);
     }
 }

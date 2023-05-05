@@ -1,35 +1,33 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "transferencia", schema = "bancodb")
+@Table(name = "transferencia", schema = "bancodb", catalog = "")
 public class TransferenciaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion")
-    private Integer operacion;
+    @Column(name = "id_transferencia")
+    private Integer idTransferencia;
     @Basic
     @Column(name = "cantidad")
     private Double cantidad;
     @Basic
     @Column(name = "IBAN_destino")
     private String ibanDestino;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
     @ManyToOne
     @JoinColumn(name = "cuenta_destino", referencedColumnName = "num_cuenta")
     private CuentaEntity cuentaByCuentaDestino;
 
-    public Integer getOperacion() {
-        return operacion;
+    public Integer getIdTransferencia() {
+        return idTransferencia;
     }
 
-    public void setOperacion(Integer operacion) {
-        this.operacion = operacion;
+    public void setIdTransferencia(Integer idTransferencia) {
+        this.idTransferencia = idTransferencia;
     }
 
     public Double getCantidad() {
@@ -55,14 +53,17 @@ public class TransferenciaEntity {
 
         TransferenciaEntity that = (TransferenciaEntity) o;
 
-        if (!Objects.equals(operacion, that.operacion)) return false;
-        if (!Objects.equals(cantidad, that.cantidad)) return false;
-        return Objects.equals(ibanDestino, that.ibanDestino);
+        if (idTransferencia != null ? !idTransferencia.equals(that.idTransferencia) : that.idTransferencia != null)
+            return false;
+        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
+        if (ibanDestino != null ? !ibanDestino.equals(that.ibanDestino) : that.ibanDestino != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = operacion != null ? operacion.hashCode() : 0;
+        int result = idTransferencia != null ? idTransferencia.hashCode() : 0;
         result = 31 * result + (cantidad != null ? cantidad.hashCode() : 0);
         result = 31 * result + (ibanDestino != null ? ibanDestino.hashCode() : 0);
         return result;
@@ -82,9 +83,5 @@ public class TransferenciaEntity {
 
     public void setCuentaByCuentaDestino(CuentaEntity cuentaByCuentaDestino) {
         this.cuentaByCuentaDestino = cuentaByCuentaDestino;
-    }
-
-    public String nombre() {
-        return "Transferencia";
     }
 }
