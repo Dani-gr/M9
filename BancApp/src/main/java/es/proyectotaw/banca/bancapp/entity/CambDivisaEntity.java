@@ -1,15 +1,14 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
-@Table(name = "camb_divisa", schema = "bancodb")
+@Table(name = "camb_divisa", schema = "bancodb", catalog = "")
 public class CambDivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion")
-    private Integer operacion;
+    @Column(name = "id_divisa")
+    private Integer idDivisa;
     @Basic
     @Column(name = "origen")
     private String origen;
@@ -19,16 +18,16 @@ public class CambDivisaEntity {
     @Basic
     @Column(name = "cantidad")
     private Double cantidad;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
 
-    public Integer getOperacion() {
-        return operacion;
+    public Integer getIdDivisa() {
+        return idDivisa;
     }
 
-    public void setOperacion(Integer operacion) {
-        this.operacion = operacion;
+    public void setIdDivisa(Integer idDivisa) {
+        this.idDivisa = idDivisa;
     }
 
     public String getOrigen() {
@@ -62,15 +61,17 @@ public class CambDivisaEntity {
 
         CambDivisaEntity that = (CambDivisaEntity) o;
 
-        if (!Objects.equals(operacion, that.operacion)) return false;
-        if (!Objects.equals(origen, that.origen)) return false;
-        if (!Objects.equals(destino, that.destino)) return false;
-        return Objects.equals(cantidad, that.cantidad);
+        if (idDivisa != null ? !idDivisa.equals(that.idDivisa) : that.idDivisa != null) return false;
+        if (origen != null ? !origen.equals(that.origen) : that.origen != null) return false;
+        if (destino != null ? !destino.equals(that.destino) : that.destino != null) return false;
+        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = operacion != null ? operacion.hashCode() : 0;
+        int result = idDivisa != null ? idDivisa.hashCode() : 0;
         result = 31 * result + (origen != null ? origen.hashCode() : 0);
         result = 31 * result + (destino != null ? destino.hashCode() : 0);
         result = 31 * result + (cantidad != null ? cantidad.hashCode() : 0);
@@ -85,7 +86,7 @@ public class CambDivisaEntity {
         this.operacionByOperacion = operacionByOperacion;
     }
 
-    public String nombre() {
+    public String nombre(){
         return "Cambio de divisa";
     }
 }

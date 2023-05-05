@@ -27,48 +27,25 @@
                     Datos personales: <br>
                     <%--@elvariable id="usuario" type="es.proyectotaw.banca.bancapp.entity.UsuarioEntity"--%>
                     <form:form modelAttribute="usuario" method="post" action="/cliente/guardar">
-                        <!-- TODO Refactor -->
+                        <form:hidden path="id"></form:hidden>
+                        <form:hidden path="clienteByCliente"></form:hidden> <br>
+                        <form:input path="nif" maxlength="9" minlength="9" size="9"></form:input> <br>
+                        <form:input path="primerNombre"></form:input> <br>
+                        <form:input path="segundoNombre"></form:input> <br>
+                        <form:input path="primerApellido"></form:input> <br>
+                        <form:input path="segundoApellido"></form:input> <br>
+                        <form:input path="fechaNacimiento" type="date"></form:input> <br>
+                        <form:input path="email"></form:input> <br>
+                        <form:input path="password"></form:input> <br>
                     </form:form>
-                    <form action="/cliente/guardar" method="post" class="text-start">
-                        <label for="userNIF" class="form-label">ID/NIF</label>
-                        <input type="text" id="userNIF" name="userNIF" class="form-control"
-                               value=""/>
-                        <br/>
-
-                        <label for="userPNombre" class="form-label">Primer nombre</label>
-                        <input type="text" id="userPNombre" name="userNombre" class="form-control"
-                               value=""/>
-                        <br/>
-
-                        <label for="userSNombre" class="form-label">Segundo nombre</label>
-                        <input type="text" id="userSNombre" name="userNombreSegundo" class="form-control"
-                               value=""/>
-                        <br/>
-
-                        <label for="userPApellido" class="form-label">Primer apellido</label>
-                        <input type="text" id="userPApellido" name="userApellidoPrimero" class="form-control"
-                               value=""/>
-                        <br/>
-
-                        <label for="userSApellido" class="form-label">Segundo apellido</label>
-                        <input type="text" id="userSApellido" name="userApellidoSegundo" class="form-control"
-                               value=""/>
-                        <br/>
-
-                        <label for="userFechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                        <input type="date" id="userFechaNacimiento" name="userFechaNacimiento" class="form-control"
-                               value=""/>
-                        <br/>
-
-                        <label for="userEmail" class="form-label">Correo electr&oacute;nico</label>
-                        <input type="email" id="userEmail" name="userEmail" placeholder="hello@example.taw" class="form-control"
-                               value=""/>
-                        <br/>
-
-                        <label for="password" class="form-label">Contrase&ntilde;a</label>
-                        <input type="password" id="password" name="userPassword" class="form-control"/>
-                        <br/>
-
+                    <%--@elvariable id="Direccion" type="es.proyectotaw.banca.bancapp.entity.DireccionEntity"--%>
+                    <form:form modelAttribute="Direccion" method="post" action="/cliente/guardarDireccion">
+                        <form:hidden path="id"></form:hidden>
+                        <form:input path="calle"></form:input> <br>
+                        <form:input path="numero"></form:input> <br>
+                        <form:input path="plantaPuertaOficina"></form:input> <br>
+                    </form:form>
+                    <form>
                         Dirección: <br>
                         <label for="direccionCalle" class="form-label">Calle</label>
                         <input type="text" id="direccionCalle" name="direccionCalle" class="form-control"/>

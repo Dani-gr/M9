@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
@@ -20,7 +21,7 @@ import java.util.List;
 public class OperacionController {
 
     @Autowired
-    protected TransferenciaRepository transferenciaRepository;
+    protected TransferenciaEntityRepository transferenciaEntityRepository;
 
     @Autowired
     protected OperacionEntityRepository operacionEntityRepository;
@@ -53,8 +54,13 @@ public class OperacionController {
         operacion.setFecha(new Date(System.currentTimeMillis()));
         operacionEntityRepository.save(operacion);
         TransferenciaEntity transferencia = new TransferenciaEntity();
-        transferencia.setOperacion(operacion.getIdOperacion());
         transferencia.setOperacionByOperacion(operacion);
+        transferencia.setCantidad((double) 0);
+        transferenciaEntityRepository.save(transferencia);
+        List<TransferenciaEntity> trans = new ArrayList<>();
+        trans.add(transferencia);
+        operacion.setTransferenciasByIdOperacion(trans);
+        operacionEntityRepository.save(operacion);
         model.addAttribute("transferenciaARealizar", transferencia);
 
         return "transferencia";
@@ -62,9 +68,11 @@ public class OperacionController {
 
     @PostMapping("/guardarTransferencia")
     public String doGuardarTransferencia(@ModelAttribute("transferenciaARealizar") TransferenciaEntity transferencia) {
-        transferenciaRepository.save(transferencia);
+        transferenciaEntityRepository.save(transferencia);
         OperacionEntity operacion = transferencia.getOperacionByOperacion();
-        operacion.setTransferenciaByIdOperacion(transferencia);
+        List<TransferenciaEntity> trans = new ArrayList<>();
+        trans.add(transferencia);
+        operacion.setTransferenciasByIdOperacion(trans);
         operacionEntityRepository.save(operacion);
 
         if (transferencia.getIbanDestino() == null) {
@@ -98,7 +106,6 @@ public class OperacionController {
         operacion.setFecha(new Date(System.currentTimeMillis()));
         operacionEntityRepository.save(operacion);
         CambDivisaEntity cambio = new CambDivisaEntity();
-        cambio.setOperacion(operacion.getIdOperacion());
         cambio.setOperacionByOperacion(operacion);
         model.addAttribute("cambioDivisa", cambio);
 
@@ -109,7 +116,9 @@ public class OperacionController {
     public String doGuardarDivisa(@ModelAttribute("cambioDivisa") CambDivisaEntity cambioDivisa) {
         cambDivisaEntityRepository.save(cambioDivisa);
         OperacionEntity operacion = cambioDivisa.getOperacionByOperacion();
-        operacion.setCambDivisaByIdOperacion(cambioDivisa);
+        List<CambDivisaEntity> cambios = new ArrayList<>();
+        cambios.add(cambioDivisa);
+        operacion.setCambDivisasByIdOperacion(cambios);
         operacionEntityRepository.save(operacion);
 
         /*
@@ -130,7 +139,6 @@ public class OperacionController {
         operacion.setFecha(new Date(System.currentTimeMillis()));
         operacionEntityRepository.save(operacion);
         ExtraccionEntity extraccion = new ExtraccionEntity();
-        extraccion.setOperacion(operacion.getIdOperacion());
         extraccion.setOperacionByOperacion(operacion);
         model.addAttribute("Extraer", extraccion);
 
@@ -141,7 +149,9 @@ public class OperacionController {
     public String doGuardarExtraccion(@ModelAttribute("Extraer") ExtraccionEntity extra) {
         extraccionEntityRepository.save(extra);
         OperacionEntity operacion = extra.getOperacionByOperacion();
-        operacion.setExtraccionByIdOperacion(extra);
+        List<ExtraccionEntity> extrac = new ArrayList<>();
+        extrac.add(extra);
+        operacion.setExtraccionsByIdOperacion(extrac);
         operacionEntityRepository.save(operacion);
 
         CuentaEntity mia = operacion.getCuentaByCuentaRealiza();
