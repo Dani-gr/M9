@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import javax.servlet.http.HttpSession;
 
@@ -185,15 +187,18 @@ public class ClienteController {
     }
 
     @PostMapping("/guardar")
-    public String doGuardarPerfil(HttpSession session, @ModelAttribute("usuario") UsuarioEntity usur) {
+    public String doGuardarPerfil(Model model,  HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute("usuario") UsuarioEntity usur) {
         //si es particular
         usuarioEntityRepository.save(usur);
-        return "redirect:/cliente/";
+        redirectAttributes.addFlashAttribute("mensaje", "Los datos se han guardado correctamente");
+        session.setAttribute("usuario", usur);
+        return "redirect:/cliente/datosUsuario";
     }
 
     @GetMapping("/datosUsuario")
     public String doVerMisDatos(HttpSession session, Model model){;
         model.addAttribute("usuario", session.getAttribute("usuario"));
+
         return "datosUsuario";
     }
 

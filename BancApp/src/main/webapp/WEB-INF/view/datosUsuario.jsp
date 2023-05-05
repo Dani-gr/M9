@@ -2,6 +2,7 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.DireccionEntity" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
@@ -17,6 +18,9 @@
 <div class="card text-center w-50" style="margin: 5% auto auto;">
     <div class="card-body">
         <h4 class="card-title">Mis datos</h4>
+        <c:if test="${not empty mensaje}">
+            <div class="alert alert-success">${mensaje}</div>
+        </c:if>
         <form:form action="/cliente/guardar" modelAttribute="usuario" method="post">
             <form:hidden path="id"/>
             NIF: <form:input readonly="true" path="nif" size="9" maxlength="9"  /><br/><br/>
@@ -36,7 +40,7 @@
             Región: <form:input path="clienteByCliente.direccionByDireccion.region" size="30" maxlength="30"/><br/><br/>
             País: <form:input path="clienteByCliente.direccionByDireccion.pais" size="30" maxlength="30"/><br/><br/>
             Código Postal: <form:input path="clienteByCliente.direccionByDireccion.codpostal" size="30" maxlength="30"/><br/><br/>
-            <form:button class="btn btn-primary">Guardar</form:button>
+            <form:button class="btn btn-primary" id="liveAlertBtn">Guardar</form:button>
         </form:form>
 </div>
 
@@ -44,7 +48,7 @@
     <!--form:form action="/datosUsuario/guardar" modelAttribute="usuario" method="post"-->
         <!--form:hidden path="customerId"/-->
     <!--/form:form-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
 </body>
