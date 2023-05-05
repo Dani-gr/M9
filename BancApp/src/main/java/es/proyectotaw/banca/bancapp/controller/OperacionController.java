@@ -80,7 +80,7 @@ public class OperacionController {
                 cuentaEntityRepository.save(mia);
                 cuentaEntityRepository.save(otro);
             } else {
-                //TODO estas probre
+                //TODO estas pobre
             }
         }
         return "menu";

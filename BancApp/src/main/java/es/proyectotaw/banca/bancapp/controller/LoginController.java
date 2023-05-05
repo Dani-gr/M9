@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("SpringMVCViewInspection")
@@ -233,10 +234,13 @@ public class LoginController {
     }
 
     @PostMapping("/menu")
+    @SuppressWarnings("unchecked")
     String doToggleMenu(HttpSession session) {
-        session.setAttribute("menu",
-                "normal".equals(session.getAttribute("menu")) ? "cajero" : "normal"
-        );
+        var roles = ((Collection<RolEntity>) session.getAttribute("roles")).stream().map(RolEntity::getNombre).toList();
+        if (!(roles.contains("gestor") || roles.contains("asistente")))
+            session.setAttribute("menu",
+                    "normal".equals(session.getAttribute("menu")) ? "cajero" : "normal"
+            );
         return "redirect:/menu";
     }
 
@@ -299,14 +303,16 @@ public class LoginController {
         cuentaEntityRepository.save(cu3);
 
         // Cambios de divisa
+        /*
         cambDivisaEntityRepository.deleteAll(cambDivisaEntityRepository.findAll());
         CambDivisaEntity cd1 = new CambDivisaEntity(), cd2 = new CambDivisaEntity();
-        /*cd1.setOperacion(o1.getIdOperacion());
-        cd2.setOperacion(o2.getIdOperacion());*/
+        cd1.setOperacion(o1.getIdOperacion());
+        cd2.setOperacion(o2.getIdOperacion());
         cd1.setOrigen("EUR");
         cd2.setOrigen("EUR");
         cd1.setDestino("USD");
         cd2.setDestino("GBP");
+        */
 
         // Operaciones
         operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
@@ -324,11 +330,29 @@ public class LoginController {
         operacionEntityRepository.save(o2);
         operacionEntityRepository.save(o3);
 
-        cd1.setOperacionByOperacion(o1);
+        /*cd1.setOperacionByOperacion(o1);
         cd2.setOperacionByOperacion(o2);
 
         cambDivisaEntityRepository.save(cd1);
-        cambDivisaEntityRepository.save(cd2);
+        cambDivisaEntityRepository.save(cd2);*/
+
+        RolusuarioEntity ru1 = new RolusuarioEntity(), ru2 = new RolusuarioEntity(), ru3 = new RolusuarioEntity();
+        ru1.setUsuarioByIdusuario(u1);
+        ru2.setUsuarioByIdusuario(u2);
+        ru3.setUsuarioByIdusuario(u3);
+
+        RolEntity r1 = rolEntityRepository.findByNombre("cliente").orElseThrow();
+        ru1.setRolByIdrol(r1);
+        ru2.setRolByIdrol(r1);
+        ru3.setRolByIdrol(r1);
+
+        ru1.setBloqueado((byte) 0);
+        ru2.setBloqueado((byte) 0);
+        ru3.setBloqueado((byte) 1);
+
+        rolusuarioEntityRepository.save(ru1);
+        rolusuarioEntityRepository.save(ru2);
+        rolusuarioEntityRepository.save(ru3);
 
         return "redirect:/";
     }

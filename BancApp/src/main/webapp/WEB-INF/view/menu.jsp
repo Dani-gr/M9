@@ -2,12 +2,14 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.RolEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.proyectotaw.banca.bancapp.entity.RolusuarioEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
     @SuppressWarnings("unchecked")
     List<RolEntity> roles = (List<RolEntity>) session.getAttribute("roles");
     List<String> nombresRoles = roles.stream().map(RolEntity::getNombre).toList();
+    boolean bloqueado = usuario.getRolusuariosById().stream().map(RolusuarioEntity::getBloqueado).toList().contains((byte) 1);
 %>
 <html>
 <head>
@@ -28,26 +30,47 @@
                     <!-- TODO -->
                     <div class="row mt-3">
                         <div class="col col-4">
-                            <div class="btn btn-lg btn-outline-secondary disabled">Transferencia</div>
+                            <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
+                                 onclick="window.location.href='/operacion/transferencia'">
+                                Transferencia
+                            </div>
+                        </div>
+                        <div class="col col-4">
+                            <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
+                                 onclick="window.location.href='/operacion/cambioDivisa'">
+                                Cambio de divisa
+                            </div>
+                        </div>
+                        <div class="col col-4">
+                            <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
+                                 onclick="window.location.href='/operacion/extraccion'">
+                                Extracci&oacute;n
+                            </div>
                         </div>
                     </div>
+                </c:when>
+                <c:when test="${nombresRoles.contains(\"gestor\")}">
+                    <!-- TODO por el gestor -->
                 </c:when>
                 <c:otherwise>
                     <div class="row mt-3">
                         <div class="col col-4">
-                            <div class="btn btn-lg btn-outline-secondary disabled">Transferencia</div>
+                            <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
+                                 onclick="window.location.href='/operacion/transferencia'">Transferencia
+                            </div>
                         </div>
                         <div class="col col-4">
-                            <div class="btn btn-lg btn-outline-secondary disabled">Cambio de divisa</div>
-                        </div>
-                        <div class="col">
-                            <div class="btn btn-lg btn-outline-secondary disabled">?</div>
+                            <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
+                                 onclick="window.location.href='/operacion/cambioDivisa'">Cambio de divisa
+                            </div>
                         </div>
                     </div>
-                    <c:if test="${nombresRoles.contains(\"gestor\")}">
+                    <c:if test="${nombresRoles.contains(\"socio\")}">
                         <div class="row">
                             <div class="col pt-3">
-                                <div class="btn btn-lg btn-outline-secondary disabled">Gestión de socios y autorizados</div>
+                                <div class="btn btn-lg btn-outline-secondary disabled">
+                                    Gestión de socios y autorizados
+                                </div>
                             </div>
                         </div>
                     </c:if>
@@ -66,6 +89,12 @@
                     <div class="col">
                         <div class="btn btn-lg btn-outline-secondary disabled">Busca chat con un asistente</div>
                     </div>
+                    <c:if test="${bloqueado}">
+                        <div class="col">
+                            <div class="btn btn-lg btn-outline-warning disabled">Solicitar desbloqueo</div>
+                            <!-- TODO -->
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </c:if>

@@ -6,6 +6,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
+    @SuppressWarnings("unchecked")
     List<OperacionEntity> operaciones = (List<OperacionEntity>) request.getAttribute("operaciones");
     CuentaEntity cuenta = (CuentaEntity) request.getAttribute("cuenta");
 %>
@@ -22,12 +23,11 @@
         <div class="card-header">
             <div class="row mt-3">
                 <h1>Perfil y operaciones realizadas</h1>
-                <!-- TODO Agregar bean del modelAttribute -->
                 <div>
                     Datos personales: <br>
                     <%--@elvariable id="usuario" type="es.proyectotaw.banca.bancapp.entity.UsuarioEntity"--%>
                     <form:form modelAttribute="usuario" method="post" action="/cliente/guardar">
-                        
+                        <!-- TODO Refactor -->
                     </form:form>
                     <form action="/cliente/guardar" method="post" class="text-start">
                         <label for="userNIF" class="form-label">ID/NIF</label>

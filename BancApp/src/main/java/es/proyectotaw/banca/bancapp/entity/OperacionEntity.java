@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @SuppressWarnings("unused")
 @Entity
-@Table(name = "operacion", schema = "bancodb", catalog = "")
+@Table(name = "operacion", schema = "bancodb")
 public class OperacionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
