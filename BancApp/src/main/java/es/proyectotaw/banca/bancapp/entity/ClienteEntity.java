@@ -1,7 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "cliente", schema = "bancodb", catalog = "")
@@ -11,18 +11,18 @@ public class ClienteEntity {
     @Column(name = "id_cliente")
     private Integer idCliente;
     @OneToMany(mappedBy = "clienteByClienteIdCliente")
-    private Collection<ChatEntity> chatsByIdCliente;
+    private List<ChatEntity> chatsByIdCliente;
     @ManyToOne
     @JoinColumn(name = "direccion", referencedColumnName = "id", nullable = false)
     private DireccionEntity direccionByDireccion;
     @OneToMany(mappedBy = "clienteByIdCliente")
-    private Collection<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
-    @OneToMany(mappedBy = "clienteByCliente")
-    private Collection<CuentaEntity> cuentasByIdCliente;
+    private List<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
+    @OneToMany(mappedBy = "clienteByCliente", fetch = FetchType.EAGER)
+    private List<CuentaEntity> cuentasByIdCliente;
     @OneToOne(mappedBy = "clienteById")
     private EmpresaEntity empresaByIdCliente;
     @OneToMany(mappedBy = "clienteByCliente")
-    private Collection<UsuarioEntity> usuariosByIdCliente;
+    private List<UsuarioEntity> usuariosByIdCliente;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -49,11 +49,11 @@ public class ClienteEntity {
         return idCliente != null ? idCliente.hashCode() : 0;
     }
 
-    public Collection<ChatEntity> getChatsByIdCliente() {
+    public List<ChatEntity> getChatsByIdCliente() {
         return chatsByIdCliente;
     }
 
-    public void setChatsByIdCliente(Collection<ChatEntity> chatsByIdCliente) {
+    public void setChatsByIdCliente(List<ChatEntity> chatsByIdCliente) {
         this.chatsByIdCliente = chatsByIdCliente;
     }
 
@@ -65,19 +65,19 @@ public class ClienteEntity {
         this.direccionByDireccion = direccionByDireccion;
     }
 
-    public Collection<ClientesEmpresaEntity> getClientesEmpresasByIdCliente() {
+    public List<ClientesEmpresaEntity> getClientesEmpresasByIdCliente() {
         return clientesEmpresasByIdCliente;
     }
 
-    public void setClientesEmpresasByIdCliente(Collection<ClientesEmpresaEntity> clientesEmpresasByIdCliente) {
+    public void setClientesEmpresasByIdCliente(List<ClientesEmpresaEntity> clientesEmpresasByIdCliente) {
         this.clientesEmpresasByIdCliente = clientesEmpresasByIdCliente;
     }
 
-    public Collection<CuentaEntity> getCuentasByIdCliente() {
+    public List<CuentaEntity> getCuentasByIdCliente() {
         return cuentasByIdCliente;
     }
 
-    public void setCuentasByIdCliente(Collection<CuentaEntity> cuentasByIdCliente) {
+    public void setCuentasByIdCliente(List<CuentaEntity> cuentasByIdCliente) {
         this.cuentasByIdCliente = cuentasByIdCliente;
     }
 
@@ -89,11 +89,11 @@ public class ClienteEntity {
         this.empresaByIdCliente = empresaByIdCliente;
     }
 
-    public Collection<UsuarioEntity> getUsuariosByIdCliente() {
+    public List<UsuarioEntity> getUsuariosByIdCliente() {
         return usuariosByIdCliente;
     }
 
-    public void setUsuariosByIdCliente(Collection<UsuarioEntity> usuariosByIdCliente) {
+    public void setUsuariosByIdCliente(List<UsuarioEntity> usuariosByIdCliente) {
         this.usuariosByIdCliente = usuariosByIdCliente;
     }
 }
