@@ -3,6 +3,7 @@ package es.proyectotaw.banca.bancapp.controller;
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -209,6 +210,13 @@ public class LoginController {
         session.setAttribute("usuario", user);
 
         session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
+
+        // Si el usuario es asistente, redirigir a chats
+        RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElse(null);
+        if(rolAsistente!=null && user.getRolusuariosById().get(0).equals(rolAsistente.getRolusuariosByIdrol().get(0))){
+            return "chats";
+        }
+
 
         return "redirect:/menu";
     }
