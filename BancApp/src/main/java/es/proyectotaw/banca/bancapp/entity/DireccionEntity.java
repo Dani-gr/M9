@@ -138,4 +138,14 @@ public class DireccionEntity {
     public void setClientesById(List<ClienteEntity> clientesById) {
         this.clientesById = clientesById;
     }
+
+    public void construct(String calle, Integer numero, String plantaPuertaOficina, String ciudad, String region, String pais, String codpostal) {
+        setCalle(calle);
+        setNumero(numero);
+        setPlantaPuertaOficina(plantaPuertaOficina);
+        setCiudad(ciudad);
+        setRegion(region);
+        setPais(pais);
+        setCodpostal(codpostal);
+    }
 }

@@ -17,7 +17,8 @@ public class ClienteEntity {
     private DireccionEntity direccionByDireccion;
     @OneToMany(mappedBy = "clienteByIdCliente")
     private List<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
-    @OneToMany(mappedBy = "clienteByCliente")
+
+    @OneToMany(mappedBy = "clienteByCliente", fetch = FetchType.EAGER)
     private List<CuentaEntity> cuentasByIdCliente;
     @OneToOne(mappedBy = "clienteById")
     private EmpresaEntity empresaByIdCliente;

@@ -187,4 +187,15 @@ public class UsuarioEntity {
     public void setClienteByCliente(ClienteEntity clienteByCliente) {
         this.clienteByCliente = clienteByCliente;
     }
+
+    public void construct(String nif, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, Date fechaNacimiento, String email, String password) {
+        setNif(nif);
+        setPrimerNombre(primerNombre);
+        setSegundoNombre(segundoNombre);
+        setPrimerApellido(primerApellido);
+        setSegundoApellido(segundoApellido);
+        setFechaNacimiento(fechaNacimiento);
+        setEmail(email);
+        setPassword(password);
+    }
 }
