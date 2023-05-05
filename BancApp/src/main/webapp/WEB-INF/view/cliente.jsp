@@ -1,10 +1,13 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.OperacionEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.proyectotaw.banca.bancapp.entity.CuentaEntity" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    List<OperacionEntity> pedidos = (List<OperacionEntity>) request.getAttribute("operaciones");
+    List<OperacionEntity> operaciones = (List<OperacionEntity>) request.getAttribute("operaciones");
+    CuentaEntity cuenta = (CuentaEntity) request.getAttribute("cuenta");
 %>
 <html>
 <head>
@@ -22,7 +25,11 @@
                 <!-- TODO Agregar bean del modelAttribute -->
                 <div>
                     Datos personales: <br>
-                    <form action="/registro" method="post" class="text-start">
+                    <%--@elvariable id="usuario" type="es.proyectotaw.banca.bancapp.entity.UsuarioEntity"--%>
+                    <form:form modelAttribute="usuario" method="post" action="/cliente/guardar">
+                        
+                    </form:form>
+                    <form action="/cliente/guardar" method="post" class="text-start">
                         <label for="userNIF" class="form-label">ID/NIF</label>
                         <input type="text" id="userNIF" name="userNIF" class="form-control"
                                value=""/>
@@ -64,44 +71,120 @@
 
                         Dirección: <br>
                         <label for="direccionCalle" class="form-label">Calle</label>
-                        <input type="test" id="direccionCalle" name="direccionCalle" class="form-control"/>
+                        <input type="text" id="direccionCalle" name="direccionCalle" class="form-control"/>
                         <br/>
 
                         <label for="direccionNumero" class="form-label">Número</label>
-                        <input type="test" id="direccionNumero" name="direccionNumero" class="form-control"/>
+                        <input type="text" id="direccionNumero" name="direccionNumero" class="form-control"/>
                         <br/>
 
                         <label for="direccionPlanta" class="form-label">Planta/Puerta/Oficina</label>
-                        <input type="test" id="direccionPlanta" name="direccionPlanta" class="form-control"/>
+                        <input type="text" id="direccionPlanta" name="direccionPlanta" class="form-control"/>
                         <br/>
 
                         <label for="direccionCiudad" class="form-label">Ciudad</label>
-                        <input type="test" id="direccionCiudad" name="direccionCiudad" class="form-control"/>
+                        <input type="text" id="direccionCiudad" name="direccionCiudad" class="form-control"/>
                         <br/>
 
                         <label for="direccionRegion" class="form-label">Región</label>
-                        <input type="test" id="direccionRegion" name="direccionRegion" class="form-control"/>
+                        <input type="text" id="direccionRegion" name="direccionRegion" class="form-control"/>
                         <br/>
 
                         <label for="direccionPais" class="form-label">País</label>
-                        <input type="test" id="direccionPais" name="direccoinPais" class="form-control"/>
+                        <input type="text" id="direccionPais" name="direccoinPais" class="form-control"/>
                         <br/>
 
                         <label for="direccionCodPostal" class="form-label">Código Postal</label>
-                        <input type="test" id="direccionCodPostal" name="direccionPostal" class="form-control"/>
+                        <input type="text" id="direccionCodPostal" name="direccionPostal" class="form-control"/>
                         <br/>
+
+                        <button class="btn btn-primary">Guardar perfil</button>
                     </form>
                 </div>
             </div>
 
-            <div class="row mt-3">
-                <div>
-                    Listado de operaciones <br>
-                    <form action="/registro" method="post" class="text-start">
-                       <select>
+            <div>
+                <h4>El saldo actual de cuenta es <%=cuenta.getSaldo()%></h4>
 
-                       </select>
-                    </form>
+                <%--@elvariable id="filtro" type="es.proyectotaw.banca.bancapp.ui.FiltroOperaciones"--%>
+                <form:form action="/cliente/filtrar" method="post" modelAttribute="filtro">
+                    Buscar por: <br/>
+                    Nombre de operación:
+                    <form:select multiple="false" path="nombreOperacion">
+                        <form:option value="ninguno" label="------" />
+                        <form:option value="Transferencia" label="Transferencia"/>
+                        <form:option value="Cambio de divisa" label="Cambio de divisa"/>
+                        <form:option value="Extraccion" label="Extraccion"/>
+                    </form:select>
+                    Cantidad >=: <form:input path="cantidadFiltro" />
+                    <button>Filtrar</button>
+                </form:form>
+                <%--@elvariable id="ordenar" type="es.proyectotaw.banca.bancapp.ui.OrdenarOperaciones"--%>
+                <form:form action="/cliente/ordenar" method="post" modelAttribute="ordenar">
+                    Ordenar por: <br/>
+                    Fecha <form:input path="fecha"/>
+                    <button>Ordenar</button>
+                </form:form>
+                <div class="row mt-3">
+                    <div>
+                        Listado de operaciones <br>
+                        <form action="/guardarOperaciones" method="post" class="text-start">
+                            <table border="1">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>FECHA</th>
+                                    <th>NOMBRE</th>
+                                    <th>CANTIDAD</th>
+                                    <th>Cuenta a la que se realiza</th>
+                                </tr>
+                                <%
+                                    for (OperacionEntity ope: operaciones) {
+                                %>
+                                <tr>
+                                <td><%= ope.getIdOperacion()%></td>
+                                <td><%=ope.getFecha()%></td>
+                                    <% if (ope.getCambDivisaByIdOperacion() != null) { %>
+                                    <td><%=ope.getCambDivisaByIdOperacion().nombre()%> </td>
+                                    <td><%=ope.getCambDivisaByIdOperacion()%></td>
+                                    <td><%=ope.getCuentaByCuentaRealiza().getNumCuenta()%></td>
+                                    <% } else {
+                                        if (ope.getTransferenciaByIdOperacion() != null) {
+                                    %>
+                                    <td><%=ope.getTransferenciaByIdOperacion().nombre()%></td>
+                                    <td><%=ope.getTransferenciaByIdOperacion().getCantidad()%></td>
+                                    <%
+                                        if(ope.getTransferenciaByIdOperacion().getCuentaByCuentaDestino() == null) {
+                                    %>
+                                    <td><%=ope.getTransferenciaByIdOperacion().getIbanDestino()%></td>
+                                    <%
+                                        } else {
+                                    %>
+                                    <td><%=ope.getTransferenciaByIdOperacion().getCuentaByCuentaDestino().getNumCuenta()%></td>
+                                    <%
+                                        }
+                                        } else {
+                                                if (ope.getExtraccionByIdOperacion() != null) {
+                                        %>
+                                        <td><%=ope.getExtraccionByIdOperacion().nombre()%></td>
+                                        <td><%=ope.getExtraccionByIdOperacion().getCantidad()%></td>
+                                        <td><%=ope.getCuentaByCuentaRealiza().getNumCuenta()%></td>
+                                        <%
+                                                }
+                                                }
+                                            }
+                                        %>
+                                <%
+                                    }
+                                %>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div>
+                        <form action="bloquear">
+                            <button class="btn btn-primary">Bloqueame por favor</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
