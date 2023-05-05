@@ -3,6 +3,7 @@ package es.proyectotaw.banca.bancapp.controller;
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("SpringMVCViewInspection")
@@ -38,7 +40,7 @@ public class LoginController {
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
-        //if (session.getAttribute("usuario") != null) return "redirect:/menu/"; TODO quitar
+        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
         model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
@@ -51,7 +53,7 @@ public class LoginController {
 
     @GetMapping("/registro")
     String doRegistrar(Model model, HttpSession session, @RequestParam("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif) {
-        //if (session.getAttribute("usuario") != null) return "redirect:/menu/"; TODO quitar
+        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
 
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
@@ -93,7 +95,7 @@ public class LoginController {
                 clienteEntityRepository.save(clienteEmpresa);
                 empresa.setId(clienteEmpresa.getIdCliente());
             }
-            if(boton.equals("registrarSocio")) {
+            if (boton.equals("registrarSocio")) {
                 model.addAttribute("entidad", "empresa");
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
@@ -121,9 +123,9 @@ public class LoginController {
             rolUsuario.add(rolusuario);
             usuarioEmpresa.setRolusuariosById(rolUsuario);
             List<RolusuarioEntity> lista = new ArrayList<>();
-            if(empresa.getRolusuariosById() != null) {
-                lista.addAll(empresa.getRolusuariosById());
-            }
+
+            if (empresa.getRolusuariosById() != null) lista.addAll(empresa.getRolusuariosById());
+
             lista.add(rolusuario);
             empresa.setRolusuariosById(lista);
             usuarioEntityRepository.save(usuarioEmpresa);
@@ -212,6 +214,13 @@ public class LoginController {
 
         session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
 
+        // Si el usuario es asistente, redirigir a chats
+        RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElse(null);
+        if(rolAsistente!=null && user.getRolusuariosById().get(0).equals(rolAsistente.getRolusuariosByIdrol().get(0))){
+            return "chats";
+        }
+
+
         return "redirect:/menu";
     }
 
@@ -219,8 +228,30 @@ public class LoginController {
     @GetMapping("/menu")
     String doMenu(HttpSession session) {
         UsuarioEntity user = (UsuarioEntity) session.getAttribute("usuario");
-        return user == null ? "redirect:/" :
-                (user.getClienteByCliente().getCuentasByIdCliente().isEmpty() ? "enespera" : "menu");
+        if (user == null) return "redirect:/";
+        List<RolusuarioEntity> ru = user.getRolusuariosById();
+
+        // Si pasa, se ha hecho mal alguna inserción
+        if (ru == null || ru.isEmpty()) return "redirect:/";
+
+        if (session.getAttribute("menu") == null)
+            session.setAttribute("menu", "normal");
+        var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
+        if (nombresRoles.contains("gestor") || nombresRoles.contains("asistente"))
+            return "menu";
+
+        return user.getClienteByCliente().getCuentasByIdCliente().isEmpty() ? "enespera" : "menu";
+    }
+
+    @PostMapping("/menu")
+    @SuppressWarnings("unchecked")
+    String doToggleMenu(HttpSession session) {
+        var roles = ((Collection<RolEntity>) session.getAttribute("roles")).stream().map(RolEntity::getNombre).toList();
+        if (!(roles.contains("gestor") || roles.contains("asistente")))
+            session.setAttribute("menu",
+                    "normal".equals(session.getAttribute("menu")) ? "cajero" : "normal"
+            );
+        return "redirect:/menu";
     }
 
     @GetMapping("/logout")
@@ -282,14 +313,16 @@ public class LoginController {
         cuentaEntityRepository.save(cu3);
 
         // Cambios de divisa
+        /*
         cambDivisaEntityRepository.deleteAll(cambDivisaEntityRepository.findAll());
         CambDivisaEntity cd1 = new CambDivisaEntity(), cd2 = new CambDivisaEntity();
-        /*cd1.setOperacion(o1.getIdOperacion());
-        cd2.setOperacion(o2.getIdOperacion());*/
+        cd1.setOperacion(o1.getIdOperacion());
+        cd2.setOperacion(o2.getIdOperacion());
         cd1.setOrigen("EUR");
         cd2.setOrigen("EUR");
         cd1.setDestino("USD");
         cd2.setDestino("GBP");
+        */
 
         // Operaciones
         operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
@@ -307,11 +340,29 @@ public class LoginController {
         operacionEntityRepository.save(o2);
         operacionEntityRepository.save(o3);
 
-        cd1.setOperacionByOperacion(o1);
+        /*cd1.setOperacionByOperacion(o1);
         cd2.setOperacionByOperacion(o2);
 
         cambDivisaEntityRepository.save(cd1);
-        cambDivisaEntityRepository.save(cd2);
+        cambDivisaEntityRepository.save(cd2);*/
+
+        RolusuarioEntity ru1 = new RolusuarioEntity(), ru2 = new RolusuarioEntity(), ru3 = new RolusuarioEntity();
+        ru1.setUsuarioByIdusuario(u1);
+        ru2.setUsuarioByIdusuario(u2);
+        ru3.setUsuarioByIdusuario(u3);
+
+        RolEntity r1 = rolEntityRepository.findByNombre("cliente").orElseThrow();
+        ru1.setRolByIdrol(r1);
+        ru2.setRolByIdrol(r1);
+        ru3.setRolByIdrol(r1);
+
+        ru1.setBloqueado((byte) 0);
+        ru2.setBloqueado((byte) 0);
+        ru3.setBloqueado((byte) 1);
+
+        rolusuarioEntityRepository.save(ru1);
+        rolusuarioEntityRepository.save(ru2);
+        rolusuarioEntityRepository.save(ru3);
 
         return "redirect:/";
     }

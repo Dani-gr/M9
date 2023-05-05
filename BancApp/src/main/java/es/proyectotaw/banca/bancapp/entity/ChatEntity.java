@@ -1,12 +1,10 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import java.util.Collection;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "chat", schema = "bancodb")
+@Table(name = "chat", schema = "bancodb", catalog = "")
 public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -22,7 +20,7 @@ public class ChatEntity {
     @JoinColumn(name = "cliente_id_cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByClienteIdCliente;
     @OneToMany(mappedBy = "chatByChat")
-    private List<MensajeEntity> mensajesById;
+    private Collection<MensajeEntity> mensajesById;
 
     public Integer getId() {
         return id;
@@ -47,8 +45,10 @@ public class ChatEntity {
 
         ChatEntity that = (ChatEntity) o;
 
-        if (!Objects.equals(id, that.id)) return false;
-        return Objects.equals(activo, that.activo);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (activo != null ? !activo.equals(that.activo) : that.activo != null) return false;
+
+        return true;
     }
 
     @Override
@@ -74,11 +74,11 @@ public class ChatEntity {
         this.clienteByClienteIdCliente = clienteByClienteIdCliente;
     }
 
-    public List<MensajeEntity> getMensajesById() {
+    public Collection<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 
-    public void setMensajesById(List<MensajeEntity> mensajesById) {
+    public void setMensajesById(Collection<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
     }
 }

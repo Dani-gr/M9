@@ -15,19 +15,7 @@
         <h3 id="saludo">Bienvenido, ${usuario.getPrimerNombre()} ${usuario.getSegundoNombre()}</h3>
     </div>
     <div class="col-1">
-        <button style="background: transparent; outline: none; border: 0; width: 100px;" class="btn btn btn-secondary"
-                onclick="window.location.href = '/cliente/datosUsuario';">
-            Mi perfil
-        </button>
-    </div>
-    <div class="col-1">
-        <button style="background: transparent; outline: none; border: 0; width: 100px;" class="btn btn btn-secondary"
-                onclick="window.location.href = '/logout';">
-            Perfil de la empresa
-        </button>
-    </div>
-    <div class="col-1">
-        <button style="background: transparent; outline: none; border: 0; width: 60px;" class="btn btn-close"
+        <button style="width: 60px" class="btn btn-danger"
                 onclick="window.location.href = '/logout';">
             Salir
         </button>

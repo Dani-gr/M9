@@ -1,11 +1,9 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "rolusuario", schema = "bancodb")
+@Table(name = "rolusuario", schema = "bancodb", catalog = "")
 public class RolusuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -47,8 +45,10 @@ public class RolusuarioEntity {
 
         RolusuarioEntity that = (RolusuarioEntity) o;
 
-        if (!Objects.equals(id, that.id)) return false;
-        return Objects.equals(bloqueado, that.bloqueado);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (bloqueado != null ? !bloqueado.equals(that.bloqueado) : that.bloqueado != null) return false;
+
+        return true;
     }
 
     @Override

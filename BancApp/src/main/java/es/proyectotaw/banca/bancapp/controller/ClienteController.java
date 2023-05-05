@@ -34,7 +34,7 @@ public class ClienteController {
     protected CuentaEntityRepository cuentaEntityRepository;
 
     @Autowired
-    protected TransferenciaRepository transferenciaRepository;
+    protected TransferenciaEntityRepository transferenciaEntityRepository;
 
     @Autowired
     protected OperacionEntityRepository operacionEntityRepository;
@@ -81,12 +81,16 @@ public class ClienteController {
         }*/
         /*
         * esto porque si no me da error pa probar VALE?*/
-        CuentaEntity cuenta = cuentaEntityRepository.getById(6);
+        CuentaEntity cuenta = cuentaEntityRepository.getById(5);
         model.addAttribute("usuario", new UsuarioEntity());
         model.addAttribute("cliente", new ClienteEntity());
+        model.addAttribute("Direccion", new DireccionEntity());
         List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
         model.addAttribute("cuenta", cuenta);
         model.addAttribute("operaciones", operaciones);
+        model.addAttribute("filtro", new FiltroOperaciones());
+        model.addAttribute("ordenar", new OrdenarOperaciones());
+
         return "cliente";
     }
 
@@ -111,7 +115,7 @@ public class ClienteController {
                 String nombre = filtro.getNombreOperacion();
                 if(filtro.getCantidadFiltro() == 0) {
                     if (nombre.equals("Transferencia")) {
-                        List<TransferenciaEntity> transferencias = transferenciaRepository.findAll();
+                        List<TransferenciaEntity> transferencias = transferenciaEntityRepository.findAll();
                         for (TransferenciaEntity trans : transferencias) {
                             operaciones.add(trans.getOperacionByOperacion());
                         }
@@ -130,7 +134,7 @@ public class ClienteController {
                     }
                 } else {
                     if (nombre.equals("Transferencia")) {
-                        List<TransferenciaEntity> transferencias = transferenciaRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
+                        List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                         for (TransferenciaEntity trans : transferencias) {
                             operaciones.add(trans.getOperacionByOperacion());
                         }
@@ -150,7 +154,7 @@ public class ClienteController {
                 }
             } else {
                 if(filtro.getCantidadFiltro() != 0) {
-                    List<TransferenciaEntity> transferencias = transferenciaRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
+                    List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                     for (TransferenciaEntity trans : transferencias) {
                         operaciones.add(trans.getOperacionByOperacion());
                     }
