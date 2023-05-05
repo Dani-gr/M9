@@ -56,12 +56,14 @@
                     <div class="row mt-3">
                         <div class="col col-4">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
-                                 onclick="window.location.href='/operacion/transferencia'">Transferencia
+                                 onclick="window.location.href='/operacion/transferencia'">
+                                Transferencia
                             </div>
                         </div>
                         <div class="col col-4">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
-                                 onclick="window.location.href='/operacion/cambioDivisa'">Cambio de divisa
+                                 onclick="window.location.href='/operacion/cambioDivisa'">
+                                Cambio de divisa
                             </div>
                         </div>
                     </div>
@@ -70,6 +72,7 @@
                             <div class="col pt-3">
                                 <div class="btn btn-lg btn-outline-secondary disabled">
                                     Gestión de socios y autorizados
+                                    <!-- TODO link and enable -->
                                 </div>
                             </div>
                         </div>
