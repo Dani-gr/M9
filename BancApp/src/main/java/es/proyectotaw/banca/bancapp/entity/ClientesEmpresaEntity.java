@@ -1,11 +1,9 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "clientes_empresa", schema = "bancodb")
+@Table(name = "clientes_empresa", schema = "bancodb", catalog = "")
 public class ClientesEmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -33,7 +31,9 @@ public class ClientesEmpresaEntity {
 
         ClientesEmpresaEntity that = (ClientesEmpresaEntity) o;
 
-        return Objects.equals(id, that.id);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
     }
 
     @Override
