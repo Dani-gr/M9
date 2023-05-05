@@ -37,9 +37,6 @@ public class LoginController {
     @Autowired
     CambDivisaEntityRepository cambDivisaEntityRepository;
 
-    @Autowired
-    ChatEntityRepository chatEntityRepository;
-
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
@@ -185,14 +182,9 @@ public class LoginController {
 
         // Comprueba si la sesion del usuario existe
         if (session.getAttribute("usuario") != null){
-            UsuarioEntity asistente =(UsuarioEntity)session.getAttribute("usuario");
-            // Comprueba si es un asistente para redirigirlo a los chats
-            if (asistente!= null && asistente.getRolusuariosById().get(0).getRolByIdrol().getNombre().equals("asistente")){
-                return "chats";
-            }else {
                 return "redirect:/menu/";
             }
-        }
+
 
         model.addAttribute("error", "Credenciales incorrectas");
         model.addAttribute("entidad", entidad);
@@ -225,13 +217,6 @@ public class LoginController {
 
         session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
 
-        // Si es un asistente redirije a chats.jsp
-        RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElse(null);
-        if(rolAsistente!=null && user.getRolusuariosById().get(0).equals(rolAsistente.getRolusuariosByIdrol().get(0))){
-           // return "chats";
-            return "redirect:/chats/";
-        }
-
 
         return "redirect:/menu";
     }
@@ -249,8 +234,12 @@ public class LoginController {
         if (session.getAttribute("menu") == null)
             session.setAttribute("menu", "normal");
         var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
-        if (nombresRoles.contains("gestor") || nombresRoles.contains("asistente"))
+        if (nombresRoles.contains("asistente")) {
+            return "redirect:/chats/";
+        }
+        if (nombresRoles.contains("gestor")) {
             return "menu";
+        }
 
         return user.getClienteByCliente().getCuentasByIdCliente().isEmpty() ? "enespera" : "menu";
     }
@@ -286,7 +275,7 @@ public class LoginController {
         direccionEntityRepository.save(d3);
 
         // Clientes
-        clienteEntityRepository.deleteAll(clienteEntityRepository.findAll());
+        //clienteEntityRepository.deleteAll(clienteEntityRepository.findAll());
         ClienteEntity c1 = new ClienteEntity(), c2 = new ClienteEntity(), c3 = new ClienteEntity();
         c1.setDireccionByDireccion(d1);
         c2.setDireccionByDireccion(d2);
@@ -296,7 +285,7 @@ public class LoginController {
         clienteEntityRepository.save(c3);
 
         // Usuarios
-        usuarioEntityRepository.deleteAll(usuarioEntityRepository.findAll());
+        //usuarioEntityRepository.deleteAll(usuarioEntityRepository.findAll());
         UsuarioEntity u1 = new UsuarioEntity(), u2 = new UsuarioEntity(), u3 = new UsuarioEntity();
         u1.construct("12345678A", "Juan", "Antonio", "García", "Pérez", Date.valueOf("1980-01-01"), "juan.garcia@bancapp.es", "contraseña");
         u2.construct("23456789B", "María", null, "Rodríguez", "Fernández", Date.valueOf("1990-05-12"), "maria.rodriguez@bancapp.es", "contraseña");
@@ -309,7 +298,7 @@ public class LoginController {
         usuarioEntityRepository.save(u3);
 
         // Cuentas
-        cuentaEntityRepository.deleteAll(cuentaEntityRepository.findAll());
+        //cuentaEntityRepository.deleteAll(cuentaEntityRepository.findAll());
         CuentaEntity cu1 = new CuentaEntity(), cu2 = new CuentaEntity(), cu3 = new CuentaEntity();
         cu1.setClienteByCliente(c1);
         cu2.setClienteByCliente(c2);
@@ -337,7 +326,7 @@ public class LoginController {
         */
 
         // Operaciones
-        operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
+        //operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
         OperacionEntity o1 = new OperacionEntity(), o2 = new OperacionEntity(), o3 = new OperacionEntity();
 
         o1.setCuentaByCuentaRealiza(cu1);

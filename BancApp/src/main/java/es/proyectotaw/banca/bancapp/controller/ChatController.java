@@ -1,6 +1,6 @@
 package es.proyectotaw.banca.bancapp.controller;
 
-import es.proyectotaw.banca.bancapp.dao.ChatEntityRepository;
+
 import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +16,10 @@ public class ChatController {
     protected ClienteEntityRepository clienteEntityRepository;
     @Autowired
     protected UsuarioEntityRepository usuarioEntityRepository;
-    @Autowired
-    protected ChatEntityRepository chatEntityRepository;
 
     @GetMapping("/")
     String doInicializarListaChats(Model model){
-        System.out.println(chatEntityRepository.findAll());
+
         return "chats";
     }
 }
