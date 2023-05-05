@@ -20,7 +20,7 @@ import java.util.List;
 public class OperacionController {
 
     @Autowired
-    protected TransferenciaRepository transferenciaRepository;
+    protected TransferenciaEntityRepository transferenciaEntityRepository;
 
     @Autowired
     protected OperacionEntityRepository operacionEntityRepository;
@@ -55,6 +55,10 @@ public class OperacionController {
         TransferenciaEntity transferencia = new TransferenciaEntity();
         transferencia.setOperacion(operacion.getIdOperacion());
         transferencia.setOperacionByOperacion(operacion);
+        transferencia.setCantidad((double) 0);
+        transferenciaEntityRepository.save(transferencia);
+        operacion.setTransferenciaByIdOperacion(transferencia);
+        operacionEntityRepository.save(operacion);
         model.addAttribute("transferenciaARealizar", transferencia);
 
         return "transferencia";
@@ -62,7 +66,7 @@ public class OperacionController {
 
     @PostMapping("/guardarTransferencia")
     public String doGuardarTransferencia(@ModelAttribute("transferenciaARealizar") TransferenciaEntity transferencia) {
-        transferenciaRepository.save(transferencia);
+        transferenciaEntityRepository.save(transferencia);
         OperacionEntity operacion = transferencia.getOperacionByOperacion();
         operacion.setTransferenciaByIdOperacion(transferencia);
         operacionEntityRepository.save(operacion);

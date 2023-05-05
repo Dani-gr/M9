@@ -1,13 +1,12 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import java.util.Collection;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "empresa", schema = "bancodb")
+@Table(name = "empresa", schema = "bancodb", catalog = "")
 public class EmpresaEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private Integer id;
@@ -15,12 +14,12 @@ public class EmpresaEntity {
     @Column(name = "cif")
     private Integer cif;
     @OneToMany(mappedBy = "empresaByIdEmpresa")
-    private List<ClientesEmpresaEntity> clientesEmpresasById;
+    private Collection<ClientesEmpresaEntity> clientesEmpresasById;
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteById;
     @OneToMany(mappedBy = "empresaByIdempresa")
-    private List<RolusuarioEntity> rolusuariosById;
+    private Collection<RolusuarioEntity> rolusuariosById;
 
     public Integer getId() {
         return id;
@@ -45,8 +44,10 @@ public class EmpresaEntity {
 
         EmpresaEntity that = (EmpresaEntity) o;
 
-        if (!Objects.equals(id, that.id)) return false;
-        return Objects.equals(cif, that.cif);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (cif != null ? !cif.equals(that.cif) : that.cif != null) return false;
+
+        return true;
     }
 
     @Override
@@ -56,11 +57,11 @@ public class EmpresaEntity {
         return result;
     }
 
-    public List<ClientesEmpresaEntity> getClientesEmpresasById() {
+    public Collection<ClientesEmpresaEntity> getClientesEmpresasById() {
         return clientesEmpresasById;
     }
 
-    public void setClientesEmpresasById(List<ClientesEmpresaEntity> clientesEmpresasById) {
+    public void setClientesEmpresasById(Collection<ClientesEmpresaEntity> clientesEmpresasById) {
         this.clientesEmpresasById = clientesEmpresasById;
     }
 
@@ -72,11 +73,11 @@ public class EmpresaEntity {
         this.clienteById = clienteById;
     }
 
-    public List<RolusuarioEntity> getRolusuariosById() {
+    public Collection<RolusuarioEntity> getRolusuariosById() {
         return rolusuariosById;
     }
 
-    public void setRolusuariosById(List<RolusuarioEntity> rolusuariosById) {
+    public void setRolusuariosById(Collection<RolusuarioEntity> rolusuariosById) {
         this.rolusuariosById = rolusuariosById;
     }
 }

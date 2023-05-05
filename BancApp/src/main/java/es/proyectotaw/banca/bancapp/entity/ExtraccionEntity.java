@@ -1,29 +1,27 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "extraccion", schema = "bancodb")
+@Table(name = "extraccion", schema = "bancodb", catalog = "")
 public class ExtraccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion")
-    private Integer operacion;
+    @Column(name = "id_extraccion")
+    private Integer idExtraccion;
     @Basic
     @Column(name = "cantidad")
     private Double cantidad;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
 
-    public Integer getOperacion() {
-        return operacion;
+    public Integer getIdExtraccion() {
+        return idExtraccion;
     }
 
-    public void setOperacion(Integer operacion) {
-        this.operacion = operacion;
+    public void setIdExtraccion(Integer idExtraccion) {
+        this.idExtraccion = idExtraccion;
     }
 
     public Double getCantidad() {
@@ -41,13 +39,15 @@ public class ExtraccionEntity {
 
         ExtraccionEntity that = (ExtraccionEntity) o;
 
-        if (!Objects.equals(operacion, that.operacion)) return false;
-        return Objects.equals(cantidad, that.cantidad);
+        if (idExtraccion != null ? !idExtraccion.equals(that.idExtraccion) : that.idExtraccion != null) return false;
+        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = operacion != null ? operacion.hashCode() : 0;
+        int result = idExtraccion != null ? idExtraccion.hashCode() : 0;
         result = 31 * result + (cantidad != null ? cantidad.hashCode() : 0);
         return result;
     }
@@ -58,9 +58,5 @@ public class ExtraccionEntity {
 
     public void setOperacionByOperacion(OperacionEntity operacionByOperacion) {
         this.operacionByOperacion = operacionByOperacion;
-    }
-
-    public String nombre() {
-        return "Extraccion";
     }
 }

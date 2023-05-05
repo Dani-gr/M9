@@ -1,30 +1,28 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import java.util.Collection;
 
-@SuppressWarnings("unused")
 @Entity
-@Table(name = "cliente", schema = "bancodb")
+@Table(name = "cliente", schema = "bancodb", catalog = "")
 public class ClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_cliente")
     private Integer idCliente;
     @OneToMany(mappedBy = "clienteByClienteIdCliente")
-    private List<ChatEntity> chatsByIdCliente;
+    private Collection<ChatEntity> chatsByIdCliente;
     @ManyToOne
     @JoinColumn(name = "direccion", referencedColumnName = "id", nullable = false)
     private DireccionEntity direccionByDireccion;
     @OneToMany(mappedBy = "clienteByIdCliente")
-    private List<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
-    @OneToMany(mappedBy = "clienteByCliente", fetch = FetchType.EAGER)
-    private List<CuentaEntity> cuentasByIdCliente;
+    private Collection<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
+    @OneToMany(mappedBy = "clienteByCliente")
+    private Collection<CuentaEntity> cuentasByIdCliente;
     @OneToOne(mappedBy = "clienteById")
     private EmpresaEntity empresaByIdCliente;
     @OneToMany(mappedBy = "clienteByCliente")
-    private List<UsuarioEntity> usuariosByIdCliente;
+    private Collection<UsuarioEntity> usuariosByIdCliente;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -41,7 +39,9 @@ public class ClienteEntity {
 
         ClienteEntity that = (ClienteEntity) o;
 
-        return Objects.equals(idCliente, that.idCliente);
+        if (idCliente != null ? !idCliente.equals(that.idCliente) : that.idCliente != null) return false;
+
+        return true;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class ClienteEntity {
         return idCliente != null ? idCliente.hashCode() : 0;
     }
 
-    public List<ChatEntity> getChatsByIdCliente() {
+    public Collection<ChatEntity> getChatsByIdCliente() {
         return chatsByIdCliente;
     }
 
-    public void setChatsByIdCliente(List<ChatEntity> chatsByIdCliente) {
+    public void setChatsByIdCliente(Collection<ChatEntity> chatsByIdCliente) {
         this.chatsByIdCliente = chatsByIdCliente;
     }
 
@@ -65,19 +65,19 @@ public class ClienteEntity {
         this.direccionByDireccion = direccionByDireccion;
     }
 
-    public List<ClientesEmpresaEntity> getClientesEmpresasByIdCliente() {
+    public Collection<ClientesEmpresaEntity> getClientesEmpresasByIdCliente() {
         return clientesEmpresasByIdCliente;
     }
 
-    public void setClientesEmpresasByIdCliente(List<ClientesEmpresaEntity> clientesEmpresasByIdCliente) {
+    public void setClientesEmpresasByIdCliente(Collection<ClientesEmpresaEntity> clientesEmpresasByIdCliente) {
         this.clientesEmpresasByIdCliente = clientesEmpresasByIdCliente;
     }
 
-    public List<CuentaEntity> getCuentasByIdCliente() {
+    public Collection<CuentaEntity> getCuentasByIdCliente() {
         return cuentasByIdCliente;
     }
 
-    public void setCuentasByIdCliente(List<CuentaEntity> cuentasByIdCliente) {
+    public void setCuentasByIdCliente(Collection<CuentaEntity> cuentasByIdCliente) {
         this.cuentasByIdCliente = cuentasByIdCliente;
     }
 
@@ -89,11 +89,11 @@ public class ClienteEntity {
         this.empresaByIdCliente = empresaByIdCliente;
     }
 
-    public List<UsuarioEntity> getUsuariosByIdCliente() {
+    public Collection<UsuarioEntity> getUsuariosByIdCliente() {
         return usuariosByIdCliente;
     }
 
-    public void setUsuariosByIdCliente(List<UsuarioEntity> usuariosByIdCliente) {
+    public void setUsuariosByIdCliente(Collection<UsuarioEntity> usuariosByIdCliente) {
         this.usuariosByIdCliente = usuariosByIdCliente;
     }
 }
