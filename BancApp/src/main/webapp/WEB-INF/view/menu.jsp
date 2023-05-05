@@ -49,31 +49,38 @@
                         </div>
                     </div>
                 </c:when>
-                <c:when test="${nombresRoles.contains(\"gestor\")}">
-                    <!-- TODO por el gestor -->
-                </c:when>
                 <c:otherwise>
-                    <div class="row mt-3">
-                        <div class="col col-4">
-                            <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
-                                 onclick="window.location.href='/operacion/transferencia'">Transferencia
-                            </div>
-                        </div>
-                        <div class="col col-4">
-                            <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
-                                 onclick="window.location.href='/operacion/cambioDivisa'">Cambio de divisa
-                            </div>
-                        </div>
-                    </div>
-                    <c:if test="${nombresRoles.contains(\"socio\")}">
-                        <div class="row">
-                            <div class="col pt-3">
-                                <div class="btn btn-lg btn-outline-secondary disabled">
-                                    Gestión de socios y autorizados
+                    <c:choose>
+                        <c:when test="${nombresRoles.contains(\"gestor\")}">
+                            <!-- TODO por el gestor -->
+                        </c:when>
+                        <c:otherwise>
+                            <div class="row mt-3">
+                                <div class="col col-4">
+                                    <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
+                                         onclick="window.location.href='/operacion/transferencia'">
+                                        Transferencia
+                                    </div>
+                                </div>
+                                <div class="col col-4">
+                                    <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
+                                         onclick="window.location.href='/operacion/cambioDivisa'">
+                                        Cambio de divisa
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </c:if>
+                            <c:if test="${nombresRoles.contains(\"socio\")}">
+                                <div class="row">
+                                    <div class="col pt-3">
+                                        <div class="btn btn-lg btn-outline-secondary disabled">
+                                            Gestión de socios y autorizados
+                                            <!-- TODO link and enable -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </c:otherwise>
             </c:choose>
             <div class="row m-3"></div>
