@@ -1,9 +1,11 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
+@SuppressWarnings("unused")
 @Entity
-@Table(name = "transferencia", schema = "bancodb", catalog = "")
+@Table(name = "transferencia", schema = "bancodb")
 public class TransferenciaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -53,11 +55,9 @@ public class TransferenciaEntity {
 
         TransferenciaEntity that = (TransferenciaEntity) o;
 
-        if (operacion != null ? !operacion.equals(that.operacion) : that.operacion != null) return false;
-        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
-        if (ibanDestino != null ? !ibanDestino.equals(that.ibanDestino) : that.ibanDestino != null) return false;
-
-        return true;
+        if (!Objects.equals(operacion, that.operacion)) return false;
+        if (!Objects.equals(cantidad, that.cantidad)) return false;
+        return Objects.equals(ibanDestino, that.ibanDestino);
     }
 
     @Override
@@ -82,5 +82,9 @@ public class TransferenciaEntity {
 
     public void setCuentaByCuentaDestino(CuentaEntity cuentaByCuentaDestino) {
         this.cuentaByCuentaDestino = cuentaByCuentaDestino;
+    }
+
+    public String nombre() {
+        return "Transferencia";
     }
 }
