@@ -10,17 +10,12 @@
 </head>
     <body>
 
-        <!--<div class="d-flex justify-content-end">
-            <span class="mr-2"> Gestor autenticado:  request.getAttribute("usuario")</span>
-            <a class="btn btn-danger" href="/">SALIR</a>
-        </div> -->
-
         <jsp:include page="cabeceraMenu.jsp"></jsp:include>
-        <br>
+
+
+        <br><br><br><br>
 
         <h1 style="text-align: center">SISTEMA DE GESTIÓN DEL BANCO</h1>
-
-        <hr>
 
         <div class="container-md">
             <h3>OPERACIONES DE GESTIÓN</h3>
