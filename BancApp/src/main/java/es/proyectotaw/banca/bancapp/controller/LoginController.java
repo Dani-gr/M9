@@ -103,7 +103,7 @@ public class LoginController {
                 clienteEmpresa.setDireccionByDireccion(direccion);
                 clienteEntityRepository.save(clienteEmpresa);
 
-                empresa.setClienteById(clienteEmpresa);
+                empresa.setClienteByCliente(clienteEmpresa);
                 empresaEntityRepository.save(empresa);
             }
             if (boton.equals("registrarSocio")) {
