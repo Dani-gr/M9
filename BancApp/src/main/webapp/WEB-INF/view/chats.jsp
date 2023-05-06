@@ -19,18 +19,27 @@
                 <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Asistente Asignado</th>
                     <th>Cliente</th>
                     <th>Estado</th>
                     <th>Ultimo mensaje</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>${Chats}</td>
-                    <td>Chat 1</td>
-                    <td>Hola, ¿cómo estás?</td>
-                    <td>a</td>
-                </tr>
+                <c:forEach items="${chats}" var="chat">
+                    <tr>
+                        <td>${chat.id}</td>
+                        <td>${chat.usuarioByAsistenteId.primerNombre} ${chat.usuarioByAsistenteId.primerApellido}</td>
+                        <td>${chat.clienteByClienteIdCliente}</td>
+                        <c:if test="${chat.activo == 1}">
+                            <td>Abierto</td>
+                        </c:if>
+                        <c:if test="${chat.activo == 0}">
+                            <td>Cerrado</td>
+                        </c:if>
+                        <td>Pendiente de hacer</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>

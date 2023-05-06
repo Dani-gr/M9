@@ -246,7 +246,7 @@ public class LoginController {
         var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
 
         if (nombresRoles.contains("asistente")) {
-            return "redirect:/chats/";
+            return "redirect:/chats/asistente";
         }
         if (nombresRoles.contains("gestor")) {
             return "menu";
