@@ -14,7 +14,7 @@ public class UsuarioEntity {
     @Column(name = "id")
     private Integer id;
     @Basic
-    @Column(name = "nif", nullable = false)
+    @Column(name = "nif")
     private String nif;
     @Basic
     @Column(name = "primer_nombre")

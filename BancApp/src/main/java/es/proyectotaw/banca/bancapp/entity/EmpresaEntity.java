@@ -8,6 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "empresa", schema = "bancodb")
 public class EmpresaEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private Integer id;

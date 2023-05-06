@@ -18,6 +18,9 @@ public class MensajeEntity {
     @Basic
     @Column(name = "contenido")
     private String contenido;
+    @Basic
+    @Column(name = "emisor", insertable=false, updatable=false)
+    private Integer emisor;
     @ManyToOne
     @JoinColumn(name = "chat", referencedColumnName = "id", nullable = false)
     private ChatEntity chatByChat;
@@ -49,6 +52,14 @@ public class MensajeEntity {
         this.contenido = contenido;
     }
 
+    public Integer getEmisor() {
+        return emisor;
+    }
+
+    public void setEmisor(Integer emisor) {
+        this.emisor = emisor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,7 +69,8 @@ public class MensajeEntity {
 
         if (!Objects.equals(idMensaje, that.idMensaje)) return false;
         if (!Objects.equals(fechaHora, that.fechaHora)) return false;
-        return Objects.equals(contenido, that.contenido);
+        if (!Objects.equals(contenido, that.contenido)) return false;
+        return Objects.equals(emisor, that.emisor);
     }
 
     @Override
@@ -66,6 +78,7 @@ public class MensajeEntity {
         int result = idMensaje != null ? idMensaje.hashCode() : 0;
         result = 31 * result + (fechaHora != null ? fechaHora.hashCode() : 0);
         result = 31 * result + (contenido != null ? contenido.hashCode() : 0);
+        result = 31 * result + (emisor != null ? emisor.hashCode() : 0);
         return result;
     }
 

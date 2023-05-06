@@ -2,7 +2,6 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
-
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "rolusuario", schema = "bancodb")

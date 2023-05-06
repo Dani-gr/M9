@@ -3,7 +3,6 @@ package es.proyectotaw.banca.bancapp.controller;
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("SpringMVCViewInspection")
@@ -39,8 +39,13 @@ public class LoginController {
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
-        //if (session.getAttribute("usuario") != null) return "redirect:/menu/"; TODO quitar
-        model.addAttribute("error", "");
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario != null) {
+            List<RolusuarioEntity> ru = usuario.getRolusuariosById();
+            // Si pasa, se ha hecho mal alguna inserción
+            if (ru == null || ru.isEmpty()) model.addAttribute("error", "Error de BBDD: El usuario no tiene roles");
+            else return "redirect:/menu";
+        } else model.addAttribute("error", "");
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
@@ -52,7 +57,13 @@ public class LoginController {
 
     @GetMapping("/registro")
     String doRegistrar(Model model, HttpSession session, @RequestParam("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif) {
-        //if (session.getAttribute("usuario") != null) return "redirect:/menu/"; TODO quitar
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario != null) {
+            List<RolusuarioEntity> ru = usuario.getRolusuariosById();
+            // Si pasa, se ha hecho mal alguna inserción
+            if (ru == null || ru.isEmpty()) model.addAttribute("error", "Error de BBDD: El usuario no tiene roles");
+            else return "redirect:/menu";
+        } else model.addAttribute("error", "");
 
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
@@ -94,7 +105,7 @@ public class LoginController {
                 clienteEntityRepository.save(clienteEmpresa);
                 empresa.setId(clienteEmpresa.getIdCliente());
             }
-            if(boton.equals("registrarSocio")) {
+            if (boton.equals("registrarSocio")) {
                 model.addAttribute("entidad", "empresa");
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
@@ -122,9 +133,9 @@ public class LoginController {
             rolUsuario.add(rolusuario);
             usuarioEmpresa.setRolusuariosById(rolUsuario);
             List<RolusuarioEntity> lista = new ArrayList<>();
-            if(empresa.getRolusuariosById() != null) {
-                lista.addAll(empresa.getRolusuariosById());
-            }
+
+            if (empresa.getRolusuariosById() != null) lista.addAll(empresa.getRolusuariosById());
+
             lista.add(rolusuario);
             empresa.setRolusuariosById(lista);
             usuarioEntityRepository.save(usuarioEmpresa);
@@ -211,13 +222,6 @@ public class LoginController {
 
         session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
 
-        // Si el usuario es asistente, redirigir a chats
-        RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElse(null);
-        if(rolAsistente!=null && user.getRolusuariosById().get(0).equals(rolAsistente.getRolusuariosByIdrol().get(0))){
-            return "chats";
-        }
-
-
         return "redirect:/menu";
     }
 
@@ -225,8 +229,33 @@ public class LoginController {
     @GetMapping("/menu")
     String doMenu(HttpSession session) {
         UsuarioEntity user = (UsuarioEntity) session.getAttribute("usuario");
-        return user == null ? "redirect:/" :
-                (user.getClienteByCliente().getCuentasByIdCliente().isEmpty() ? "enespera" : "menu");
+        if (user == null) return "redirect:/";
+        List<RolusuarioEntity> ru = user.getRolusuariosById();
+
+        // Si pasa, se ha hecho mal alguna inserción
+        if (ru == null || ru.isEmpty()) return "redirect:/";
+
+        if (session.getAttribute("menu") == null)
+            session.setAttribute("menu", "normal");
+        var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
+        if (nombresRoles.contains("gestor"))
+            return "menu";
+        if (nombresRoles.contains("asistente"))
+            return "chats";
+
+
+        return user.getClienteByCliente().getCuentasByIdCliente().isEmpty() ? "enespera" : "menu";
+    }
+
+    @PostMapping("/menu")
+    @SuppressWarnings("unchecked")
+    String doToggleMenu(HttpSession session) {
+        var roles = ((Collection<RolEntity>) session.getAttribute("roles")).stream().map(RolEntity::getNombre).toList();
+        if (!(roles.contains("gestor") || roles.contains("asistente")))
+            session.setAttribute("menu",
+                    "normal".equals(session.getAttribute("menu")) ? "cajero" : "normal"
+            );
+        return "redirect:/menu";
     }
 
     @GetMapping("/logout")
@@ -240,13 +269,15 @@ public class LoginController {
     String doInitBBDD() {
         // Direcciones
         direccionEntityRepository.deleteAll(direccionEntityRepository.findAll());
-        DireccionEntity d1 = new DireccionEntity(), d2 = new DireccionEntity(), d3 = new DireccionEntity();
+        DireccionEntity d1 = new DireccionEntity(), d2 = new DireccionEntity(), d3 = new DireccionEntity(), d4 = new DireccionEntity();
         d1.construct("Calle Falsa", 123, "1ºA", "Madrid", "Madrid", "España", "28001");
         d2.construct("Calle Imaginaria", 456, "5ºC", "Barcelona", "Barcelona", "España", "08001");
         d3.construct("Calle Inventada", 789, "4ºB", "Sevilla", "Sevilla", "España", "41001");
+        d4.construct("Calle A", 0, "A-A", "A", "Almería", "España", "12345");
         direccionEntityRepository.save(d1);
         direccionEntityRepository.save(d2);
         direccionEntityRepository.save(d3);
+        direccionEntityRepository.save(d4);
 
         // Clientes
         clienteEntityRepository.deleteAll(clienteEntityRepository.findAll());
@@ -260,16 +291,20 @@ public class LoginController {
 
         // Usuarios
         usuarioEntityRepository.deleteAll(usuarioEntityRepository.findAll());
-        UsuarioEntity u1 = new UsuarioEntity(), u2 = new UsuarioEntity(), u3 = new UsuarioEntity();
+        UsuarioEntity u1 = new UsuarioEntity(), u2 = new UsuarioEntity(), u3 = new UsuarioEntity(), u4 = new UsuarioEntity(), u5 = new UsuarioEntity();
         u1.construct("12345678A", "Juan", "Antonio", "García", "Pérez", Date.valueOf("1980-01-01"), "juan.garcia@bancapp.es", "contraseña");
         u2.construct("23456789B", "María", null, "Rodríguez", "Fernández", Date.valueOf("1990-05-12"), "maria.rodriguez@bancapp.es", "contraseña");
         u3.construct("34567890C", "Juan", null, "Sánchez", "García", Date.valueOf("1985-11-21"), "juan.sanchez@bancapp.es", "contraseña");
+        u4.construct("99999999A", "Alberto", null, "Álvarez", "Alarcón", Date.valueOf("2000-11-22"), "a@bancapp.es", "a");
+        u5.construct("98765432R", "Kevin", null, "Fernández", "Carrión", Date.valueOf("1952-10-24"), "kfc@bancapp.es", "pollopollo");
         u1.setClienteByCliente(c1);
         u2.setClienteByCliente(c2);
         u3.setClienteByCliente(c3);
         usuarioEntityRepository.save(u1);
         usuarioEntityRepository.save(u2);
         usuarioEntityRepository.save(u3);
+        usuarioEntityRepository.save(u4);
+        usuarioEntityRepository.save(u5);
 
         // Cuentas
         cuentaEntityRepository.deleteAll(cuentaEntityRepository.findAll());
@@ -288,14 +323,16 @@ public class LoginController {
         cuentaEntityRepository.save(cu3);
 
         // Cambios de divisa
+        /*
         cambDivisaEntityRepository.deleteAll(cambDivisaEntityRepository.findAll());
         CambDivisaEntity cd1 = new CambDivisaEntity(), cd2 = new CambDivisaEntity();
-        /*cd1.setOperacion(o1.getIdOperacion());
-        cd2.setOperacion(o2.getIdOperacion());*/
+        cd1.setOperacion(o1.getIdOperacion());
+        cd2.setOperacion(o2.getIdOperacion());
         cd1.setOrigen("EUR");
         cd2.setOrigen("EUR");
         cd1.setDestino("USD");
         cd2.setDestino("GBP");
+        */
 
         // Operaciones
         operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
@@ -313,11 +350,39 @@ public class LoginController {
         operacionEntityRepository.save(o2);
         operacionEntityRepository.save(o3);
 
-        cd1.setOperacionByOperacion(o1);
+        /*cd1.setOperacionByOperacion(o1);
         cd2.setOperacionByOperacion(o2);
 
         cambDivisaEntityRepository.save(cd1);
-        cambDivisaEntityRepository.save(cd2);
+        cambDivisaEntityRepository.save(cd2);*/
+
+        RolusuarioEntity ru1 = new RolusuarioEntity(), ru2 = new RolusuarioEntity(), ru3 = new RolusuarioEntity(), ru4 = new RolusuarioEntity(), ru5 = new RolusuarioEntity();
+        ru1.setUsuarioByIdusuario(u1);
+        ru2.setUsuarioByIdusuario(u2);
+        ru3.setUsuarioByIdusuario(u3);
+        ru4.setUsuarioByIdusuario(u4);
+        ru5.setUsuarioByIdusuario(u5);
+
+        RolEntity rolCliente = rolEntityRepository.findByNombre("cliente").orElseThrow();
+        RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElseThrow();
+        RolEntity rolGestor = rolEntityRepository.findByNombre("gestor").orElseThrow();
+        ru1.setRolByIdrol(rolCliente);
+        ru2.setRolByIdrol(rolCliente);
+        ru3.setRolByIdrol(rolCliente);
+        ru4.setRolByIdrol(rolAsistente);
+        ru5.setRolByIdrol(rolGestor);
+
+        ru1.setBloqueado((byte) 0);
+        ru2.setBloqueado((byte) 0);
+        ru3.setBloqueado((byte) 1);
+        ru4.setBloqueado((byte) 0);
+        ru5.setBloqueado((byte) 0);
+
+        rolusuarioEntityRepository.save(ru1);
+        rolusuarioEntityRepository.save(ru2);
+        rolusuarioEntityRepository.save(ru3);
+        rolusuarioEntityRepository.save(ru4);
+        rolusuarioEntityRepository.save(ru5);
 
         return "redirect:/";
     }

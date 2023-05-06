@@ -9,21 +9,21 @@ import java.util.Objects;
 public class ExtraccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "operacion")
-    private Integer operacion;
+    @Column(name = "id_extraccion")
+    private Integer idExtraccion;
     @Basic
     @Column(name = "cantidad")
     private Double cantidad;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
     private OperacionEntity operacionByOperacion;
 
-    public Integer getOperacion() {
-        return operacion;
+    public Integer getIdExtraccion() {
+        return idExtraccion;
     }
 
-    public void setOperacion(Integer operacion) {
-        this.operacion = operacion;
+    public void setIdExtraccion(Integer idExtraccion) {
+        this.idExtraccion = idExtraccion;
     }
 
     public Double getCantidad() {
@@ -41,13 +41,13 @@ public class ExtraccionEntity {
 
         ExtraccionEntity that = (ExtraccionEntity) o;
 
-        if (!Objects.equals(operacion, that.operacion)) return false;
+        if (!Objects.equals(idExtraccion, that.idExtraccion)) return false;
         return Objects.equals(cantidad, that.cantidad);
     }
 
     @Override
     public int hashCode() {
-        int result = operacion != null ? operacion.hashCode() : 0;
+        int result = idExtraccion != null ? idExtraccion.hashCode() : 0;
         result = 31 * result + (cantidad != null ? cantidad.hashCode() : 0);
         return result;
     }
@@ -60,7 +60,7 @@ public class ExtraccionEntity {
         this.operacionByOperacion = operacionByOperacion;
     }
 
-    public String nombre() {
-        return "Extraccion";
+    public String nombre(){
+        return "Extracción";
     }
 }

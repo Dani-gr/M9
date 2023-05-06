@@ -183,8 +183,8 @@
         </form>
     </div>
     <div class="card-footer">
-        <a href="/registro?entidad=<%=entidad%>" class="btn btn-secondary">
-            ¿Ya tienes una cuenta? Inicar sesi&oacute;n
+        <a href="/?entidad=<%=entidad%>" class="btn btn-secondary">
+            ¿Ya tienes una cuenta? Iniciar sesi&oacute;n
         </a>
     </div>
 </div>

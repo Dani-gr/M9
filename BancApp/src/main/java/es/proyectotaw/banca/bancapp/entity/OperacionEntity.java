@@ -2,11 +2,12 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
 @Entity
-@Table(name = "operacion", schema = "bancodb", catalog = "")
+@Table(name = "operacion", schema = "bancodb")
 public class OperacionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -15,15 +16,15 @@ public class OperacionEntity {
     @Basic
     @Column(name = "fecha")
     private Date fecha;
-    @OneToOne(mappedBy = "operacionByOperacion")
-    private CambDivisaEntity cambDivisaByIdOperacion;
-    @OneToOne(mappedBy = "operacionByOperacion")
-    private ExtraccionEntity extraccionByIdOperacion;
+    @OneToMany(mappedBy = "operacionByOperacion")
+    private List<CambDivisaEntity> cambDivisasByIdOperacion;
+    @OneToMany(mappedBy = "operacionByOperacion")
+    private List<ExtraccionEntity> extraccionsByIdOperacion;
     @ManyToOne
     @JoinColumn(name = "cuenta_realiza", referencedColumnName = "num_cuenta", nullable = false)
     private CuentaEntity cuentaByCuentaRealiza;
-    @OneToOne(mappedBy = "operacionByOperacion")
-    private TransferenciaEntity transferenciaByIdOperacion;
+    @OneToMany(mappedBy = "operacionByOperacion")
+    private List<TransferenciaEntity> transferenciasByIdOperacion;
 
     public Integer getIdOperacion() {
         return idOperacion;
@@ -59,20 +60,20 @@ public class OperacionEntity {
         return result;
     }
 
-    public CambDivisaEntity getCambDivisaByIdOperacion() {
-        return cambDivisaByIdOperacion;
+    public List<CambDivisaEntity> getCambDivisasByIdOperacion() {
+        return cambDivisasByIdOperacion;
     }
 
-    public void setCambDivisaByIdOperacion(CambDivisaEntity cambDivisaByIdOperacion) {
-        this.cambDivisaByIdOperacion = cambDivisaByIdOperacion;
+    public void setCambDivisasByIdOperacion(List<CambDivisaEntity> cambDivisasByIdOperacion) {
+        this.cambDivisasByIdOperacion = cambDivisasByIdOperacion;
     }
 
-    public ExtraccionEntity getExtraccionByIdOperacion() {
-        return extraccionByIdOperacion;
+    public List<ExtraccionEntity> getExtraccionsByIdOperacion() {
+        return extraccionsByIdOperacion;
     }
 
-    public void setExtraccionByIdOperacion(ExtraccionEntity extraccionByIdOperacion) {
-        this.extraccionByIdOperacion = extraccionByIdOperacion;
+    public void setExtraccionsByIdOperacion(List<ExtraccionEntity> extraccionsByIdOperacion) {
+        this.extraccionsByIdOperacion = extraccionsByIdOperacion;
     }
 
     public CuentaEntity getCuentaByCuentaRealiza() {
@@ -83,11 +84,11 @@ public class OperacionEntity {
         this.cuentaByCuentaRealiza = cuentaByCuentaRealiza;
     }
 
-    public TransferenciaEntity getTransferenciaByIdOperacion() {
-        return transferenciaByIdOperacion;
+    public List<TransferenciaEntity> getTransferenciasByIdOperacion() {
+        return transferenciasByIdOperacion;
     }
 
-    public void setTransferenciaByIdOperacion(TransferenciaEntity transferenciaByIdOperacion) {
-        this.transferenciaByIdOperacion = transferenciaByIdOperacion;
+    public void setTransferenciasByIdOperacion(List<TransferenciaEntity> transferenciasByIdOperacion) {
+        this.transferenciasByIdOperacion = transferenciasByIdOperacion;
     }
 }
