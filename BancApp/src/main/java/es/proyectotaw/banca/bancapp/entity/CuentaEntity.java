@@ -10,13 +10,13 @@ import java.util.Objects;
 public class CuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "num_cuenta")
+    @Column(name = "num_cuenta", nullable = false)
     private Integer numCuenta;
     @Basic
     @Column(name = "saldo")
     private Double saldo;
     @Basic
-    @Column(name = "activa")
+    @Column(name = "activa", nullable = false)
     private Byte activa;
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
@@ -24,7 +24,7 @@ public class CuentaEntity {
     @OneToMany(mappedBy = "cuentaByCuentaRealiza")
     private List<OperacionEntity> operacionsByNumCuenta;
     @OneToMany(mappedBy = "cuentaByCuentaDestino")
-    private List<TransferenciaEntity> transferenciasByNumCuenta;
+    private List<TransferenciaEntity> transferenciasRecibidasByNumCuenta;
 
     public Integer getNumCuenta() {
         return numCuenta;
@@ -86,11 +86,11 @@ public class CuentaEntity {
         this.operacionsByNumCuenta = operacionsByNumCuenta;
     }
 
-    public List<TransferenciaEntity> getTransferenciasByNumCuenta() {
-        return transferenciasByNumCuenta;
+    public List<TransferenciaEntity> getTransferenciasRecibidasByNumCuenta() {
+        return transferenciasRecibidasByNumCuenta;
     }
 
-    public void setTransferenciasByNumCuenta(List<TransferenciaEntity> transferenciasByNumCuenta) {
-        this.transferenciasByNumCuenta = transferenciasByNumCuenta;
+    public void setTransferenciasRecibidasByNumCuenta(List<TransferenciaEntity> transferenciasRecibidasByNumCuenta) {
+        this.transferenciasRecibidasByNumCuenta = transferenciasRecibidasByNumCuenta;
     }
 }

@@ -9,10 +9,10 @@ import java.util.Objects;
 public class CuentasSospechosasEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idcuentas_sospechosas")
+    @Column(name = "idcuentas_sospechosas", nullable = false)
     private Integer idcuentasSospechosas;
     @Basic
-    @Column(name = "IBAN")
+    @Column(name = "IBAN", nullable = false, length = 24)
     private String iban;
 
     public Integer getIdcuentasSospechosas() {

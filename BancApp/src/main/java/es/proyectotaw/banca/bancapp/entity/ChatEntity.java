@@ -10,10 +10,10 @@ import java.util.Objects;
 public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "activo")
+    @Column(name = "activo", nullable = false)
     private Byte activo;
     @ManyToOne
     @JoinColumn(name = "asistente_id", referencedColumnName = "id", nullable = false)

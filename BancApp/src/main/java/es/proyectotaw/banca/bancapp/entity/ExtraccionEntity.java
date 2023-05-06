@@ -9,10 +9,10 @@ import java.util.Objects;
 public class ExtraccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_extraccion")
+    @Column(name = "id_extraccion", nullable = false)
     private Integer idExtraccion;
     @Basic
-    @Column(name = "cantidad")
+    @Column(name = "cantidad", nullable = false)
     private Double cantidad;
     @ManyToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)
