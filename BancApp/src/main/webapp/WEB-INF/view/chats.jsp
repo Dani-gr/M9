@@ -23,14 +23,18 @@
                     <th>Cliente</th>
                     <th>Estado</th>
                     <th>Ultimo mensaje</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${chats}" var="chat">
                     <tr>
-                        <td>${chat.id}</td>
+                        <td class="table-plus">${chat.id}</td>
                         <td>${chat.usuarioByAsistenteId.primerNombre} ${chat.usuarioByAsistenteId.primerApellido}</td>
-                        <td>${chat.clienteByClienteIdCliente}</td>
+                        <td>
+                                ${chat.clienteByClienteIdCliente.usuariosByIdCliente.get(0).primerNombre}
+                                ${chat.clienteByClienteIdCliente.usuariosByIdCliente.get(0).primerApellido}
+                        </td>
                         <c:if test="${chat.activo == 1}">
                             <td>Abierto</td>
                         </c:if>
@@ -38,6 +42,7 @@
                             <td>Cerrado</td>
                         </c:if>
                         <td>Pendiente de hacer</td>
+                        <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Entrar</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>
