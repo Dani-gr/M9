@@ -14,4 +14,7 @@ public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, In
 
     @Query("select c from UsuarioEntity c where c.id = :id")
     UsuarioEntity buscarPorID(@Param("id") Integer id);
+
+    @Override
+    Optional<UsuarioEntity> findById(Integer integer);
 }

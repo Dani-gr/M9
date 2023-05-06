@@ -36,6 +36,14 @@
         <h4>Mensaje de ${mensaje.usuarioByEmisor.primerNombre}: ${mensaje.contenido}</h4>
     </c:forEach>
 </div>
+<div class="container">
+    <form action="/chats/crearMensaje" method="post">
+        <input type="hidden" id="idUsuario" name="idUsuario" value="${chat.usuarioByAsistenteId.id}">
+        <input type="hidden" id="idChat" name="idChat" value="${chat.id}">
+        <input type="text" id="mensaje" name="mensaje" placeholder="Escriba aqui su mensaje...">
+        <input type="submit" value="Enviar">
+    </form>
+</div>
 
 
 </body>

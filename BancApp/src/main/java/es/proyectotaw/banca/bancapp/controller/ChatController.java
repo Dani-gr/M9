@@ -3,16 +3,19 @@ package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.ChatEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
+import es.proyectotaw.banca.bancapp.dao.MensajeEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioEntityRepository;
 import es.proyectotaw.banca.bancapp.entity.ChatEntity;
+import es.proyectotaw.banca.bancapp.entity.MensajeEntity;
+import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -24,6 +27,8 @@ public class ChatController {
     protected UsuarioEntityRepository usuarioEntityRepository;
     @Autowired
     protected ChatEntityRepository chatEntityRepository;
+    @Autowired
+    protected MensajeEntityRepository mensajeEntityRepository;
 
     @GetMapping("/asistente")
     String doInicializarListaChatsAsistente(Model model){
@@ -46,10 +51,26 @@ public class ChatController {
 
     @GetMapping("/busquedaChatsPorNombre")
     String doMostrarChatsPorNombre(@RequestParam("nombre") String nombre, Model model){
-        System.out.println("HOLA HOLA HOLA HOLA NOMBRE: " + nombre);
         List<ChatEntity> chats = chatEntityRepository.findByClienteByClienteIdCliente_UsuariosByIdCliente_PrimerNombre(nombre);
-        System.out.println(chats);
         model.addAttribute("chats", chats);
         return "chats";
     }
+    @PostMapping("/crearMensaje")
+    String doEnviarMensaje(@RequestParam("mensaje") String mensaje,
+                           @RequestParam("idChat") int chat,
+                           @RequestParam("idUsuario") int user,
+                           Model model){
+        MensajeEntity mens = new MensajeEntity();
+        mens.setEmisor(user);
+        mens.setContenido(mensaje);
+        ChatEntity chatDestino = (ChatEntity) chatEntityRepository.findById(chat).get();
+        mens.setChatByChat(chatDestino);
+        mens.setFechaHora(new Date(System.currentTimeMillis()));
+        UsuarioEntity userEmisor = (UsuarioEntity) usuarioEntityRepository.findById(user).get();
+        mens.setUsuarioByEmisor(userEmisor);
+        mensajeEntityRepository.saveAndFlush(mens);
+        return "redirect:/chats/detallesChat/" + chat;
+    }
+    //TODO: Para cuando se introduzca la fecha bien LocalDateTime time = java.time.LocalDateTime.now();
+
 }
