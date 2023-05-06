@@ -34,7 +34,7 @@ public class GestorController {
     }
 
     @PostMapping("/filtrar")
-    public String doFiltrar(@ModelAttribute("FiltroClientes") FiltroClientes filtroClientes,
+    public String doFiltrar(@ModelAttribute("filtroClientes") FiltroClientes filtroClientes,
                             Model model){
         return procesarFiltradoClientes(model, filtroClientes);
     }

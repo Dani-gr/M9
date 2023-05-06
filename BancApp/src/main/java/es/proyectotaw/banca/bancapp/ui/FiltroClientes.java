@@ -2,21 +2,21 @@ package es.proyectotaw.banca.bancapp.ui;
 
 public class FiltroClientes {
 
-    private Integer limInfSaldo;
+    private Float limInfSaldo;
     private String ciudad;
-    private Integer estadoCuenta;
+    private Boolean cuentaActiva;
 
     public FiltroClientes(){
         this.limInfSaldo = null;
         this.ciudad = null;
-        this.estadoCuenta = null;
+        this.cuentaActiva = null;
     }
 
-    public Integer getLimInfSaldo() {
+    public Float getLimInfSaldo() {
         return limInfSaldo;
     }
 
-    public void setLimInfSaldo(Integer limInfSaldo) {
+    public void setLimInfSaldo(Float limInfSaldo) {
         this.limInfSaldo = limInfSaldo;
     }
 
@@ -28,11 +28,11 @@ public class FiltroClientes {
         this.ciudad = ciudad;
     }
 
-    public Integer getEstadoCuenta() {
-        return estadoCuenta;
+    public Boolean getCuentaActiva() {
+        return cuentaActiva;
     }
 
-    public void setEstadoCuenta(Integer estadoCuenta) {
-        this.estadoCuenta = estadoCuenta;
+    public void setCuentaActiva(Boolean cuentaActiva) {
+        this.cuentaActiva = cuentaActiva;
     }
 }

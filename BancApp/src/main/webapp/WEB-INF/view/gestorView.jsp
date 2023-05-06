@@ -41,19 +41,42 @@
             </table>
         </div>
 
-        <br><hr>
+        <hr>
 
         <div class="container-md">
-            <h3>RELACIÓN DE CLIENTES DEL BANCO</h3>
+            <h3 style="text-align: center">RELACIÓN DE CLIENTES DEL BANCO</h3>
 
             <table>
                 <tr>
-                    FILTROS PARA VISUALIZAR CLIENTES
-                    <form:form method="post" action="/gestor/filtrar" modelAttribute="filtroClientes">
+                    <strong>FILTROS PARA VISUALIZAR CLIENTES</strong>
 
+                    <form:form modelAttribute="filtroCLientes" action="/gestor/filtrar" method="post">
+                        <table>
+                            <tr>
+                                <td>CIUDAD:</td>
+                                <td><form:input path="ciudad"></form:input></td>
+                            </tr>
+                            <tr>
+                                <td>SALDO MÍNIMO:</td>
+                                <td><form:input path="limInfSaldo" type="number"></form:input></td>
+                            </tr>
+                            <tr>
+                                <td>ESTADO CUENTA:</td>
+                                <td>
+                                    <form:radiobutton path="cuentaActiva" value="true" label="Activa" />
+                                    <form:radiobutton path="cuentaActiva" value="false" label="Bloqueada" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <form:button class="btn btn-primary">FILTRAR</form:button>
+                        <input class="btn btn-warning" type="reset" value="BORRAR FILTROS">
                     </form:form>
+
                 </tr>
             </table>
+
+            <br><br>
 
             <table class="table table-success table-striped">
                 <tr>
