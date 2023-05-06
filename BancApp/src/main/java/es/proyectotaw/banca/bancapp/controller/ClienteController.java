@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+@SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/cliente")
 public class ClienteController {
@@ -47,16 +48,8 @@ public class ClienteController {
 
 
     @GetMapping("/")
-    public String doPasarAlMenu(Model model, HttpSession session){
-        String urlTo;
-
-        if(session.getAttribute("usuario") == null && session.getAttribute("empresa") == null) {
-            urlTo="login";
-        } else {
-            urlTo="menu";
-        }
-
-        return urlTo;
+    public String doPasarAlMenu() {
+        return "redirect:/menu";
     }
 
     @GetMapping("/perfil")
@@ -80,7 +73,9 @@ public class ClienteController {
             model.addAttribute("operaciones", operaciones);
         }*/
         /*
-        * esto porque si no me da error pa probar VALE?*/
+         * esto porque si no me da error pa probar VALE?
+         * TODO quitar
+         * */
         CuentaEntity cuenta = cuentaEntityRepository.getById(5);
         model.addAttribute("usuario", new UsuarioEntity());
         model.addAttribute("cliente", new ClienteEntity());
@@ -96,14 +91,14 @@ public class ClienteController {
 
 
     @PostMapping("/filtrar")
-    public String doFiltrar (@ModelAttribute("filtro") FiltroOperaciones filtro,
-                             Model model, HttpSession session) {
+    public String doFiltrar(@ModelAttribute("filtro") FiltroOperaciones filtro,
+                            Model model, HttpSession session) {
         return this.procesarFiltrado(filtro, model, session);
     }
 
     @GetMapping("/filtrar")
-    protected String procesarFiltrado (FiltroOperaciones filtro,
-                                       Model model, HttpSession session) {
+    protected String procesarFiltrado(FiltroOperaciones filtro,
+                                      Model model, HttpSession session) {
         List<OperacionEntity> operaciones = new ArrayList<>();
         String urlTo = "cliente";
         //lo de la session
@@ -111,9 +106,9 @@ public class ClienteController {
             filtro = new FiltroOperaciones();
             operaciones = operacionEntityRepository.findAll();
         } else {
-            if(!filtro.getNombreOperacion().equals("ninguno")) {
+            if (!filtro.getNombreOperacion().equals("ninguno")) {
                 String nombre = filtro.getNombreOperacion();
-                if(filtro.getCantidadFiltro() == 0) {
+                if (filtro.getCantidadFiltro() == 0) {
                     if (nombre.equals("Transferencia")) {
                         List<TransferenciaEntity> transferencias = transferenciaEntityRepository.findAll();
                         for (TransferenciaEntity trans : transferencias) {
@@ -153,7 +148,7 @@ public class ClienteController {
                     }
                 }
             } else {
-                if(filtro.getCantidadFiltro() != 0) {
+                if (filtro.getCantidadFiltro() != 0) {
                     List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                     for (TransferenciaEntity trans : transferencias) {
                         operaciones.add(trans.getOperacionByOperacion());
@@ -177,13 +172,13 @@ public class ClienteController {
     }
 
     @PostMapping("/ordenar")
-    public String doOrdenar (@ModelAttribute("ordenar") OrdenarOperaciones orden,
-                             Model model, HttpSession session) {
+    public String doOrdenar(@ModelAttribute("ordenar") OrdenarOperaciones orden,
+                            Model model, HttpSession session) {
         return this.procesarOrdenado(orden, model, session);
     }
 
-    protected String procesarOrdenado (OrdenarOperaciones orden,
-                                       Model model, HttpSession session) {
+    protected String procesarOrdenado(OrdenarOperaciones orden,
+                                      Model model, HttpSession session) {
 
         model.addAttribute("ordenar", orden);
 

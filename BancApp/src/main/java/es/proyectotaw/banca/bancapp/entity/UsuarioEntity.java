@@ -11,31 +11,31 @@ import java.util.Objects;
 public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "nif")
+    @Column(name = "nif", nullable = false, length = 10)
     private String nif;
     @Basic
-    @Column(name = "primer_nombre")
+    @Column(name = "primer_nombre", nullable = false, length = 45)
     private String primerNombre;
     @Basic
-    @Column(name = "segundo_nombre")
+    @Column(name = "segundo_nombre", length = 45)
     private String segundoNombre;
     @Basic
-    @Column(name = "primer_apellido")
+    @Column(name = "primer_apellido", nullable = false, length = 45)
     private String primerApellido;
     @Basic
-    @Column(name = "segundo_apellido")
+    @Column(name = "segundo_apellido", length = 45)
     private String segundoApellido;
     @Basic
-    @Column(name = "fecha_nacimiento")
+    @Column(name = "fecha_nacimiento", nullable = false)
     private Date fechaNacimiento;
     @Basic
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, length = 45)
     private String email;
     @Basic
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 45)
     private String password;
     @OneToMany(mappedBy = "usuarioByAsistenteId")
     private List<ChatEntity> chatsById;
