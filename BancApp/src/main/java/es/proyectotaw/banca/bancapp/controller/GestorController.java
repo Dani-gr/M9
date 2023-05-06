@@ -47,7 +47,8 @@ public class GestorController {
 
     /*Zona destinada a los botones de acciones*/
     @GetMapping("/solicitudesAlta")
-    public String doMostrarSolicitudesAlta(){
+    public String doMostrarSolicitudesAlta(Model model){
+        model.addAttribute("solicitantes", this.clienteRepository.obtenerAspirantesCliente());
         return "solicitudesAltaGestorView";
     }
 
