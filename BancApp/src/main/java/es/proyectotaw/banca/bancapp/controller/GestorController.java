@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/gestor")
@@ -22,7 +23,7 @@ public class GestorController {
     private final int DIAS_INACTIVIDAD = 30; //Segun la politica del banco (US-21)
 
     @Autowired
-    protected ClienteEntityRepository clienteRepository;
+    protected ClienteEntityRepository clienteEntityRepository;
 
     /*Zona destinada a controlar la pantalla de gestor*/
     @GetMapping("/")

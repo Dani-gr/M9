@@ -9,16 +9,16 @@ import java.util.Objects;
 public class CambDivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_divisa")
+    @Column(name = "id_divisa", nullable = false)
     private Integer idDivisa;
     @Basic
-    @Column(name = "origen")
+    @Column(name = "origen", nullable = false, length = 45)
     private String origen;
     @Basic
-    @Column(name = "destino")
+    @Column(name = "destino", nullable = false, length = 45)
     private String destino;
     @Basic
-    @Column(name = "cantidad")
+    @Column(name = "cantidad", nullable = false)
     private Double cantidad;
     @ManyToOne
     @JoinColumn(name = "operacion", referencedColumnName = "id_operacion", nullable = false)

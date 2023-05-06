@@ -10,10 +10,10 @@ import java.util.Objects;
 public class RolEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idrol")
+    @Column(name = "idrol", nullable = false)
     private Integer idrol;
     @Basic
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
     @OneToMany(mappedBy = "rolByIdrol")
     private List<RolusuarioEntity> rolusuariosByIdrol;

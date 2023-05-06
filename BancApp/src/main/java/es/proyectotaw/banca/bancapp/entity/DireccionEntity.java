@@ -10,28 +10,28 @@ import java.util.Objects;
 public class DireccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "calle")
+    @Column(name = "calle", nullable = false, length = 45)
     private String calle;
     @Basic
-    @Column(name = "numero")
+    @Column(name = "numero", nullable = false)
     private Integer numero;
     @Basic
-    @Column(name = "planta_puerta_oficina")
+    @Column(name = "planta_puerta_oficina", nullable = false, length = 45)
     private String plantaPuertaOficina;
     @Basic
-    @Column(name = "ciudad")
+    @Column(name = "ciudad", nullable = false, length = 45)
     private String ciudad;
     @Basic
-    @Column(name = "region")
+    @Column(name = "region", length = 45)
     private String region;
     @Basic
-    @Column(name = "pais")
+    @Column(name = "pais", nullable = false, length = 45)
     private String pais;
     @Basic
-    @Column(name = "codpostal")
+    @Column(name = "codpostal", nullable = false, length = 45)
     private String codpostal;
     @OneToMany(mappedBy = "direccionByDireccion")
     private List<ClienteEntity> clientesById;
@@ -105,17 +105,17 @@ public class DireccionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DireccionEntity that = (DireccionEntity) o;
+        DireccionEntity direccion = (DireccionEntity) o;
 
-        if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(calle, that.calle)) return false;
-        if (!Objects.equals(numero, that.numero)) return false;
-        if (!Objects.equals(plantaPuertaOficina, that.plantaPuertaOficina))
+        if (!Objects.equals(id, direccion.id)) return false;
+        if (!Objects.equals(calle, direccion.calle)) return false;
+        if (!Objects.equals(numero, direccion.numero)) return false;
+        if (!Objects.equals(plantaPuertaOficina, direccion.plantaPuertaOficina))
             return false;
-        if (!Objects.equals(ciudad, that.ciudad)) return false;
-        if (!Objects.equals(region, that.region)) return false;
-        if (!Objects.equals(pais, that.pais)) return false;
-        return Objects.equals(codpostal, that.codpostal);
+        if (!Objects.equals(ciudad, direccion.ciudad)) return false;
+        if (!Objects.equals(region, direccion.region)) return false;
+        if (!Objects.equals(pais, direccion.pais)) return false;
+        return Objects.equals(codpostal, direccion.codpostal);
     }
 
     @Override
