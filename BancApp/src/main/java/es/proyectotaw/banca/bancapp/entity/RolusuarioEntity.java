@@ -2,16 +2,17 @@ package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
+
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "rolusuario", schema = "bancodb")
 public class RolusuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "bloqueado")
+    @Column(name = "bloqueado", nullable = false)
     private Byte bloqueado;
     @ManyToOne
     @JoinColumn(name = "idrol", referencedColumnName = "idrol", nullable = false)
@@ -20,7 +21,7 @@ public class RolusuarioEntity {
     @JoinColumn(name = "idusuario", referencedColumnName = "id", nullable = false)
     private UsuarioEntity usuarioByIdusuario;
     @ManyToOne
-    @JoinColumn(name = "idempresa", referencedColumnName = "id")
+    @JoinColumn(name = "idempresa", referencedColumnName = "id_empresa")
     private EmpresaEntity empresaByIdempresa;
 
     public Integer getId() {

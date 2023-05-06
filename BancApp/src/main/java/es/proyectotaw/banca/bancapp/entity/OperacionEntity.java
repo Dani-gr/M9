@@ -11,10 +11,10 @@ import java.util.Objects;
 public class OperacionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_operacion")
+    @Column(name = "id_operacion", nullable = false)
     private Integer idOperacion;
     @Basic
-    @Column(name = "fecha")
+    @Column(name = "fecha", nullable = false)
     private Date fecha;
     @OneToMany(mappedBy = "operacionByOperacion")
     private List<CambDivisaEntity> cambDivisasByIdOperacion;
@@ -47,10 +47,11 @@ public class OperacionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OperacionEntity that = (OperacionEntity) o;
+        OperacionEntity operacion = (OperacionEntity) o;
 
-        if (!Objects.equals(idOperacion, that.idOperacion)) return false;
-        return Objects.equals(fecha, that.fecha);
+        if (!Objects.equals(idOperacion, operacion.idOperacion))
+            return false;
+        return Objects.equals(fecha, operacion.fecha);
     }
 
     @Override

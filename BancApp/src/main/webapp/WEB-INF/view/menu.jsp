@@ -1,33 +1,33 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
-<%@ page import="es.proyectotaw.banca.bancapp.entity.RolEntity" %>
-<%@ page import="java.util.List" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.RolusuarioEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<jsp:useBean id="nombresRoles" type="java.util.List<java.lang.String>" scope="session"/>
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-    @SuppressWarnings("unchecked")
-    List<RolEntity> roles = (List<RolEntity>) session.getAttribute("roles");
-    List<String> nombresRoles = roles.stream().map(RolEntity::getNombre).toList();
     boolean bloqueado = usuario.getRolusuariosById().stream().map(RolusuarioEntity::getBloqueado).toList().contains((byte) 1);
 %>
 <html>
 <head>
     <title>Empresa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"/>
 </head>
 <body class="bg-gradient bg-dark">
 <jsp:include page="cabeceraMenu.jsp"/>
 <div class="m-3">&nbsp;</div>
-
+<jsp:useBean id="mensaje" scope="request" type="java.lang.String"/>
+<c:if test="${not null and not empty mensaje}">
+<div class="d-flex justify-content-center">
+    <h4 style="color:limegreen"><%=mensaje%></h4>
+</div>
+</c:if>
 <div class="d-flex justify-content-center">
     <div class="card text-center w-75" style="margin: 5% auto auto;">
         <div class="card-header">
             <jsp:useBean id="menu" scope="session" type="java.lang.String"/>
             <c:choose>
                 <c:when test="${\"cajero\".equalsIgnoreCase(menu)}">
-                    <!-- TODO -->
                     <div class="row mt-3">
                         <div class="col col-4">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
@@ -85,7 +85,7 @@
             </c:choose>
             <div class="row m-3"></div>
         </div>
-        <c:if test="${\"normal\".equalsIgnoreCase(menu)}">
+        <c:if test="${\"normal\".equalsIgnoreCase(menu) && !nombresRoles.contains(\"gestor\")}">
             <div class="card-footer">
                 <div class="row">
                     <div class="col">
