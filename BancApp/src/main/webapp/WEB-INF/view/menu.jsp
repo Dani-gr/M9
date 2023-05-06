@@ -28,7 +28,6 @@
             <jsp:useBean id="menu" scope="session" type="java.lang.String"/>
             <c:choose>
                 <c:when test="${\"cajero\".equalsIgnoreCase(menu)}">
-                    <!-- TODO -->
                     <div class="row mt-3">
                         <div class="col col-4">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"

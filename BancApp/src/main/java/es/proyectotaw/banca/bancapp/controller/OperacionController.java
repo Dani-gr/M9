@@ -18,21 +18,18 @@ import java.util.List;
 @Controller
 @RequestMapping("/operacion")
 public class OperacionController {
-
     @Autowired
     protected TransferenciaEntityRepository transferenciaEntityRepository;
-
     @Autowired
     protected OperacionEntityRepository operacionEntityRepository;
-
     @Autowired
     protected CuentaEntityRepository cuentaEntityRepository;
-
     @Autowired
     protected CambDivisaEntityRepository cambDivisaEntityRepository;
-
     @Autowired
     protected ExtraccionEntityRepository extraccionEntityRepository;
+    @Autowired
+    protected RolusuarioEntityRepository rolusuarioEntityRepository;
 
     @GetMapping("/")
     public String doAlmacenarOperacion(Model model) {
@@ -47,10 +44,24 @@ public class OperacionController {
      * @return {@code false} si el usuario tiene permiso, y {@code true} si no
      */
     private boolean incumplePermisos(HttpSession session) {
-        // TODO añadir comprobar bloqueos
+        var usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) return true;
         @SuppressWarnings("unchecked")
         var nombresRoles = (List<String>) session.getAttribute("nombresRoles");
-        return session.getAttribute("usuario") == null || nombresRoles.contains("gestor") || nombresRoles.contains("asistente");
+        if (nombresRoles.contains("gestor") || nombresRoles.contains("asistente")) return true;
+        var empresa = (EmpresaEntity) session.getAttribute("empresa");
+        if (empresa != null) {
+            var bloqueos = usuario.getRolusuariosById().stream().filter(
+                    ru -> empresa.equals(ru.getEmpresaByIdempresa())
+            ).map(RolusuarioEntity::getBloqueado).toList();
+            // TODO test
+            if (bloqueos.contains((byte) 1) || bloqueos.contains((byte) 2)) return true;
+        }
+
+        // TODO test
+        return usuario.getClienteByCliente().getCuentasByIdCliente().stream().anyMatch(
+                cuenta -> cuenta.getActiva().equals((byte) 1) || cuenta.getActiva().equals((byte) 2)
+        );
     }
 
     @GetMapping("/transferencia")
