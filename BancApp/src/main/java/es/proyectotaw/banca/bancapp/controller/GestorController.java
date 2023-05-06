@@ -11,23 +11,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
 
     @Autowired
-    protected ClienteEntityRepository clienteRepository;
+    protected ClienteEntityRepository clienteEntityRepository;
 
     @Autowired
     protected EmpresaEntityRepository empresaEntityRepository;
 
     @Autowired
-    protected DireccionEntityRepository direccionRepository;
+    protected DireccionEntityRepository direccionEntityRepository;
 
     @GetMapping("/")
-    String doInicializarPantalla(Model model){
-        model.addAttribute("clientes", this.clienteRepository.findAll());
+    String doInicializarPantalla(Model model) {
+        model.addAttribute("clientes", this.clienteEntityRepository.findAll());
 
         DireccionEntity d = new DireccionEntity();
         d.setCiudad("dwdew");
@@ -38,24 +39,23 @@ public class GestorController {
         d.setNumero(656);
         d.setCodpostal("frefrefre");
 
-        this.direccionRepository.save(d);
+        this.direccionEntityRepository.save(d);
 
         ClienteEntity c = new ClienteEntity();
         c.setDireccionByDireccion(d);
-        this.clienteRepository.save(c);
+        this.clienteEntityRepository.save(c);
 
         EmpresaEntity e = new EmpresaEntity();
         e.setCif(56456);
-        e.setId(c.getIdCliente());
+        e.setClienteByCliente(c);
         this.empresaEntityRepository.save(e);
 
         return "gestorView";
     }
 
 
-
     @GetMapping("/delete")
-    String doBorrar(Model model){
+    String doBorrar(Model model) {
         //TODO
         return "redirect:/gestor/";
     }

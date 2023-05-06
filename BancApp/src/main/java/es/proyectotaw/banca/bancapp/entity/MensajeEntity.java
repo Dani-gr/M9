@@ -1,7 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
@@ -10,17 +10,14 @@ import java.util.Objects;
 public class MensajeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_mensaje")
+    @Column(name = "id_mensaje", nullable = false)
     private Integer idMensaje;
     @Basic
-    @Column(name = "fecha_hora")
-    private Date fechaHora;
+    @Column(name = "fecha_hora", nullable = false)
+    private Timestamp fechaHora;
     @Basic
-    @Column(name = "contenido")
+    @Column(name = "contenido", nullable = false, length = 500)
     private String contenido;
-    @Basic
-    @Column(name = "emisor", insertable=false, updatable=false)
-    private Integer emisor;
     @ManyToOne
     @JoinColumn(name = "chat", referencedColumnName = "id", nullable = false)
     private ChatEntity chatByChat;
@@ -36,11 +33,11 @@ public class MensajeEntity {
         this.idMensaje = idMensaje;
     }
 
-    public Date getFechaHora() {
+    public Timestamp getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(Date fechaHora) {
+    public void setFechaHora(Timestamp fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -52,14 +49,6 @@ public class MensajeEntity {
         this.contenido = contenido;
     }
 
-    public Integer getEmisor() {
-        return emisor;
-    }
-
-    public void setEmisor(Integer emisor) {
-        this.emisor = emisor;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,8 +58,7 @@ public class MensajeEntity {
 
         if (!Objects.equals(idMensaje, that.idMensaje)) return false;
         if (!Objects.equals(fechaHora, that.fechaHora)) return false;
-        if (!Objects.equals(contenido, that.contenido)) return false;
-        return Objects.equals(emisor, that.emisor);
+        return Objects.equals(contenido, that.contenido);
     }
 
     @Override
@@ -78,7 +66,6 @@ public class MensajeEntity {
         int result = idMensaje != null ? idMensaje.hashCode() : 0;
         result = 31 * result + (fechaHora != null ? fechaHora.hashCode() : 0);
         result = 31 * result + (contenido != null ? contenido.hashCode() : 0);
-        result = 31 * result + (emisor != null ? emisor.hashCode() : 0);
         return result;
     }
 

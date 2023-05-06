@@ -10,7 +10,7 @@ import java.util.Objects;
 public class ClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_cliente")
+    @Column(name = "id_cliente", nullable = false)
     private Integer idCliente;
     @OneToMany(mappedBy = "clienteByClienteIdCliente")
     private List<ChatEntity> chatsByIdCliente;
@@ -22,8 +22,8 @@ public class ClienteEntity {
 
     @OneToMany(mappedBy = "clienteByCliente", fetch = FetchType.EAGER)
     private List<CuentaEntity> cuentasByIdCliente;
-    @OneToOne(mappedBy = "clienteById")
-    private EmpresaEntity empresaByIdCliente;
+    @OneToMany(mappedBy = "clienteByCliente")
+    private List<EmpresaEntity> empresasByIdCliente;
     @OneToMany(mappedBy = "clienteByCliente")
     private List<UsuarioEntity> usuariosByIdCliente;
 
@@ -82,12 +82,12 @@ public class ClienteEntity {
         this.cuentasByIdCliente = cuentasByIdCliente;
     }
 
-    public EmpresaEntity getEmpresaByIdCliente() {
-        return empresaByIdCliente;
+    public List<EmpresaEntity> getEmpresasByIdCliente() {
+        return empresasByIdCliente;
     }
 
-    public void setEmpresaByIdCliente(EmpresaEntity empresaByIdCliente) {
-        this.empresaByIdCliente = empresaByIdCliente;
+    public void setEmpresasByIdCliente(List<EmpresaEntity> empresasByIdCliente) {
+        this.empresasByIdCliente = empresasByIdCliente;
     }
 
     public List<UsuarioEntity> getUsuariosByIdCliente() {
