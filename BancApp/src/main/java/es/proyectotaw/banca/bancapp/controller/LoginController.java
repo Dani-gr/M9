@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("SpringMVCViewInspection")
@@ -189,7 +188,7 @@ public class LoginController {
         /* TODO:
             - Testear algún gestor / socio
          */
-        if (session.getAttribute("usuario") != null) return "redirect:/menu/";
+        if (session.getAttribute("usuario") != null) return "redirect:/menu";
 
         model.addAttribute("error", "Credenciales incorrectas");
         model.addAttribute("entidad", entidad);
@@ -220,41 +219,50 @@ public class LoginController {
         } else session.setAttribute("empresa", null);
         session.setAttribute("usuario", user);
 
-        session.setAttribute("roles", user.getRolusuariosById().stream().map(RolusuarioEntity::getRolByIdrol).toList());
+        session.setAttribute("nombresRoles", user.getRolusuariosById().stream()
+                .map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList());
 
         return "redirect:/menu";
     }
 
 
     @GetMapping("/menu")
-    String doMenu(HttpSession session) {
+    String doMenu(HttpSession session, Model model) {
         UsuarioEntity user = (UsuarioEntity) session.getAttribute("usuario");
-        if (user == null) return "redirect:/";
+        if (user == null) return "redirect:/logout";
         List<RolusuarioEntity> ru = user.getRolusuariosById();
 
         // Si pasa, se ha hecho mal alguna inserción
-        if (ru == null || ru.isEmpty()) return "redirect:/";
+        if (ru == null || ru.isEmpty()) return "redirect:/logout";
 
         if (session.getAttribute("menu") == null)
             session.setAttribute("menu", "normal");
         var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
-        if (nombresRoles.contains("gestor"))
-            return "menu";
         if (nombresRoles.contains("asistente"))
             return "chats";
-
+        String mensaje = (String) session.getAttribute("mensaje");
+        if (mensaje != null && !mensaje.isBlank()) {
+            model.addAttribute("mensaje", mensaje);
+            session.removeAttribute("mensaje");
+        } else model.addAttribute("mensaje", "");
+        if (nombresRoles.contains("gestor"))
+            return "menu";
 
         return user.getClienteByCliente().getCuentasByIdCliente().isEmpty() ? "enespera" : "menu";
     }
 
     @PostMapping("/menu")
     @SuppressWarnings("unchecked")
-    String doToggleMenu(HttpSession session) {
-        var roles = ((Collection<RolEntity>) session.getAttribute("roles")).stream().map(RolEntity::getNombre).toList();
-        if (!(roles.contains("gestor") || roles.contains("asistente")))
-            session.setAttribute("menu",
-                    "normal".equals(session.getAttribute("menu")) ? "cajero" : "normal"
-            );
+    String doToggleMenu(Model model, HttpSession session) {
+        var roles = ((List<String>) session.getAttribute("nombresRoles"));
+        session.setAttribute("menu",
+                roles.contains("gestor") || roles.contains("asistente") ?
+                        "normal" :
+                        "normal".equals(session.getAttribute("menu")) ? "cajero" : "normal"
+        );
+
+        model.addAttribute("mensaje", "");
+
         return "redirect:/menu";
     }
 

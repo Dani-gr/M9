@@ -34,7 +34,6 @@
     </div>
     <div class="card-body">
         <h4 class="card-title">Registrarse</h4>
-        <!-- TODO Añadir control de errores (máximo/mínimo de caracteres) -->
         <form action="/registro" method="post" class="text-start">
             <jsp:useBean id="cifEmpresa" scope="request" type="java.lang.String"/>
             <c:choose>

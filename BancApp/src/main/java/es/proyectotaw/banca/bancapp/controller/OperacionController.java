@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("DuplicatedCode")
+@SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/operacion")
 public class OperacionController {
@@ -42,84 +41,123 @@ public class OperacionController {
         return "menu";
     }
 
+    /**
+     * Método auxiliar para comprobar si se accede sin permiso.
+     *
+     * @return {@code false} si el usuario tiene permiso, y {@code true} si no
+     */
+    private boolean incumplePermisos(HttpSession session) {
+        // TODO añadir comprobar bloqueos
+        @SuppressWarnings("unchecked")
+        var nombresRoles = (List<String>) session.getAttribute("nombresRoles");
+        return session.getAttribute("usuario") == null || nombresRoles.contains("gestor") || nombresRoles.contains("asistente");
+    }
+
     @GetMapping("/transferencia")
     public String doTransferencia(Model model, HttpSession session) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        ClienteEntity cliente = usuario.getClienteByCliente();
-        List<CuentaEntity> cuentas = cliente.getCuentasByIdCliente();
-        CuentaEntity cuenta = cuentas.get(0);
+        if (incumplePermisos(session)) return "redirect:/menu";
 
-        OperacionEntity operacion = new OperacionEntity();
-        operacion.setCuentaByCuentaRealiza(cuenta);
-        operacion.setFecha(new Date(System.currentTimeMillis()));
-        operacionEntityRepository.save(operacion);
         TransferenciaEntity transferencia = new TransferenciaEntity();
-        transferencia.setOperacionByOperacion(operacion);
-        transferencia.setCantidad((double) 0);
-        transferenciaEntityRepository.save(transferencia);
-        List<TransferenciaEntity> trans = new ArrayList<>();
-        trans.add(transferencia);
-        operacion.setTransferenciasByIdOperacion(trans);
-        operacionEntityRepository.save(operacion);
+        transferencia.setCantidad(0.00);
         model.addAttribute("transferenciaARealizar", transferencia);
+
+        model.addAttribute("error", "");
 
         return "transferencia";
     }
 
-    @PostMapping("/guardarTransferencia")
-    public String doGuardarTransferencia(@ModelAttribute("transferenciaARealizar") TransferenciaEntity transferencia) {
-        transferenciaEntityRepository.save(transferencia);
-        OperacionEntity operacion = transferencia.getOperacionByOperacion();
-        List<TransferenciaEntity> trans = new ArrayList<>();
-        trans.add(transferencia);
-        operacion.setTransferenciasByIdOperacion(trans);
-        operacionEntityRepository.save(operacion);
-
-        if (transferencia.getIbanDestino() == null) {
-            CuentaEntity mia = operacion.getCuentaByCuentaRealiza();
-            CuentaEntity otro = transferencia.getCuentaByCuentaDestino();
-            Double cantidad = transferencia.getCantidad();
-
-            if (mia.getSaldo() - cantidad >= 0) {
-                mia.setSaldo(mia.getSaldo() - cantidad);
-                otro.setSaldo(otro.getSaldo() + cantidad);
-                //que diga algo "Felicidades, ahora estás más probre"
-                //No sé si es necesario, por si acaso
-                cuentaEntityRepository.save(mia);
-                cuentaEntityRepository.save(otro);
-            } else {
-                //TODO estas pobre
-            }
-        }
-        return "menu";
-    }
-
-    @GetMapping("/cambioDivisa")
-    public String doDivisa(Model model, HttpSession session) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        ClienteEntity cliente = usuario.getClienteByCliente();
-        List<CuentaEntity> cuentas = cliente.getCuentasByIdCliente();
-        CuentaEntity cuenta = cuentas.get(0);
+    private OperacionEntity crearOperacion(HttpSession session) {
+        // TODO refactor for new method getCuentaAsociada() in Rolusuario
+        CuentaEntity cuenta = ((UsuarioEntity) session.getAttribute("usuario")).getClienteByCliente().getCuentasByIdCliente().get(0);
 
         OperacionEntity operacion = new OperacionEntity();
         operacion.setCuentaByCuentaRealiza(cuenta);
         operacion.setFecha(new Date(System.currentTimeMillis()));
-        operacionEntityRepository.save(operacion);
+
+        return operacion;
+    }
+
+    @PostMapping("/guardarTransferencia")
+    public String doGuardarTransferencia(Model model, HttpSession session, @ModelAttribute("transferenciaARealizar") TransferenciaEntity transferencia) {
+        if (transferencia == null || incumplePermisos(session)) return "redirect:/menu";
+
+        OperacionEntity operacion = crearOperacion(session);
+        CuentaEntity mia = operacion.getCuentaByCuentaRealiza(), otro;
+        Double cantidad = transferencia.getCantidad();
+
+        if (cantidad == null || cantidad <= 0) {
+            model.addAttribute("error", "¡La cantidad debe ser positiva!");
+            model.addAttribute("transferenciaARealizar", transferencia);
+            return "transferencia";
+        }
+        try {
+            otro = cuentaEntityRepository.findById(Integer.valueOf(transferencia.getIbanDestino())).orElse(null);
+        } catch (RuntimeException ignored) {
+            otro = null;
+        }
+
+        if (transferencia.getIbanDestino() == null || transferencia.getIbanDestino().isBlank()) {
+            // Campos destino vacíos
+            model.addAttribute("error", "¡No has indicado el destino de la transferencia!");
+            model.addAttribute("transferenciaARealizar", transferencia);
+            return "transferencia";
+        } else if (otro != null) {
+            // Cuenta interna
+            if (mia.getSaldo() - cantidad >= 0) {
+                mia.setSaldo(mia.getSaldo() - cantidad);
+                otro.setSaldo(otro.getSaldo() + cantidad);
+                cuentaEntityRepository.save(mia);
+                cuentaEntityRepository.save(otro);
+
+                operacionEntityRepository.save(operacion);
+                transferencia.setCuentaByCuentaDestino(otro);
+                transferencia.setIbanDestino(null);
+                transferencia.setOperacionByOperacion(operacion);
+                transferenciaEntityRepository.save(transferencia);
+
+                session.setAttribute("mensaje", "¡Transferencia realizada correctamente!");
+                return "redirect:/menu";
+            } else {
+                // Estás pobre :(
+                model.addAttribute("error", "¡No tienes suficiente saldo! Tienes " + mia.getSaldo() + "€.");
+                model.addAttribute("transferenciaARealizar", transferencia);
+                return "transferencia";
+            }
+        } else if (mia.getSaldo() - cantidad < 0) {
+            // Cuenta externa, pero estás pobre :(
+            model.addAttribute("error", "¡No tienes suficiente saldo! Tienes " + mia.getSaldo() + "€.");
+            model.addAttribute("transferenciaARealizar", transferencia);
+            return "transferencia";
+        } else {
+            // Cuenta externa, pero tienes suficiente :)
+            mia.setSaldo(mia.getSaldo() - cantidad);
+            operacionEntityRepository.save(operacion);
+            transferencia.setOperacionByOperacion(operacion);
+            transferenciaEntityRepository.save(transferencia);
+            session.setAttribute("mensaje", "¡Transferencia realizada correctamente!");
+            return "redirect:/menu";
+        }
+    }
+
+    @GetMapping("/cambioDivisa")
+    public String doDivisa(Model model, HttpSession session) {
+        if (incumplePermisos(session)) return "redirect:/menu";
         CambDivisaEntity cambio = new CambDivisaEntity();
-        cambio.setOperacionByOperacion(operacion);
+        cambio.setCantidad(0.00);
         model.addAttribute("cambioDivisa", cambio);
+        model.addAttribute("error", "");
 
         return "cambiodivisa";
     }
 
     @PostMapping("/guardarDivisa")
-    public String doGuardarDivisa(@ModelAttribute("cambioDivisa") CambDivisaEntity cambioDivisa) {
-        cambDivisaEntityRepository.save(cambioDivisa);
-        OperacionEntity operacion = cambioDivisa.getOperacionByOperacion();
-        List<CambDivisaEntity> cambios = new ArrayList<>();
-        cambios.add(cambioDivisa);
-        operacion.setCambDivisasByIdOperacion(cambios);
+    public String doGuardarDivisa(HttpSession session, @ModelAttribute("cambioDivisa") CambDivisaEntity cambioDivisa) {
+        if (cambioDivisa == null || incumplePermisos(session)) return "redirect:/menu";
+        OperacionEntity operacion = crearOperacion(session);
+        // Éxito
         operacionEntityRepository.save(operacion);
+        cambioDivisa.setOperacionByOperacion(operacion);
+        cambDivisaEntityRepository.save(cambioDivisa);
 
         /*
          * TODO Por hacer porque me tengo que estudiar los cambios de monedas a monedas
@@ -129,39 +167,41 @@ public class OperacionController {
 
     @GetMapping("/extraccion")
     public String doExtraccion(Model model, HttpSession session) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        ClienteEntity cliente = usuario.getClienteByCliente();
-        List<CuentaEntity> cuentas = cliente.getCuentasByIdCliente();
-        CuentaEntity cuenta = cuentas.get(0);
+        if (incumplePermisos(session)) return "redirect:/menu";
 
-        OperacionEntity operacion = new OperacionEntity();
-        operacion.setCuentaByCuentaRealiza(cuenta);
-        operacion.setFecha(new Date(System.currentTimeMillis()));
-        operacionEntityRepository.save(operacion);
         ExtraccionEntity extraccion = new ExtraccionEntity();
-        extraccion.setOperacionByOperacion(operacion);
-        model.addAttribute("Extraer", extraccion);
+        extraccion.setCantidad(0.0);
+        model.addAttribute("extraer", extraccion);
+        model.addAttribute("error", "");
 
         return "extraccion";
     }
 
     @PostMapping("/guardarExtraccion")
-    public String doGuardarExtraccion(@ModelAttribute("Extraer") ExtraccionEntity extra) {
-        extraccionEntityRepository.save(extra);
-        OperacionEntity operacion = extra.getOperacionByOperacion();
-        List<ExtraccionEntity> extrac = new ArrayList<>();
-        extrac.add(extra);
-        operacion.setExtraccionsByIdOperacion(extrac);
-        operacionEntityRepository.save(operacion);
+    public String doGuardarExtraccion(Model model, HttpSession session, @ModelAttribute("extraer") ExtraccionEntity extra) {
+        if (extra == null || incumplePermisos(session)) return "redirect:/menu";
 
+        OperacionEntity operacion = crearOperacion(session);
         CuentaEntity mia = operacion.getCuentaByCuentaRealiza();
         Double cantidad = extra.getCantidad();
-        if (mia.getSaldo() - cantidad >= 0) {
+
+        if (cantidad <= 0) {
+            model.addAttribute("error", "¡La cantidad debe ser positiva!");
+            model.addAttribute("extraer", extra);
+            return "extraccion";
+        } else if (mia.getSaldo() - cantidad >= 0) {
             mia.setSaldo(mia.getSaldo() - cantidad);
             cuentaEntityRepository.save(mia);
+
+            operacionEntityRepository.save(operacion);
+            extra.setOperacionByOperacion(operacion);
+            extraccionEntityRepository.save(extra);
+            return "menu";
         } else {
-            //TODO estas pobre
+            // Estás pobre :(
+            model.addAttribute("error", "¡No tienes suficiente saldo!\nTienes " + mia.getSaldo() + "€.");
+            model.addAttribute("extraer", extra);
+            return "extraccion";
         }
-        return "menu";
     }
 }
