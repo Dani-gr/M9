@@ -102,54 +102,43 @@ public class LoginController {
                 direccionEntityRepository.save(direccion);
                 clienteEmpresa.setDireccionByDireccion(direccion);
                 clienteEntityRepository.save(clienteEmpresa);
-                empresa.setId(clienteEmpresa.getIdCliente());
+
+                empresa.setClienteById(clienteEmpresa);
+                empresaEntityRepository.save(empresa);
             }
             if (boton.equals("registrarSocio")) {
                 model.addAttribute("entidad", "empresa");
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
-            //Creo al socio/autorizado
+            // Creo al socio/autorizado
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
             usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
 
+            // TODO check for existing users
             ClienteEntity cliente = new ClienteEntity();
             DireccionEntity direccion = new DireccionEntity();
             direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
             direccionEntityRepository.save(direccion);
             cliente.setDireccionByDireccion(direccion);
             clienteEntityRepository.save(cliente);
+
+            usuarioEmpresa.setClienteByCliente(cliente);
+            usuarioEntityRepository.save(usuarioEmpresa);
 
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
             rolusuario.setRolByIdrol(rol);
-            usuarioEntityRepository.save(usuarioEmpresa);
             rolusuario.setUsuarioByIdusuario(usuarioEmpresa);
-            empresaEntityRepository.save(empresa);
             rolusuario.setEmpresaByIdempresa(empresa);
             rolusuario.setBloqueado((byte) 0);
             rolusuarioEntityRepository.save(rolusuario);
-            List<RolusuarioEntity> rolUsuario = new ArrayList<>();
-            rolUsuario.add(rolusuario);
-            usuarioEmpresa.setRolusuariosById(rolUsuario);
-            List<RolusuarioEntity> lista = new ArrayList<>();
 
-            if (empresa.getRolusuariosById() != null) lista.addAll(empresa.getRolusuariosById());
-
-            lista.add(rolusuario);
-            empresa.setRolusuariosById(lista);
-            usuarioEntityRepository.save(usuarioEmpresa);
-            empresaEntityRepository.save(empresa);
-            List<UsuarioEntity> usuarios = new ArrayList<>();
-            usuarios.add(usuarioEmpresa);
-            cliente.setUsuariosByIdCliente(usuarios);
-            usuarioEmpresa.setClienteByCliente(cliente);
-            clienteEntityRepository.save(cliente);
-            usuarioEntityRepository.save(usuarioEmpresa);
+            session.setAttribute("empresa", empresa);
         } else {
-            session.setAttribute("empresa", null);
             UsuarioEntity usuario = new UsuarioEntity();
             usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
-            usuarioEntityRepository.save(usuario);
+
+            // TODO check for existing users
 
             ClienteEntity cliente = new ClienteEntity();
             DireccionEntity direccion = new DireccionEntity();
@@ -157,6 +146,9 @@ public class LoginController {
             direccionEntityRepository.save(direccion);
             cliente.setDireccionByDireccion(direccion);
             clienteEntityRepository.save(cliente);
+
+            usuario.setClienteByCliente(cliente);
+            usuarioEntityRepository.save(usuario);
 
             RolusuarioEntity rolusuario = new RolusuarioEntity();
             RolEntity rol = rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new);
@@ -164,15 +156,8 @@ public class LoginController {
             rolusuario.setUsuarioByIdusuario(usuario);
             rolusuario.setBloqueado((byte) 0);
             rolusuarioEntityRepository.save(rolusuario);
-            List<RolusuarioEntity> lista = new ArrayList<>();
-            lista.add(rolusuario);
-            usuario.setRolusuariosById(lista);
-            List<UsuarioEntity> usuarios = new ArrayList<>();
-            usuarios.add(usuario);
-            cliente.setUsuariosByIdCliente(usuarios);
-            usuario.setClienteByCliente(cliente);
-            clienteEntityRepository.save(cliente);
-            usuarioEntityRepository.save(usuario);
+
+            session.setAttribute("empresa", null);
         }
 
         model.addAttribute("cifEmpresa", cif);
@@ -330,17 +315,6 @@ public class LoginController {
         cuentaEntityRepository.save(cu2);
         cuentaEntityRepository.save(cu3);
 
-        // Cambios de divisa
-        /*
-        cambDivisaEntityRepository.deleteAll(cambDivisaEntityRepository.findAll());
-        CambDivisaEntity cd1 = new CambDivisaEntity(), cd2 = new CambDivisaEntity();
-        cd1.setOperacion(o1.getIdOperacion());
-        cd2.setOperacion(o2.getIdOperacion());
-        cd1.setOrigen("EUR");
-        cd2.setOrigen("EUR");
-        cd1.setDestino("USD");
-        cd2.setDestino("GBP");
-        */
 
         // Operaciones
         operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
@@ -358,11 +332,19 @@ public class LoginController {
         operacionEntityRepository.save(o2);
         operacionEntityRepository.save(o3);
 
-        /*cd1.setOperacionByOperacion(o1);
+
+        // Cambios de divisa
+        cambDivisaEntityRepository.deleteAll(cambDivisaEntityRepository.findAll());
+        CambDivisaEntity cd1 = new CambDivisaEntity(), cd2 = new CambDivisaEntity();
+        cd1.setOperacionByOperacion(o1);
         cd2.setOperacionByOperacion(o2);
+        cd1.setOrigen("EUR");
+        cd2.setOrigen("EUR");
+        cd1.setDestino("USD");
+        cd2.setDestino("GBP");
 
         cambDivisaEntityRepository.save(cd1);
-        cambDivisaEntityRepository.save(cd2);*/
+        cambDivisaEntityRepository.save(cd2);
 
         RolusuarioEntity ru1 = new RolusuarioEntity(), ru2 = new RolusuarioEntity(), ru3 = new RolusuarioEntity(), ru4 = new RolusuarioEntity(), ru5 = new RolusuarioEntity();
         ru1.setUsuarioByIdusuario(u1);
