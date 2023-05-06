@@ -14,4 +14,7 @@ public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, In
 
     @Query("select c from UsuarioEntity c where c.id = :id")
     UsuarioEntity buscarPorID(@Param("id") Integer id);
+
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.id = :id")
+    Optional<UsuarioEntity> findUsuariosByEmpresa(@Param("id") Integer id);
 }

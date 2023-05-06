@@ -69,16 +69,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <c:if test="${nombresRoles.contains(\"socio\")}">
-                                <div class="row">
-                                    <div class="col pt-3">
-                                        <div class="btn btn-lg btn-outline-secondary disabled">
-                                            Gestión de socios y autorizados
-                                            <!-- TODO link and enable -->
-                                        </div>
+
+                            <% if(nombresRoles.contains("socio")){  %>
+                            <div class="row">
+                                <div class="col pt-3">
+                                    <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%> "
+                                         onclick="window.location.href='/empresa/'">
+                                        Gestión de socios y autorizados
                                     </div>
                                 </div>
-                            </c:if>
+                            </div>
+                            <% } %>
+
                         </c:otherwise>
                     </c:choose>
                 </c:otherwise>
