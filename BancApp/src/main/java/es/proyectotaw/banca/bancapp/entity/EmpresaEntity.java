@@ -10,25 +10,25 @@ import java.util.Objects;
 public class EmpresaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_empresa", nullable = false)
+    private Integer idEmpresa;
     @Basic
-    @Column(name = "cif")
+    @Column(name = "cif", nullable = false)
     private Integer cif;
     @OneToMany(mappedBy = "empresaByIdEmpresa")
-    private List<ClientesEmpresaEntity> clientesEmpresasById;
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id_cliente", nullable = false)
-    private ClienteEntity clienteById;
+    private List<ClientesEmpresaEntity> clientesEmpresasByIdEmpresa;
+    @ManyToOne
+    @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
+    private ClienteEntity clienteByCliente;
     @OneToMany(mappedBy = "empresaByIdempresa")
-    private List<RolusuarioEntity> rolusuariosById;
+    private List<RolusuarioEntity> rolusuariosByIdEmpresa;
 
-    public Integer getId() {
-        return id;
+    public Integer getIdEmpresa() {
+        return idEmpresa;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdEmpresa(Integer idEmpresa) {
+        this.idEmpresa = idEmpresa;
     }
 
     public Integer getCif() {
@@ -46,38 +46,38 @@ public class EmpresaEntity {
 
         EmpresaEntity that = (EmpresaEntity) o;
 
-        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(idEmpresa, that.idEmpresa)) return false;
         return Objects.equals(cif, that.cif);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = idEmpresa != null ? idEmpresa.hashCode() : 0;
         result = 31 * result + (cif != null ? cif.hashCode() : 0);
         return result;
     }
 
-    public List<ClientesEmpresaEntity> getClientesEmpresasById() {
-        return clientesEmpresasById;
+    public List<ClientesEmpresaEntity> getClientesEmpresasByIdEmpresa() {
+        return clientesEmpresasByIdEmpresa;
     }
 
-    public void setClientesEmpresasById(List<ClientesEmpresaEntity> clientesEmpresasById) {
-        this.clientesEmpresasById = clientesEmpresasById;
+    public void setClientesEmpresasByIdEmpresa(List<ClientesEmpresaEntity> clientesEmpresasByIdEmpresa) {
+        this.clientesEmpresasByIdEmpresa = clientesEmpresasByIdEmpresa;
     }
 
-    public ClienteEntity getClienteById() {
-        return clienteById;
+    public ClienteEntity getClienteByCliente() {
+        return clienteByCliente;
     }
 
-    public void setClienteById(ClienteEntity clienteById) {
-        this.clienteById = clienteById;
+    public void setClienteByCliente(ClienteEntity clienteByCliente) {
+        this.clienteByCliente = clienteByCliente;
     }
 
-    public List<RolusuarioEntity> getRolusuariosById() {
-        return rolusuariosById;
+    public List<RolusuarioEntity> getRolusuariosByIdEmpresa() {
+        return rolusuariosByIdEmpresa;
     }
 
-    public void setRolusuariosById(List<RolusuarioEntity> rolusuariosById) {
-        this.rolusuariosById = rolusuariosById;
+    public void setRolusuariosByIdEmpresa(List<RolusuarioEntity> rolusuariosByIdEmpresa) {
+        this.rolusuariosByIdEmpresa = rolusuariosByIdEmpresa;
     }
 }
