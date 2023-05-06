@@ -14,8 +14,14 @@
 <div class="container" style="margin-top: 100px;">
     <div class="row">
         <div class="col-md-12">
-            <h1>Lista de Chats</h1>
-            <table class="table table-striped">
+            <nav>
+                <h1>Lista de Chats</h1>
+                <form action="busquedaChatsPorNombre">
+                    <input type="text" id="nombre" name="nombre" placeholder="Buscar...">
+                    <input type="submit" value="Buscar">
+                </form>
+            </nav>
+            <table class="table table-striped table-info">
                 <thead>
                 <tr>
                     <th>ID</th>

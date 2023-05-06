@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Chat con Andres</title>
+    <title>Chat</title>
     <style>
         .header {
             background-color: #dcdcdc;
