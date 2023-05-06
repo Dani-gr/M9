@@ -27,10 +27,7 @@ public class GestorController {
     /*Zona destinada a controlar la pantalla de gestor*/
     @GetMapping("/")
     public String doInicializarPantallaPrincipal(Model model){
-        model.addAttribute("clientes", this.clienteRepository.obtenerClientesDadosDeAlta());
-        FiltroClientes filtroClientes = null;
-
-        return  procesarFiltradoClientes(model, filtroClientes);
+        return  procesarFiltradoClientes(model, null);
     }
 
     @PostMapping("/filtrar")
@@ -40,7 +37,11 @@ public class GestorController {
     }
 
     private String procesarFiltradoClientes(Model model, FiltroClientes filtroClientes){
-        model.addAttribute("filtroCLientes", new FiltroClientes());
+
+        if(filtroClientes == null) filtroClientes = new FiltroClientes();
+
+        model.addAttribute("clientes", this.clienteRepository.obtenerClientesDadosDeAlta());
+        model.addAttribute("filtroCLientes", filtroClientes);
         return "gestorView";
     }
 
