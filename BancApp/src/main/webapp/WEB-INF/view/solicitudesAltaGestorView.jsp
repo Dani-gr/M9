@@ -34,7 +34,7 @@
             </tr>
 
             <%for(ClienteEntity c : solicitantes){
-                boolean esEmpresa = c.getEmpresaByIdCliente() != null;
+                boolean esEmpresa = !c.getEmpresasByIdCliente().isEmpty()  &&  c.getEmpresasByIdCliente().get(0) != null;
             %>
             <tr>
                 <td> <%= c.getIdCliente() %> </td>

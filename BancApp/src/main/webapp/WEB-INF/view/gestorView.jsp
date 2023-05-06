@@ -10,12 +10,13 @@
 </head>
     <body>
 
-        <div class="d-flex justify-content-end">
-            <span class="mr-2"> Gestor autenticado: <!-- request.getAttribute("usuario") --> </span> -->
+        <!--<div class="d-flex justify-content-end">
+            <span class="mr-2"> Gestor autenticado:  request.getAttribute("usuario")</span>
             <a class="btn btn-danger" href="/">SALIR</a>
-        </div>
+        </div> -->
 
-        <hr>
+        <jsp:include page="cabeceraMenu.jsp"></jsp:include>
+        <br>
 
         <h1 style="text-align: center">SISTEMA DE GESTIÓN DEL BANCO</h1>
 
@@ -97,7 +98,7 @@
 
                     <td>
                         <%
-                            boolean esEmpresa = c.getEmpresaByIdCliente() != null;
+                            boolean esEmpresa = !c.getEmpresasByIdCliente().isEmpty()  &&  c.getEmpresasByIdCliente().get(0) != null;
                         %>
                         <%= (esEmpresa) ?
                                 "<a class=\"btn btn-dark\" href='/gestor/empresa?id=" + c.getIdCliente() + "'>VER EMPRESA</a>" :

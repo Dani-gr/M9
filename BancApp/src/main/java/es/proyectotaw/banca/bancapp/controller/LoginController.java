@@ -231,7 +231,7 @@ public class LoginController {
             session.removeAttribute("mensaje");
         } else model.addAttribute("mensaje", "");
         if (nombresRoles.contains("gestor"))
-            return "menu";
+            return "redirect:/gestor/";
 
         return user.getClienteByCliente().getCuentasByIdCliente().isEmpty() ? "enespera" : "menu";
     }
@@ -332,7 +332,7 @@ public class LoginController {
         operacionEntityRepository.save(o2);
         operacionEntityRepository.save(o3);
 
-
+        /*
         // Cambios de divisa
         cambDivisaEntityRepository.deleteAll(cambDivisaEntityRepository.findAll());
         CambDivisaEntity cd1 = new CambDivisaEntity(), cd2 = new CambDivisaEntity();
@@ -344,7 +344,7 @@ public class LoginController {
         cd2.setDestino("GBP");
 
         cambDivisaEntityRepository.save(cd1);
-        cambDivisaEntityRepository.save(cd2);
+        cambDivisaEntityRepository.save(cd2);*/
 
         RolusuarioEntity ru1 = new RolusuarioEntity(), ru2 = new RolusuarioEntity(), ru3 = new RolusuarioEntity(), ru4 = new RolusuarioEntity(), ru5 = new RolusuarioEntity();
         ru1.setUsuarioByIdusuario(u1);

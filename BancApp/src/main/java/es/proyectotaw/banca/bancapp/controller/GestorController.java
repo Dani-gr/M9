@@ -41,7 +41,7 @@ public class GestorController {
 
         if(filtroClientes == null) filtroClientes = new FiltroClientes();
 
-        model.addAttribute("clientes", this.clienteRepository.obtenerClientesDadosDeAlta());
+        model.addAttribute("clientes", this.clienteEntityRepository.obtenerClientesDadosDeAlta());
         model.addAttribute("filtroCLientes", filtroClientes);
         return "gestorView";
     }
@@ -49,7 +49,7 @@ public class GestorController {
     /*Zona destinada a los botones de acciones*/
     @GetMapping("/solicitudesAlta")
     public String doMostrarSolicitudesAlta(Model model){
-        model.addAttribute("solicitantes", this.clienteRepository.obtenerAspirantesCliente());
+        model.addAttribute("solicitantes", this.clienteEntityRepository.obtenerAspirantesCliente());
         return "solicitudesAltaGestorView";
     }
 
