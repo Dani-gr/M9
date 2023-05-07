@@ -92,4 +92,18 @@ public class EmpresaController {
         return "redirect:/datosEmpresa";
     }
 
+    @GetMapping("/operaciones")
+    public String doMostrarOperaciones(Model model, HttpSession session){
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
+        List<RolusuarioEntity> listaRolUsuarioAsociados = usuario.getRolusuariosById();
+        EmpresaEntity empresa = listaRolUsuarioAsociados.get(0).getEmpresaByIdempresa();
+        List<UsuarioEntity> usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresa(empresa.getIdEmpresa());
+        List<UsuarioEntity> usuariosBloqueados = usuarioEntityRepository.findUsuariosBloqueadosByEmpresa(empresa.getIdEmpresa());
+        model.addAttribute("usuariosAsociados", usuariosAsociados);
+        model.addAttribute("usuariosBloqueados", usuariosBloqueados);
+
+        return "operaciones";
+    }
+
 }

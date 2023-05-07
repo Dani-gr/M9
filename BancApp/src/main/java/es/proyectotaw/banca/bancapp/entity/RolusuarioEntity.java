@@ -81,4 +81,8 @@ public class RolusuarioEntity {
     public void setEmpresaByIdempresa(EmpresaEntity empresaByIdempresa) {
         this.empresaByIdempresa = empresaByIdempresa;
     }
+
+    public CuentaEntity getCuentaAsociada() {
+        return null;
+    }
 }

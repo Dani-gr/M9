@@ -77,7 +77,7 @@ public class OperacionController {
         return "transferencia";
     }
 
-    private OperacionEntity crearOperacion(HttpSession session) {
+   private OperacionEntity crearOperacion(HttpSession session) {
         var ru = ((UsuarioEntity) session.getAttribute("usuario")).getRolusuariosById();
         EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
         ru = ru.stream().filter(
@@ -92,6 +92,7 @@ public class OperacionController {
 
         return operacion;
     }
+
 
     @PostMapping("/guardarTransferencia")
     public String doGuardarTransferencia(Model model, HttpSession session, @ModelAttribute("transferenciaARealizar") TransferenciaEntity transferencia) {
