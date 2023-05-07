@@ -37,10 +37,23 @@ public class ChatController {
         model.addAttribute("chats", chats);
         return "chats";
     }
-    @GetMapping("/cliente")
-    String doInicializarListaChats(Model model){
-        //TODO: Extraer el id del cliente para buscar chats del mismo
-        //model.addAttribute("chats", chats);
+
+    @PostMapping("/solicitudAsistencia")
+    String doInicializarChatConAsistente(@RequestParam("usuario") int usuarioId, Model model){
+        //TODO: Crear el chat con el asistente
+        UsuarioEntity user = (UsuarioEntity) usuarioEntityRepository.findById(usuarioId).get();
+        //TODO: Crear chat
+            // TODO: asignar asistente en base a algun criterio
+            // TODO: asignar valores de un chat
+            // TODO: guardar este chat creado
+        //model.addAttribute("chats",chats);
+        return "chats"; //TODO: Redirigir al chat (vista cliente??)
+    }
+    @GetMapping("/cliente/")
+    String doInicializarListaChats(@RequestParam("cliente") int id, Model model){
+        List<ChatEntity> chats = (List<ChatEntity>) chatEntityRepository.findByClienteByClienteIdCliente_IdCliente(id);
+        model.addAttribute("chats", chats);
+        //model.addAttribute("cliente", id);
         return "chats";
     }
     @GetMapping("/detallesChat/{id}")

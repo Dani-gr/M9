@@ -1,10 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.RolusuarioEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <jsp:useBean id="nombresRoles" type="java.util.List<java.lang.String>" scope="session"/>
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    int idUsuario = usuario.getId();
     boolean bloqueado = usuario.getRolusuariosById().stream().map(RolusuarioEntity::getBloqueado).toList().contains((byte) 1);
 %>
 <html>
@@ -93,9 +95,20 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col">
-                        <div class="btn btn-lg btn-outline-secondary disabled">Busca chat con un asistente</div>
-                    </div>
+                    <form:form action="/chats/solicitudAsistencia" method="post">
+                        <div class="col">
+                            <input type="hidden" id="usuario" name="usuario" value="<%=usuario.getId()%>">
+                            <input type="submit" href="/chats/solicitudAsistencia" class="btn btn-lg btn-outline-secondary" value="Busca chat con un asistente">
+                        </div>
+                    </form:form>
+                    <br/>
+                    <form:form action="/chats/cliente/" method="get">
+                        <div class="col"><!-- TODO: PENDIENTE DE HACER -->
+                            <input type="hidden" id="cliente" name="cliente" value="<%=usuario.getClienteByCliente().getIdCliente()%>">
+                            <input type="submit" class="btn btn-lg btn-outline-secondary" value="Acceder a los chats con asistentes">
+                        </div>
+                    </form:form>
+
                     <c:if test="${bloqueado}">
                         <div class="col">
                             <div class="btn btn-lg btn-outline-warning disabled">Solicitar desbloqueo</div>

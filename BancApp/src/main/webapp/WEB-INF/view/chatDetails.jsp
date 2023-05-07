@@ -34,8 +34,21 @@
 <div class="header">Chat con ${chat.clienteByClienteIdCliente.usuariosByIdCliente.get(0).primerNombre}</div>
 <div class="container" style="text-align: right;">
     <c:forEach items="${chat.mensajesById}" var="mensaje">
-        <h4 style="margin-bottom:0px;">${mensaje.usuarioByEmisor.primerNombre}: ${mensaje.contenido}</h4>
-        <p>${mensaje.fechaHora}</p>
+        <c:if test="${mensaje.usuarioByEmisor.clienteByCliente == null}">
+            <!-- NO ES CLIENTE, POR LO TANTO ES ASISTENTE -->
+            <div style="text-align: right">
+                <h4 style="margin-bottom: 0px; margin-top: 0px;">${mensaje.usuarioByEmisor.primerNombre}: ${mensaje.contenido}</h4>
+                <p style="margin-top: 0px;">${mensaje.fechaHora}</p>
+            </div>
+        </c:if>
+        <c:if test="${mensaje.usuarioByEmisor.clienteByCliente != null}">
+            <!-- ES CLIENTE -->
+            <div style="text-align: left">
+                <h4 style="text-align: left; margin-bottom: 0px; margin-top: 0px">${mensaje.usuarioByEmisor.primerNombre}: ${mensaje.contenido}</h4>
+                <p style="margin-top: 0px">${mensaje.fechaHora}</p>
+            </div>
+        </c:if>
+
     </c:forEach>
 </div>
 <div class="container" style="text-align: right;">
