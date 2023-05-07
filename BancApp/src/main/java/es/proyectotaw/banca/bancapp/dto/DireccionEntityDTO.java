@@ -1,7 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,11 +15,10 @@ public class DireccionEntityDTO implements Serializable {
     private final String ciudad;
     private final String region;
     private final String pais;
-    private final String codPostal;
-    private final Collection<ClienteEntityDTO> clientesById;
-    private final UsuarioEntityDTO usuarioById;
+    private final String codpostal;
+    private final List<ClienteEntityDTO> clientesById;
 
-    public DireccionEntityDTO(Integer id, String calle, Integer numero, String plantaPuertaOficina, String ciudad, String region, String pais, String codPostal, Collection<ClienteEntityDTO> clientesById, UsuarioEntityDTO usuarioById) {
+    public DireccionEntityDTO(Integer id, String calle, Integer numero, String plantaPuertaOficina, String ciudad, String region, String pais, String codpostal, List<ClienteEntityDTO> clientesById) {
         this.id = id;
         this.calle = calle;
         this.numero = numero;
@@ -27,9 +26,8 @@ public class DireccionEntityDTO implements Serializable {
         this.ciudad = ciudad;
         this.region = region;
         this.pais = pais;
-        this.codPostal = codPostal;
+        this.codpostal = codpostal;
         this.clientesById = clientesById;
-        this.usuarioById = usuarioById;
     }
 
     public Integer getId() {
@@ -60,16 +58,12 @@ public class DireccionEntityDTO implements Serializable {
         return pais;
     }
 
-    public String getCodPostal() {
-        return codPostal;
+    public String getCodpostal() {
+        return codpostal;
     }
 
-    public Collection<ClienteEntityDTO> getClientesById() {
+    public List<ClienteEntityDTO> getClientesById() {
         return clientesById;
-    }
-
-    public UsuarioEntityDTO getUsuarioById() {
-        return usuarioById;
     }
 
     @Override
@@ -84,14 +78,13 @@ public class DireccionEntityDTO implements Serializable {
                 Objects.equals(this.ciudad, entity.ciudad) &&
                 Objects.equals(this.region, entity.region) &&
                 Objects.equals(this.pais, entity.pais) &&
-                Objects.equals(this.codPostal, entity.codPostal) &&
-                Objects.equals(this.clientesById, entity.clientesById) &&
-                Objects.equals(this.usuarioById, entity.usuarioById);
+                Objects.equals(this.codpostal, entity.codpostal) &&
+                Objects.equals(this.clientesById, entity.clientesById);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, calle, numero, plantaPuertaOficina, ciudad, region, pais, codPostal, clientesById, usuarioById);
+        return Objects.hash(id, calle, numero, plantaPuertaOficina, ciudad, region, pais, codpostal, clientesById);
     }
 
     @Override
@@ -104,8 +97,7 @@ public class DireccionEntityDTO implements Serializable {
                 "ciudad = " + ciudad + ", " +
                 "region = " + region + ", " +
                 "pais = " + pais + ", " +
-                "codPostal = " + codPostal + ", " +
-                "clientesById = " + clientesById + ", " +
-                "usuarioById = " + usuarioById + ")";
+                "codpostal = " + codpostal + ", " +
+                "clientesById = " + clientesById + ")";
     }
 }

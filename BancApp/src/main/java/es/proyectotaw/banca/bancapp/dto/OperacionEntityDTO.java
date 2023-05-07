@@ -2,6 +2,7 @@ package es.proyectotaw.banca.bancapp.dto;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,18 +11,18 @@ import java.util.Objects;
 public class OperacionEntityDTO implements Serializable {
     private final Integer idOperacion;
     private final Date fecha;
-    private final CambdivisaEntityDTO cambdivisaByIdOperacion;
-    private final ExtraccionEntityDTO extraccionByIdOperacion;
+    private final List<CambDivisaEntityDTO> cambDivisasByIdOperacion;
+    private final List<ExtraccionEntityDTO> extraccionsByIdOperacion;
     private final CuentaEntityDTO cuentaByCuentaRealiza;
-    private final TransferenciaEntityDTO transferenciaByIdOperacion;
+    private final List<TransferenciaEntityDTO> transferenciasByIdOperacion;
 
-    public OperacionEntityDTO(Integer idOperacion, Date fecha, CambdivisaEntityDTO cambdivisaByIdOperacion, ExtraccionEntityDTO extraccionByIdOperacion, CuentaEntityDTO cuentaByCuentaRealiza, TransferenciaEntityDTO transferenciaByIdOperacion) {
+    public OperacionEntityDTO(Integer idOperacion, Date fecha, List<CambDivisaEntityDTO> cambDivisasByIdOperacion, List<ExtraccionEntityDTO> extraccionsByIdOperacion, CuentaEntityDTO cuentaByCuentaRealiza, List<TransferenciaEntityDTO> transferenciasByIdOperacion) {
         this.idOperacion = idOperacion;
         this.fecha = fecha;
-        this.cambdivisaByIdOperacion = cambdivisaByIdOperacion;
-        this.extraccionByIdOperacion = extraccionByIdOperacion;
+        this.cambDivisasByIdOperacion = cambDivisasByIdOperacion;
+        this.extraccionsByIdOperacion = extraccionsByIdOperacion;
         this.cuentaByCuentaRealiza = cuentaByCuentaRealiza;
-        this.transferenciaByIdOperacion = transferenciaByIdOperacion;
+        this.transferenciasByIdOperacion = transferenciasByIdOperacion;
     }
 
     public Integer getIdOperacion() {
@@ -32,20 +33,20 @@ public class OperacionEntityDTO implements Serializable {
         return fecha;
     }
 
-    public CambdivisaEntityDTO getCambdivisaByIdOperacion() {
-        return cambdivisaByIdOperacion;
+    public List<CambDivisaEntityDTO> getCambDivisasByIdOperacion() {
+        return cambDivisasByIdOperacion;
     }
 
-    public ExtraccionEntityDTO getExtraccionByIdOperacion() {
-        return extraccionByIdOperacion;
+    public List<ExtraccionEntityDTO> getExtraccionsByIdOperacion() {
+        return extraccionsByIdOperacion;
     }
 
     public CuentaEntityDTO getCuentaByCuentaRealiza() {
         return cuentaByCuentaRealiza;
     }
 
-    public TransferenciaEntityDTO getTransferenciaByIdOperacion() {
-        return transferenciaByIdOperacion;
+    public List<TransferenciaEntityDTO> getTransferenciasByIdOperacion() {
+        return transferenciasByIdOperacion;
     }
 
     @Override
@@ -55,15 +56,15 @@ public class OperacionEntityDTO implements Serializable {
         OperacionEntityDTO entity = (OperacionEntityDTO) o;
         return Objects.equals(this.idOperacion, entity.idOperacion) &&
                 Objects.equals(this.fecha, entity.fecha) &&
-                Objects.equals(this.cambdivisaByIdOperacion, entity.cambdivisaByIdOperacion) &&
-                Objects.equals(this.extraccionByIdOperacion, entity.extraccionByIdOperacion) &&
+                Objects.equals(this.cambDivisasByIdOperacion, entity.cambDivisasByIdOperacion) &&
+                Objects.equals(this.extraccionsByIdOperacion, entity.extraccionsByIdOperacion) &&
                 Objects.equals(this.cuentaByCuentaRealiza, entity.cuentaByCuentaRealiza) &&
-                Objects.equals(this.transferenciaByIdOperacion, entity.transferenciaByIdOperacion);
+                Objects.equals(this.transferenciasByIdOperacion, entity.transferenciasByIdOperacion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idOperacion, fecha, cambdivisaByIdOperacion, extraccionByIdOperacion, cuentaByCuentaRealiza, transferenciaByIdOperacion);
+        return Objects.hash(idOperacion, fecha, cambDivisasByIdOperacion, extraccionsByIdOperacion, cuentaByCuentaRealiza, transferenciasByIdOperacion);
     }
 
     @Override
@@ -71,9 +72,9 @@ public class OperacionEntityDTO implements Serializable {
         return getClass().getSimpleName() + "(" +
                 "idOperacion = " + idOperacion + ", " +
                 "fecha = " + fecha + ", " +
-                "cambdivisaByIdOperacion = " + cambdivisaByIdOperacion + ", " +
-                "extraccionByIdOperacion = " + extraccionByIdOperacion + ", " +
+                "cambDivisasByIdOperacion = " + cambDivisasByIdOperacion + ", " +
+                "extraccionsByIdOperacion = " + extraccionsByIdOperacion + ", " +
                 "cuentaByCuentaRealiza = " + cuentaByCuentaRealiza + ", " +
-                "transferenciaByIdOperacion = " + transferenciaByIdOperacion + ")";
+                "transferenciasByIdOperacion = " + transferenciasByIdOperacion + ")";
     }
 }

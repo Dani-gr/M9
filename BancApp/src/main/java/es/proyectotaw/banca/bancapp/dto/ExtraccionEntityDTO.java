@@ -7,18 +7,18 @@ import java.util.Objects;
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.ExtraccionEntity} entity
  */
 public class ExtraccionEntityDTO implements Serializable {
-    private final Integer operacion;
+    private final Integer idExtraccion;
     private final Double cantidad;
     private final OperacionEntityDTO operacionByOperacion;
 
-    public ExtraccionEntityDTO(Integer operacion, Double cantidad, OperacionEntityDTO operacionByOperacion) {
-        this.operacion = operacion;
+    public ExtraccionEntityDTO(Integer idExtraccion, Double cantidad, OperacionEntityDTO operacionByOperacion) {
+        this.idExtraccion = idExtraccion;
         this.cantidad = cantidad;
         this.operacionByOperacion = operacionByOperacion;
     }
 
-    public Integer getOperacion() {
-        return operacion;
+    public Integer getIdExtraccion() {
+        return idExtraccion;
     }
 
     public Double getCantidad() {
@@ -34,20 +34,20 @@ public class ExtraccionEntityDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExtraccionEntityDTO entity = (ExtraccionEntityDTO) o;
-        return Objects.equals(this.operacion, entity.operacion) &&
+        return Objects.equals(this.idExtraccion, entity.idExtraccion) &&
                 Objects.equals(this.cantidad, entity.cantidad) &&
                 Objects.equals(this.operacionByOperacion, entity.operacionByOperacion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(operacion, cantidad, operacionByOperacion);
+        return Objects.hash(idExtraccion, cantidad, operacionByOperacion);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "operacion = " + operacion + ", " +
+                "idExtraccion = " + idExtraccion + ", " +
                 "cantidad = " + cantidad + ", " +
                 "operacionByOperacion = " + operacionByOperacion + ")";
     }

@@ -1,45 +1,45 @@
 package es.proyectotaw.banca.bancapp.dto;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.EmpresaEntity} entity
  */
 public class EmpresaEntityDTO implements Serializable {
+    private final Integer idEmpresa;
     private final Integer cif;
-    private final Integer id;
-    private final Collection<ClientesempresaEntityDTO> clientesempresas;
-    private final ClienteEntityDTO clienteById;
-    private final Collection<RolusuarioEntityDTO> rolusuarios;
+    private final List<ClientesEmpresaEntityDTO> clientesEmpresasByIdEmpresa;
+    private final ClienteEntityDTO clienteByCliente;
+    private final List<RolusuarioEntityDTO> rolusuariosByIdEmpresa;
 
-    public EmpresaEntityDTO(Integer cif, Integer id, Collection<ClientesempresaEntityDTO> clientesempresas, ClienteEntityDTO clienteById, Collection<RolusuarioEntityDTO> rolusuarios) {
+    public EmpresaEntityDTO(Integer idEmpresa, Integer cif, List<ClientesEmpresaEntityDTO> clientesEmpresasByIdEmpresa, ClienteEntityDTO clienteByCliente, List<RolusuarioEntityDTO> rolusuariosByIdEmpresa) {
+        this.idEmpresa = idEmpresa;
         this.cif = cif;
-        this.id = id;
-        this.clientesempresas = clientesempresas;
-        this.clienteById = clienteById;
-        this.rolusuarios = rolusuarios;
+        this.clientesEmpresasByIdEmpresa = clientesEmpresasByIdEmpresa;
+        this.clienteByCliente = clienteByCliente;
+        this.rolusuariosByIdEmpresa = rolusuariosByIdEmpresa;
+    }
+
+    public Integer getIdEmpresa() {
+        return idEmpresa;
     }
 
     public Integer getCif() {
         return cif;
     }
 
-    public Integer getId() {
-        return id;
+    public List<ClientesEmpresaEntityDTO> getClientesEmpresasByIdEmpresa() {
+        return clientesEmpresasByIdEmpresa;
     }
 
-    public Collection<ClientesempresaEntityDTO> getClientesempresas() {
-        return clientesempresas;
+    public ClienteEntityDTO getClienteByCliente() {
+        return clienteByCliente;
     }
 
-    public ClienteEntityDTO getClienteById() {
-        return clienteById;
-    }
-
-    public Collection<RolusuarioEntityDTO> getRolusuarios() {
-        return rolusuarios;
+    public List<RolusuarioEntityDTO> getRolusuariosByIdEmpresa() {
+        return rolusuariosByIdEmpresa;
     }
 
     @Override
@@ -47,25 +47,25 @@ public class EmpresaEntityDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmpresaEntityDTO entity = (EmpresaEntityDTO) o;
-        return Objects.equals(this.cif, entity.cif) &&
-                Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.clientesempresas, entity.clientesempresas) &&
-                Objects.equals(this.clienteById, entity.clienteById) &&
-                Objects.equals(this.rolusuarios, entity.rolusuarios);
+        return Objects.equals(this.idEmpresa, entity.idEmpresa) &&
+                Objects.equals(this.cif, entity.cif) &&
+                Objects.equals(this.clientesEmpresasByIdEmpresa, entity.clientesEmpresasByIdEmpresa) &&
+                Objects.equals(this.clienteByCliente, entity.clienteByCliente) &&
+                Objects.equals(this.rolusuariosByIdEmpresa, entity.rolusuariosByIdEmpresa);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cif, id, clientesempresas, clienteById, rolusuarios);
+        return Objects.hash(idEmpresa, cif, clientesEmpresasByIdEmpresa, clienteByCliente, rolusuariosByIdEmpresa);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
+                "idEmpresa = " + idEmpresa + ", " +
                 "cif = " + cif + ", " +
-                "id = " + id + ", " +
-                "clientesempresas = " + clientesempresas + ", " +
-                "clienteById = " + clienteById + ", " +
-                "rolusuarios = " + rolusuarios + ")";
+                "clientesEmpresasByIdEmpresa = " + clientesEmpresasByIdEmpresa + ", " +
+                "clienteByCliente = " + clienteByCliente + ", " +
+                "rolusuariosByIdEmpresa = " + rolusuariosByIdEmpresa + ")";
     }
 }

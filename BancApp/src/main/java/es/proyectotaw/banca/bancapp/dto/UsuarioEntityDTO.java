@@ -2,7 +2,7 @@ package es.proyectotaw.banca.bancapp.dto;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,14 +18,12 @@ public class UsuarioEntityDTO implements Serializable {
     private final Date fechaNacimiento;
     private final String email;
     private final String password;
-    private final Integer idDireccion;
-    private final Collection<ChatEntityDTO> chatsById;
-    private final DireccionEntityDTO direccionById;
-    private final Collection<MensajeEntityDTO> mensajesById;
-    private final Collection<RolusuarioEntityDTO> rolusuariosById;
-    private final ClienteEntityDTO clienteById;
+    private final List<ChatEntityDTO> chatsById;
+    private final List<MensajeEntityDTO> mensajesById;
+    private final List<RolusuarioEntityDTO> rolusuariosById;
+    private final ClienteEntityDTO clienteByCliente;
 
-    public UsuarioEntityDTO(Integer id, String nif, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, Date fechaNacimiento, String email, String password, Integer idDireccion, Collection<ChatEntityDTO> chatsById, DireccionEntityDTO direccionById, Collection<MensajeEntityDTO> mensajesById, Collection<RolusuarioEntityDTO> rolusuariosById, ClienteEntityDTO clienteById) {
+    public UsuarioEntityDTO(Integer id, String nif, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, Date fechaNacimiento, String email, String password, List<ChatEntityDTO> chatsById, List<MensajeEntityDTO> mensajesById, List<RolusuarioEntityDTO> rolusuariosById, ClienteEntityDTO clienteByCliente) {
         this.id = id;
         this.nif = nif;
         this.primerNombre = primerNombre;
@@ -35,12 +33,10 @@ public class UsuarioEntityDTO implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
         this.email = email;
         this.password = password;
-        this.idDireccion = idDireccion;
         this.chatsById = chatsById;
-        this.direccionById = direccionById;
         this.mensajesById = mensajesById;
         this.rolusuariosById = rolusuariosById;
-        this.clienteById = clienteById;
+        this.clienteByCliente = clienteByCliente;
     }
 
     public Integer getId() {
@@ -79,28 +75,20 @@ public class UsuarioEntityDTO implements Serializable {
         return password;
     }
 
-    public Integer getIdDireccion() {
-        return idDireccion;
-    }
-
-    public Collection<ChatEntityDTO> getChatsById() {
+    public List<ChatEntityDTO> getChatsById() {
         return chatsById;
     }
 
-    public DireccionEntityDTO getDireccionById() {
-        return direccionById;
-    }
-
-    public Collection<MensajeEntityDTO> getMensajesById() {
+    public List<MensajeEntityDTO> getMensajesById() {
         return mensajesById;
     }
 
-    public Collection<RolusuarioEntityDTO> getRolusuariosById() {
+    public List<RolusuarioEntityDTO> getRolusuariosById() {
         return rolusuariosById;
     }
 
-    public ClienteEntityDTO getClienteById() {
-        return clienteById;
+    public ClienteEntityDTO getClienteByCliente() {
+        return clienteByCliente;
     }
 
     @Override
@@ -117,17 +105,15 @@ public class UsuarioEntityDTO implements Serializable {
                 Objects.equals(this.fechaNacimiento, entity.fechaNacimiento) &&
                 Objects.equals(this.email, entity.email) &&
                 Objects.equals(this.password, entity.password) &&
-                Objects.equals(this.idDireccion, entity.idDireccion) &&
                 Objects.equals(this.chatsById, entity.chatsById) &&
-                Objects.equals(this.direccionById, entity.direccionById) &&
                 Objects.equals(this.mensajesById, entity.mensajesById) &&
                 Objects.equals(this.rolusuariosById, entity.rolusuariosById) &&
-                Objects.equals(this.clienteById, entity.clienteById);
+                Objects.equals(this.clienteByCliente, entity.clienteByCliente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nif, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password, idDireccion, chatsById, direccionById, mensajesById, rolusuariosById, clienteById);
+        return Objects.hash(id, nif, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password, chatsById, mensajesById, rolusuariosById, clienteByCliente);
     }
 
     @Override
@@ -142,11 +128,9 @@ public class UsuarioEntityDTO implements Serializable {
                 "fechaNacimiento = " + fechaNacimiento + ", " +
                 "email = " + email + ", " +
                 "password = " + password + ", " +
-                "idDireccion = " + idDireccion + ", " +
                 "chatsById = " + chatsById + ", " +
-                "direccionById = " + direccionById + ", " +
                 "mensajesById = " + mensajesById + ", " +
                 "rolusuariosById = " + rolusuariosById + ", " +
-                "clienteById = " + clienteById + ")";
+                "clienteByCliente = " + clienteByCliente + ")";
     }
 }
