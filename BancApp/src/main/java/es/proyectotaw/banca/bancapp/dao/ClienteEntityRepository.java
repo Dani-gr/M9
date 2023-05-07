@@ -15,32 +15,17 @@ public interface ClienteEntityRepository extends JpaRepository<ClienteEntity, In
     @Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0")
     List<ClienteEntity> obtenerClientesDadosDeAlta();
 
-    /*Filtro de clientes*/
-
-    /*@Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
-                                            "c.cuentasByIdCliente[0].saldo >= :lim")
-    List<ClienteEntity> obtenerClientesPorSaldoMinimo(@Param("lim") Float lim);
+    /*
+    @Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
+                                            " c. >= :lim")
+    List<ClienteEntity> obtenerClientesPorSaldoMinimo(@Param("lim") Double lim);
 
     @Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
                                             "c.direccionByDireccion.ciudad like CONCAT('%', :ciudad, '%')  ")
     List<ClienteEntity> obtenerClientesPorCiudad(@Param("ciudad") String ciudad);
 
     @Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
-                                            "c.cuentasByIdCliente[0].activa = :estado")
-    List<ClienteEntity> obtenerClientesPorEstadoDeCuenta(@Param("estado") Boolean estado);
-
-    @Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
             "c.cuentasByIdCliente[0].saldo >= :lim and c.direccionByDireccion.ciudad like CONCAT('%', :ciudad, '%')  ")
-    List<ClienteEntity> obtenerCLientesPorSaldoMinimoYCiudad(@Param("lim") Float lim, @Param("ciudad") String ciudad);
-
-    @Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
-            "c.cuentasByIdCliente[0].saldo >= :lim")
-    List<ClienteEntity> obtenerCLientesPorSaldoMinimoYEstadoDeCuenta(@Param("lim") Float lim, @Param("estado") Boolean estado);
-
-    @Query()
-    List<ClienteEntity> obtenerCLientesPorCiudadYEstadoDeCuenta();
-
-    @Query()
-    List<ClienteEntity> obtenerCLientesPorCiudadSaldoMinimoYEstadoDeCuenta();*/
-
+    List<ClienteEntity> obtenerCLientesPorSaldoMinimoYCiudad(@Param("lim") Double lim, @Param("ciudad") String ciudad);
+    */
 }

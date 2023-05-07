@@ -2,6 +2,8 @@ package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.CuentaEntityRepository;
+import es.proyectotaw.banca.bancapp.dao.CuentasSospechosasRepository;
+import es.proyectotaw.banca.bancapp.dao.TransferenciaEntityRepository;
 import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.CuentaEntity;
 import es.proyectotaw.banca.bancapp.ui.FiltroClientes;
@@ -27,6 +29,12 @@ public class GestorController {
     @Autowired
     protected CuentaEntityRepository cuentaEntityRepository;
 
+    @Autowired
+    protected CuentasSospechosasRepository cuentasSospechosasRepository;
+
+    @Autowired
+    protected TransferenciaEntityRepository transferenciaEntityRepository;
+
 
     /*Zona destinada a controlar la pantalla de gestor*/
     @GetMapping("/")
@@ -44,12 +52,20 @@ public class GestorController {
 
         if(session.getAttribute("usuario") == null) return "redirect:/";
 
-        List<ClienteEntity> clientes;
+        List<ClienteEntity> clientes = this.clienteEntityRepository.findAll();
+        filtroClientes = new FiltroClientes();
 
-
+        /*if(filtroClientes == null || (filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad() == null) ){
             filtroClientes = new FiltroClientes();
-            clientes = this.clienteEntityRepository.obtenerClientesDadosDeAlta();
-
+            clientes = this.clienteEntityRepository.findAll();
+        } else if (filtroClientes.getCiudad() == null) {
+            clientes = this.clienteEntityRepository.obtenerClientesPorSaldoMinimo(filtroClientes.getLimInfSaldo());
+        } else if (filtroClientes.getLimInfSaldo() == null) {
+            clientes = this.clienteEntityRepository.obtenerClientesPorCiudad(filtroClientes.getCiudad().toLowerCase());
+        }else{
+            clientes = this.clienteEntityRepository
+                    .obtenerCLientesPorSaldoMinimoYCiudad(filtroClientes.getLimInfSaldo(), filtroClientes.getCiudad());
+        }*/
 
         model.addAttribute("clientes", clientes);
         model.addAttribute("filtroCLientes", filtroClientes);
@@ -102,15 +118,29 @@ public class GestorController {
     }
 
     @GetMapping("/cuentasInactivas")
-    public String doMostrarCuentasInactivas(){
-        return "solicitudesAltaGestorView";
+    public String doMostrarCuentasInactivas(HttpSession session, Model model){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
+        model.addAttribute("inactivas", this.cuentaEntityRepository.findAll());
+        return "cuentasInactivasGestorView";
     }
 
     @GetMapping("/seguridadTransferencias")
-    public String doMostrarSeguridadCuentas(){
+    public String doMostrarSeguridadCuentas(Model model, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
+        List<String> sospechosas = this.cuentasSospechosasRepository.obtenerIbans();
+        model.addAttribute("sospechosas", this.cuentasSospechosasRepository.findAll());
+        model.addAttribute("transferencias", this.transferenciaEntityRepository.filtrarPorDestinoSospechoso(sospechosas));
+
         return "seguridadGestorView";
     }
 
+    @GetMapping("/bloquearPorTransferencia")
+    public String bloquearSospechosa(@Param("cuenta") Integer cuenta){
+        setEstadoCuenta(cuenta,  (byte)0);
+        return "redirect:/gestor/seguridadTransferencias";
+    }
 
     /*Bloqueo/desbloqueo según la vista a la que se quiera retornar*/
 

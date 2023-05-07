@@ -56,13 +56,6 @@
                                 <td>SALDO MÍNIMO:</td>
                                 <td><form:input class="form-control" path="limInfSaldo" type="number"></form:input></td>
                             </tr>
-                            <tr>
-                                <td>ESTADO CUENTA:</td>
-                                <td>
-                                    <form:radiobutton class="form-check-input" path="cuentaActiva" value="true" label="Activa" />
-                                    <form:radiobutton class="form-check-input" path="cuentaActiva" value="false" label="Bloqueada" />
-                                </td>
-                            </tr>
                         </table>
                         <form:button class="btn btn-primary">FILTRAR</form:button>
                         <input class="btn btn-warning" type="reset" value="BORRAR FILTROS"

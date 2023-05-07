@@ -37,8 +37,8 @@
             <td>EMAIL</td><td><%=u.getEmail()%></td>
         </tr>
         <tr>
-            <td>NOMBRE COMPLETO</td><td><%=u.getPrimerNombre() + " " + u.getSegundoNombre() + "\n" +
-                                        u.getPrimerApellido() + " " + u.getSegundoApellido() %></td>
+            <td>NOMBRE COMPLETO</td><td><%=u.getPrimerNombre() + " " %> <%=(u.getSegundoNombre() != null)? u.getSegundoNombre(): ""%>  <%="\n" +
+                                        u.getPrimerApellido() + " " %> <%= (u.getSegundoApellido() == null)? u.getSegundoApellido(): ""%></td>
         </tr>
         <tr>
             <td>FECHA DE NACIMIENTO</td><td><%=u.getFechaNacimiento()%></td>
