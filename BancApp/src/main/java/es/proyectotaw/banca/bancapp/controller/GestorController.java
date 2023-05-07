@@ -79,7 +79,7 @@ public class GestorController {
         return "solicitudesAltaGestorView";
     }
 
-    @GetMapping("/solicitudesAlta/verSolicitante")
+    @GetMapping("/verSolicitante")
     public String doMostrarSolicitanteACliente(@RequestParam("id") Integer id, Model model, HttpSession session){
         if(session.getAttribute("usuario") == null) return "redirect:/";
 
@@ -185,7 +185,7 @@ public class GestorController {
         return "solicitudesActivacionGestorView";
     }
 
-    @GetMapping("/gestor/activar")
+    @GetMapping("/activar")
     public String doActivarCuenta(@RequestParam("cuenta") Integer cuenta, HttpSession session){
         if(session.getAttribute("usuario") == null) return "redirect:/";
 

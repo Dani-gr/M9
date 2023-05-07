@@ -44,14 +44,14 @@
                             "ES UNA EMPRESA" :
                             "ES UN PARTICULAR"
                     %>
-                    <a href="/gestor/solicitudesAlta/verSolicitante?id=<%=c.getIdCliente()%>"
+                    <a href="/gestor/verSolicitante?id=<%=c.getIdCliente()%>">INFORMACIÓN</a>
                 </td>
 
                 <td>
-                    <a href="gestor/asignarCuenta?id=<%=c.getIdCliente()%>">ACEPTAR</a>
+                    <a class="btn btn-success" href="/gestor/asignarCuenta?id=<%=c.getIdCliente()%>">ACEPTAR</a>
                 </td>
                 <td>
-                    <a href="gestor/borrarCliente?id=<%=c.getIdCliente()%>">DENEGAR</a>
+                    <a class="btn btn-danger" href="/gestor/borrarCliente?id=<%=c.getIdCliente()%>">DENEGAR</a>
                 </td>
 
             </tr>
