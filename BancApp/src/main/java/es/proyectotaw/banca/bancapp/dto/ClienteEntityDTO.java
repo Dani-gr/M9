@@ -1,42 +1,37 @@
 package es.proyectotaw.banca.bancapp.dto;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.ClienteEntity} entity
  */
+@SuppressWarnings("unused")
 public class ClienteEntityDTO implements Serializable {
     private final Integer idCliente;
-    private final String direcc;
-    private final Collection<ChatEntityDTO> chatsByIdCliente;
+    private final List<ChatEntityDTO> chatsByIdCliente;
     private final DireccionEntityDTO direccionByDireccion;
-    private final Collection<ClientesempresaEntityDTO> clientesempresasByIdCliente;
-    private final Collection<CuentaEntityDTO> cuentasByIdCliente;
-    private final Collection<EmpresaEntityDTO> empresasByIdCliente;
-    private final UsuarioEntityDTO usuarioByIdCliente;
+    private final List<ClientesEmpresaEntityDTO> clientesEmpresasByIdCliente;
+    private final List<CuentaEntityDTO> cuentasByIdCliente;
+    private final List<EmpresaEntityDTO> empresasByIdCliente;
+    private final List<UsuarioEntityDTO> usuariosByIdCliente;
 
-    public ClienteEntityDTO(Integer idCliente, String direcc, Collection<ChatEntityDTO> chatsByIdCliente, DireccionEntityDTO direccionByDireccion, Collection<ClientesempresaEntityDTO> clientesempresasByIdCliente, Collection<CuentaEntityDTO> cuentasByIdCliente, Collection<EmpresaEntityDTO> empresasByIdCliente, UsuarioEntityDTO usuarioByIdCliente) {
+    public ClienteEntityDTO(Integer idCliente, List<ChatEntityDTO> chatsByIdCliente, DireccionEntityDTO direccionByDireccion, List<ClientesEmpresaEntityDTO> clientesEmpresasByIdCliente, List<CuentaEntityDTO> cuentasByIdCliente, List<EmpresaEntityDTO> empresasByIdCliente, List<UsuarioEntityDTO> usuariosByIdCliente) {
         this.idCliente = idCliente;
-        this.direcc = direcc;
         this.chatsByIdCliente = chatsByIdCliente;
         this.direccionByDireccion = direccionByDireccion;
-        this.clientesempresasByIdCliente = clientesempresasByIdCliente;
+        this.clientesEmpresasByIdCliente = clientesEmpresasByIdCliente;
         this.cuentasByIdCliente = cuentasByIdCliente;
         this.empresasByIdCliente = empresasByIdCliente;
-        this.usuarioByIdCliente = usuarioByIdCliente;
+        this.usuariosByIdCliente = usuariosByIdCliente;
     }
 
     public Integer getIdCliente() {
         return idCliente;
     }
 
-    public String getDirecc() {
-        return direcc;
-    }
-
-    public Collection<ChatEntityDTO> getChatsByIdCliente() {
+    public List<ChatEntityDTO> getChatsByIdCliente() {
         return chatsByIdCliente;
     }
 
@@ -44,20 +39,20 @@ public class ClienteEntityDTO implements Serializable {
         return direccionByDireccion;
     }
 
-    public Collection<ClientesempresaEntityDTO> getClientesempresasByIdCliente() {
-        return clientesempresasByIdCliente;
+    public List<ClientesEmpresaEntityDTO> getClientesEmpresasByIdCliente() {
+        return clientesEmpresasByIdCliente;
     }
 
-    public Collection<CuentaEntityDTO> getCuentasByIdCliente() {
+    public List<CuentaEntityDTO> getCuentasByIdCliente() {
         return cuentasByIdCliente;
     }
 
-    public Collection<EmpresaEntityDTO> getEmpresasByIdCliente() {
+    public List<EmpresaEntityDTO> getEmpresasByIdCliente() {
         return empresasByIdCliente;
     }
 
-    public UsuarioEntityDTO getUsuarioByIdCliente() {
-        return usuarioByIdCliente;
+    public List<UsuarioEntityDTO> getUsuariosByIdCliente() {
+        return usuariosByIdCliente;
     }
 
     @Override
@@ -66,30 +61,28 @@ public class ClienteEntityDTO implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         ClienteEntityDTO entity = (ClienteEntityDTO) o;
         return Objects.equals(this.idCliente, entity.idCliente) &&
-                Objects.equals(this.direcc, entity.direcc) &&
                 Objects.equals(this.chatsByIdCliente, entity.chatsByIdCliente) &&
                 Objects.equals(this.direccionByDireccion, entity.direccionByDireccion) &&
-                Objects.equals(this.clientesempresasByIdCliente, entity.clientesempresasByIdCliente) &&
+                Objects.equals(this.clientesEmpresasByIdCliente, entity.clientesEmpresasByIdCliente) &&
                 Objects.equals(this.cuentasByIdCliente, entity.cuentasByIdCliente) &&
                 Objects.equals(this.empresasByIdCliente, entity.empresasByIdCliente) &&
-                Objects.equals(this.usuarioByIdCliente, entity.usuarioByIdCliente);
+                Objects.equals(this.usuariosByIdCliente, entity.usuariosByIdCliente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idCliente, direcc, chatsByIdCliente, direccionByDireccion, clientesempresasByIdCliente, cuentasByIdCliente, empresasByIdCliente, usuarioByIdCliente);
+        return Objects.hash(idCliente, chatsByIdCliente, direccionByDireccion, clientesEmpresasByIdCliente, cuentasByIdCliente, empresasByIdCliente, usuariosByIdCliente);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "idCliente = " + idCliente + ", " +
-                "direcc = " + direcc + ", " +
                 "chatsByIdCliente = " + chatsByIdCliente + ", " +
                 "direccionByDireccion = " + direccionByDireccion + ", " +
-                "clientesempresasByIdCliente = " + clientesempresasByIdCliente + ", " +
+                "clientesEmpresasByIdCliente = " + clientesEmpresasByIdCliente + ", " +
                 "cuentasByIdCliente = " + cuentasByIdCliente + ", " +
                 "empresasByIdCliente = " + empresasByIdCliente + ", " +
-                "usuarioByIdCliente = " + usuarioByIdCliente + ")";
+                "usuariosByIdCliente = " + usuariosByIdCliente + ")";
     }
 }
