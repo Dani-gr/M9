@@ -4,6 +4,7 @@
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.ArrayList" %>
 <% Optional<UsuarioEntity> usuariosAsociados = (Optional<UsuarioEntity>) request.getAttribute("usuariosAsociados");%>
+<% Optional<UsuarioEntity> usuariosBloqueados = (Optional<UsuarioEntity>) request.getAttribute("usuariosBloqueados");%>
 
 <html>
 <head>
@@ -37,7 +38,9 @@
             <td><%= usuario.getPrimerNombre() %> <%= usuario.getSegundoNombre() %> </td>
             <td><%= usuario.getPrimerApellido() %> <%= usuario.getSegundoApellido() %></td>
             <td><a href="/empresa/cambiarRol?id=<%=usuario.getId()%>&rol=<%=usuario.getRolusuariosById().get(0).getRolByIdrol().getIdrol()%>"/> <%= usuario.getRolusuariosById().get(0).getRolByIdrol().getNombre() %></td>
-            <td><a href="/empresa/bloquear?id=<%=usuario.getId()%>&rol=<%=usuario.getRolusuariosById().get(0).getRolByIdrol().getIdrol()%>"/><button class="btn btn-danger"> X </button></td>
+            <td><a href="/empresa/bloquearUsuario?id=<%=usuario.getId()%>"/><button class="btn btn-danger
+                <%= usuario.getRolusuariosById().get(0).getBloqueado() == (byte) 1 ? " disabled" : "" %>
+                "> X </button></td>
         </tr>
         <% } %>
         <% } %>

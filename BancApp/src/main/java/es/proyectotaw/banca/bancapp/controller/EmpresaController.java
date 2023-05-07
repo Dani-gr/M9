@@ -1,6 +1,7 @@
 package es.proyectotaw.banca.bancapp.controller;
 
 
+import es.proyectotaw.banca.bancapp.dao.EmpresaEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.RolEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.RolusuarioEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioEntityRepository;
@@ -30,6 +31,8 @@ public class EmpresaController {
     RolEntityRepository rolEntityRepository;
     @Autowired
     private RolusuarioEntityRepository rolusuarioEntityRepository;
+    @Autowired
+    private EmpresaEntityRepository empresaEntityRepository;
 
     @GetMapping("/")
     public String doMostrar(Model model, HttpSession session){
@@ -37,9 +40,10 @@ public class EmpresaController {
 
         List<RolusuarioEntity> listaRolUsuarioAsociados = usuario.getRolusuariosById();
         EmpresaEntity empresa = listaRolUsuarioAsociados.get(0).getEmpresaByIdempresa();
-        Optional<UsuarioEntity> usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresa(empresa.getId());
-
+        Optional<UsuarioEntity> usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresa(empresa.getIdEmpresa());
+        Optional<UsuarioEntity> usuariosBloqueados = usuarioEntityRepository.findUsuariosBloqueadosByEmpresa(empresa.getIdEmpresa());
         model.addAttribute("usuariosAsociados", usuariosAsociados);
+        model.addAttribute("usuariosBloqueados", usuariosBloqueados);
 
 
         return "gestionSociosYAut";
@@ -65,6 +69,14 @@ public class EmpresaController {
         }
         rolusuario.setRolByIdrol(rolNuevo);
         rolusuarioEntityRepository.save(rolusuario);
+        return "redirect:/empresa/";
+    }
+
+    @GetMapping("/bloquearUsuario")
+    public String doBloquearUsuario(@RequestParam("id") Integer id){
+        UsuarioEntity usuario = usuarioEntityRepository.getById(id);
+        usuario.getRolusuariosById().get(0).setBloqueado((byte) 1);
+        usuarioEntityRepository.save(usuario);
         return "redirect:/empresa/";
     }
 }

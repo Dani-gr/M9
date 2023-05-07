@@ -336,7 +336,7 @@ public class LoginController {
         operacionEntityRepository.save(o2);
         operacionEntityRepository.save(o3);
 
-
+        /*
         // Cambios de divisa
         cambDivisaEntityRepository.deleteAll(cambDivisaEntityRepository.findAll());
         CambDivisaEntity cd1 = new CambDivisaEntity(), cd2 = new CambDivisaEntity();
@@ -347,9 +347,11 @@ public class LoginController {
         cd1.setDestino("USD");
         cd2.setDestino("GBP");
 
+
+
         cambDivisaEntityRepository.save(cd1);
         cambDivisaEntityRepository.save(cd2);
-
+        */
         RolusuarioEntity ru1 = new RolusuarioEntity(), ru2 = new RolusuarioEntity(), ru3 = new RolusuarioEntity(), ru4 = new RolusuarioEntity(), ru5 = new RolusuarioEntity();
         ru1.setUsuarioByIdusuario(u1);
         ru2.setUsuarioByIdusuario(u2);
