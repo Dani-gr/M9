@@ -32,13 +32,13 @@
 </head>
 <body>
 <div class="header">Chat con ${chat.clienteByClienteIdCliente.usuariosByIdCliente.get(0).primerNombre}</div>
-<div class="container">
+<div class="container" style="text-align: right;">
     <c:forEach items="${chat.mensajesById}" var="mensaje">
         <h4 style="margin-bottom:0px;">${mensaje.usuarioByEmisor.primerNombre}: ${mensaje.contenido}</h4>
         <p>${mensaje.fechaHora}</p>
     </c:forEach>
 </div>
-<div class="container">
+<div class="container" style="text-align: right;">
     <c:if test="${chat.activo == 1}">
         <form action="/chats/crearMensaje" method="post">
             <input type="hidden" id="idUsuario" name="idUsuario" value="${chat.usuarioByAsistenteId.id}">
