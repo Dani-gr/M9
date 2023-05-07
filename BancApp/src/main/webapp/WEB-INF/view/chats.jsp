@@ -22,10 +22,19 @@
                 <h1>Lista de Chats</h1>
                 <c:if test="<%=usuario.getClienteByCliente()==null%>">
                     <form action="busquedaChatsPorNombre">
-                        <input type="text" id="nombre" name="nombre" placeholder="Buscar...">
+                        <input type="text" id="nombre" name="nombre" placeholder="Buscar por cliente...">
                         <input type="submit" value="Buscar">
                     </form>
                 </c:if>
+                <form action="filtrarPorActivo">
+                    Filtro:
+                    <select name="filtro" id="filtro">
+                        <option value="Abiertos">Abiertos</option>
+                        <option value="Cerrados">Cerrados</option>
+                        <option value="Reset">Reiniciar</option>
+                    </select>
+                    <input type="submit" value="Filtrar">
+                </form>
             </nav>
             <table class="table table-striped table-info">
                 <thead>

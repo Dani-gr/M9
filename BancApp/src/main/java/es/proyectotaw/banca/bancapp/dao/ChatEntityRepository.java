@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatEntityRepository extends JpaRepository<ChatEntity, Integer> {
+    List<ChatEntity> findAllByActivo(Byte activo);
     @Transactional
     @Modifying
     @Query("update ChatEntity c set c.activo = ?1 where c.id = ?2")
@@ -21,7 +22,4 @@ public interface ChatEntityRepository extends JpaRepository<ChatEntity, Integer>
     @Override
     Optional<ChatEntity> findById(Integer integer);
 
-    //List<ChatEntity> findByClienteByClienteIdCliente();
-
-    //List<ChatEntity> findByClienteByClienteIdCliente_IdCliente(Integer idCliente);
 }

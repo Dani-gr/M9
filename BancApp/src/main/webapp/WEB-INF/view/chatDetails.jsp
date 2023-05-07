@@ -37,7 +37,7 @@
 <body>
 <div class="header">Chat con ${chat.clienteByClienteIdCliente.usuariosByIdCliente.get(0).primerNombre}</div>
 <div class="container" style="text-align: right;">
-    <c:forEach items="${chat.mensajesById}" var="mensaje">
+    <c:forEach items="${mensajes}" var="mensaje">
         <c:if test="${mensaje.usuarioByEmisor.clienteByCliente == null}">
             <!-- NO ES CLIENTE, POR LO TANTO ES ASISTENTE -->
             <div style="text-align: right">

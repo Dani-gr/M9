@@ -9,8 +9,10 @@ import es.proyectotaw.banca.bancapp.entity.ChatEntity;
 import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.MensajeEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
+import net.bytebuddy.TypeCache;
 import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,12 +56,14 @@ public class ChatController {
     String doInicializarListaChats(@RequestParam("cliente") int id, Model model){
         List<ChatEntity> chats = (List<ChatEntity>) chatEntityRepository.findByClienteByClienteIdCliente_IdCliente(id);
         model.addAttribute("chats", chats);
-        //model.addAttribute("cliente", id);
         return "chats";
     }
     @GetMapping("/detallesChat/{id}")
     String doMostrarChat(@PathVariable(value = "id") int id, Model model){
+        Sort sortByFechaDesc = Sort.by("fechaHora").ascending();
         ChatEntity chat = chatEntityRepository.getById(id);
+        List<MensajeEntity> msgs = mensajeEntityRepository.findByChatByChat_Id(chat.getId(),sortByFechaDesc);
+        model.addAttribute("mensajes", msgs);
         model.addAttribute("chat",chat);
         return "chatDetails";
     }
@@ -72,6 +76,20 @@ public class ChatController {
     @GetMapping("/busquedaChatsPorNombre")
     String doMostrarChatsPorNombre(@RequestParam("nombre") String nombre, Model model){
         List<ChatEntity> chats = chatEntityRepository.findByClienteByClienteIdCliente_UsuariosByIdCliente_PrimerNombre(nombre);
+        model.addAttribute("chats", chats);
+        return "chats";
+    }
+
+    @GetMapping("/filtrarPorActivo")
+    String doFiltrarChatsPorActividad(@RequestParam("filtro") String filtro, Model model){
+        List<ChatEntity> chats = null;
+        if(filtro.equals("Abiertos")){
+            chats = (List<ChatEntity>) chatEntityRepository.findAllByActivo((byte) 1);
+        }else if (filtro.equals("Cerrados")){
+            chats = (List<ChatEntity>) chatEntityRepository.findAllByActivo((byte) 0);
+        }else{
+            return "redirect:/chats/asistente";
+        }
         model.addAttribute("chats", chats);
         return "chats";
     }
