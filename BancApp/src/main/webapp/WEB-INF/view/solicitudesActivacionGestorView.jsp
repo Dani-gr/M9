@@ -12,27 +12,30 @@
         List<CuentaEntity> cuentas = (List<CuentaEntity>) request.getAttribute("cuentas");
     %>
 
-    <%
-        if(!cuentas.isEmpty()){%>
-            <h1>CUENTAS QUE SOLICITAN SU ACTIVACIÓN</h1>
+    <div class="container">
+        <%
+            if(!cuentas.isEmpty()){%>
+        <h1>CUENTAS QUE SOLICITAN SU ACTIVACIÓN</h1>
 
-            <table border="1">
-                <tr>
-                    <th>NÚMERO</th>
-                    <th>CLIENTE</th>
-                    <th></th>
-                </tr>
+        <table class="table table-striped">
+            <tr>
+                <th>NÚMERO</th>
+                <th>CLIENTE</th>
+                <th></th>
+            </tr>
 
-         <%   for(CuentaEntity c : cuentas){   %>
-                <tr>
-                    <td> <%=c.getNumCuenta()%> </td>
-                    <td> <%=c.getClienteByCliente().getIdCliente()%> </td>
-                    <td> <a href="/gestor/activar?cuenta= <%=c.getNumCuenta()%> ">ACTIVAR</a> </td>
-                </tr>
-        <%    } %>
-            </table>
+            <%   for(CuentaEntity c : cuentas){   %>
+            <tr>
+                <td> <%=c.getNumCuenta()%> </td>
+                <td> <%=c.getClienteByCliente().getIdCliente()%> </td>
+                <td> <a href="/gestor/activar?cuenta= <%=c.getNumCuenta()%> ">ACTIVAR</a> </td>
+            </tr>
+            <%    } %>
+        </table>
 
-     <%}%>
+        <%}%>
+    </div>
+
 
 
 </body>

@@ -26,12 +26,12 @@
                         <td>
                             <a href="/gestor/solicitudesAlta" class="btn btn-success">SOLICITUDES DE ALTA DE CLIENTE</a>
                             <a href="/gestor/cuentasInactivas" class="btn btn-success">CUENTAS SIN ACTIVIDAD EN 30 DÍAS</a>
-                            <a href="/gestor/solicitudesActivacion" class="btn btn-success">SOLICITUDES DE DESBLOQUEO EN EMPRESAS</a>
+                            <a href="/gestor/solicitudesDesbloqueoEmpresa" class="btn btn-success">SOLICITUDES DE DESBLOQUEO EN EMPRESAS</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a href="/gestor/solicitudesDesbloqueoEmpresa" class="btn btn-success">SOLICITUDES DE DESBLOQUEO DE CUENTAS</a>
+                            <a href="/gestor/solicitudesActivacion" class="btn btn-success">SOLICITUDES DE DESBLOQUEO DE CUENTAS</a>
                             <a href="/gestor/seguridadTransferencias" class="btn btn-success">SEGURIDAD DE LAS CUENTAS</a>
                         </td>
                     </tr>
