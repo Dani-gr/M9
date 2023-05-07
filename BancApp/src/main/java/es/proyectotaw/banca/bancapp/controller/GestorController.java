@@ -3,6 +3,7 @@ package es.proyectotaw.banca.bancapp.controller;
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.CuentaEntity;
+import es.proyectotaw.banca.bancapp.entity.CuentasSospechosasEntity;
 import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
 import es.proyectotaw.banca.bancapp.ui.FiltroClientes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,14 @@ public class GestorController {
         return "cuentasInactivasGestorView";
     }
 
+    @GetMapping("/bloquearInactiva")
+    public String doBloquearInactiva(HttpSession session, @RequestParam("id") Integer id){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
+        this.setEstadoCuenta(id, (byte) 0);
+        return "redirect:/gestor/cuentasInactivas";
+    }
+
     @GetMapping("/seguridadTransferencias")
     public String doMostrarSeguridadCuentas(Model model, HttpSession session){
         if(session.getAttribute("usuario") == null) return "redirect:/";
@@ -133,8 +142,29 @@ public class GestorController {
         return "seguridadGestorView";
     }
 
+    @PostMapping("/addSospechosa")
+    public String addSospechosa(@RequestParam("ibanSospechoso") String ibanSospechoso, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
+        CuentasSospechosasEntity sospechosa = new CuentasSospechosasEntity();
+        sospechosa.setIban(ibanSospechoso);
+        this.cuentasSospechosasRepository.save(sospechosa);
+        return "redirect:/gestor/seguridadTransferencias";
+    }
+
+    @GetMapping("/borrarSospechosa")
+    public String removeSospechosa(@RequestParam("id") Integer id, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
+        CuentasSospechosasEntity sospechosa = this.cuentasSospechosasRepository.findById(id).orElse(null);
+        this.cuentasSospechosasRepository.delete(sospechosa);
+        return "redirect:/gestor/seguridadTransferencias";
+    }
+
     @GetMapping("/bloquearPorTransferencia")
-    public String bloquearSospechosa(@RequestParam("cuenta") Integer cuenta){
+    public String bloquearSospechosa(@RequestParam("cuenta") Integer cuenta, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
         setEstadoCuenta(cuenta,  (byte)0);
         return "redirect:/gestor/seguridadTransferencias";
     }
@@ -148,19 +178,25 @@ public class GestorController {
     }
 
     @GetMapping("/solicitudesActivacion")
-    public String doMostrarSolicitudesActivacion(Model model){
+    public String doMostrarSolicitudesActivacion(Model model, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
         model.addAttribute("cuentas", this.cuentaEntityRepository.getCuentasPendientesDeActivar());
         return "solicitudesActivacionGestorView";
     }
 
     @GetMapping("/gestor/activar")
-    public String doActivarCuenta(@RequestParam("cuenta") Integer cuenta){
+    public String doActivarCuenta(@RequestParam("cuenta") Integer cuenta, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
         setEstadoCuenta(cuenta, (byte) 1);
         return "redirect:/gestor/solicitudesActivacion";
     }
 
     @GetMapping("/solicitudesDesbloqueoEmpresa")
-    public String doMostrarSolicitudesDesbloqueoEmpresa(Model model){
+    public String doMostrarSolicitudesDesbloqueoEmpresa(Model model, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
         model.addAttribute("rolesSolicitantes", this.rolusuarioEntityRepository.findRolesSolicitantesDeActivar());
         return "solicitudesDesbloqueoEmpresaGestorView";
     }

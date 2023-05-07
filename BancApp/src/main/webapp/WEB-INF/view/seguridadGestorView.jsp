@@ -10,34 +10,46 @@
 
     <jsp:include page="cabeceraGestor.jsp"></jsp:include>
 
-    <h1>SEGURIDAD DE LAS CUENTAS</h1>
+    <br>
+    <br><br>
+    <br>
+
+    <h1 style="text-align: center">SEGURIDAD DE LAS CUENTAS</h1>
 
     <%
-        List<CuentasSospechosasEntity> IBANS = (List<CuentasSospechosasEntity>) request.getAttribute("sospechosas");
-        List<TransferenciaEntity> transferencias = (List<TransferenciaEntity>) request.getAttribute("transferencias");
+        List<CuentasSospechosasEntity> IBANS = (List<CuentasSospechosasEntity>) request.getAttribute("sospechosas"); %>
 
-        if(IBANS.isEmpty()){
-    %>  <h3>NO HAY NINGUNA CUENTA SOSPECHOSA</h3>
+    <div class="container-md">
+        <table class="table table-striped">
+            <tr><th>NÚMEROS IBAN SOSPECHOSOS</th></tr>
 
-    <%
-        }else{%>
+            <%
+                for(CuentasSospechosasEntity c : IBANS){
+            %>
+            <tr><td> <%= c.getIban() %> </td>
+                <td> <a href="/gestor/borrarSospechosa?id= <%= c.getIdcuentasSospechosas() %> ">BORRAR</a> </td>
+            </tr>
+            <%
+                }
+            %>
 
-            <table border = "1">
-                <tr><th>NÚMEROS IBAN SOSPECHOSOS</th></tr>
-                <tr>
-                    <%
-                        for(CuentasSospechosasEntity c : IBANS){
-                    %>
-                        <td> <%= c.getIban() %> </td>
-                    <%
-                        }
-                    %>
-                </tr>
-            </table>
+            <tr>
+                <form method="post" action="/gestor/addSospechosa" >
+                    <input type="text" size="24" name="ibanSospechoso" class="form-control" minlength="1" required/>
+                    <input type="submit" value="AÑADIR" class="btn btn-success">
+                </form>
+            </tr>
+
+        </table>
+    </div>
+
+    <%  List<TransferenciaEntity> transferencias = (List<TransferenciaEntity>) request.getAttribute("transferencias");
+
+    %>
 
             <%
                 if(!transferencias.isEmpty()){ %>
-
+                <h3>NO HAY NINGUNA TRANSFERENCIA SOSPECHOSA</h3>
                 <table border="1">
                     <tr>
                         <th>NÚMERO DE OPERACIÓN</th>
@@ -58,8 +70,6 @@
                 </table>
 
              <% }%>
-
-    <%  }%>
 
 </body>
 </html>

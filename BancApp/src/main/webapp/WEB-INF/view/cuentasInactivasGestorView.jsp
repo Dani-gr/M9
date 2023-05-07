@@ -44,7 +44,7 @@
                     <td>
                         <%=
                             (c.getActiva() == 1)?
-                                "<a href=\"\" >BLOQUEAR</a>" : ""
+                                "<a href=\"/gestor/bloquearInactiva?id=" + c.getNumCuenta() + "\" >BLOQUEAR</a>" : ""
                         %>
                     </td>
             </tr>
