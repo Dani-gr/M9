@@ -77,6 +77,10 @@ public class ClienteEntity {
         return cuentasByIdCliente;
     }
 
+    public CuentaEntity getPrimeraCuentaByIdCliente(){
+        return (cuentasByIdCliente.isEmpty())? null: cuentasByIdCliente.get(0);
+    }
+
     public void setCuentasByIdCliente(List<CuentaEntity> cuentasByIdCliente) {
         this.cuentasByIdCliente = cuentasByIdCliente;
     }
