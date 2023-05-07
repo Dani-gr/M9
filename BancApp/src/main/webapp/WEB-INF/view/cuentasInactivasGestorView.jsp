@@ -1,11 +1,6 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.CuentaEntity" %>
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: carlo
-  Date: 07/05/2023
-  Time: 14:06
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.util.List" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

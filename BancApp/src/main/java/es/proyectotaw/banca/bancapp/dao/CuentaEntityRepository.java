@@ -12,13 +12,13 @@ import java.util.List;
 
 public interface CuentaEntityRepository extends JpaRepository<CuentaEntity, Integer> {
 
-    /*@Query("SELECT c FROM CuentaEntity c WHERE (SELECT MAX(o.fecha) FROM c.operacionesByIdCuenta o) <= :fechaMaxima")
-    default List<CuentaEntity> encuentraCuentasSinActividadEnDias(@Param("dias") Integer dias) {
-        java.sql.Date fechaMaxima = java.sql.Date.valueOf(LocalDate.now().minusDays(dias));
-        return encontrarCuentasSinActividadEnDias(fechaMaxima);
-    }
+    /*Estados de una cuenta
+        Activa = 0 -> Bloqueada
+        Activa = 1 -> Activa
+        Activa = 2 -> Bloqueada pendiente de Activar
 
-    @Query("SELECT c FROM CuentaEntity c WHERE (SELECT MAX(o.fecha) FROM c.operacionesByIdCuenta o) <= :fechaMaxima")
-    List<CuentaEntity> encontrarCuentasSinActividadEnDias(@Param("fechaMaxima") java.sql.Date fechaMaxima);*/
+     */
+    @Query("select c from CuentaEntity c where c.activa = 2")
+    List<CuentaEntity> getCuentasPendientesDeActivar();
 
 }

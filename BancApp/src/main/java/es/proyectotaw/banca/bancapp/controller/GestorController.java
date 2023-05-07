@@ -1,11 +1,9 @@
 package es.proyectotaw.banca.bancapp.controller;
 
-import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
-import es.proyectotaw.banca.bancapp.dao.CuentaEntityRepository;
-import es.proyectotaw.banca.bancapp.dao.CuentasSospechosasRepository;
-import es.proyectotaw.banca.bancapp.dao.TransferenciaEntityRepository;
+import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.CuentaEntity;
+import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
 import es.proyectotaw.banca.bancapp.ui.FiltroClientes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -35,6 +33,9 @@ public class GestorController {
     @Autowired
     protected TransferenciaEntityRepository transferenciaEntityRepository;
 
+    @Autowired
+    protected RolusuarioEntityRepository rolusuarioEntityRepository;
+
 
     /*Zona destinada a controlar la pantalla de gestor*/
     @GetMapping("/")
@@ -52,17 +53,16 @@ public class GestorController {
 
         if(session.getAttribute("usuario") == null) return "redirect:/";
 
-        List<ClienteEntity> clientes = this.clienteEntityRepository.findAll();
-        filtroClientes = new FiltroClientes();
+        List<ClienteEntity> clientes = null;
 
-        /*if(filtroClientes == null || (filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad() == null) ){
+        if(filtroClientes == null || (filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad() == null) ){
             filtroClientes = new FiltroClientes();
             clientes = this.clienteEntityRepository.findAll();
-        } else if (filtroClientes.getCiudad() == null) {
+        }/* else if (filtroClientes.getCiudad() == null) {
             clientes = this.clienteEntityRepository.obtenerClientesPorSaldoMinimo(filtroClientes.getLimInfSaldo());
-        } else if (filtroClientes.getLimInfSaldo() == null) {
-            clientes = this.clienteEntityRepository.obtenerClientesPorCiudad(filtroClientes.getCiudad().toLowerCase());
-        }else{
+        }*/ else if (filtroClientes.getLimInfSaldo() == null) {
+            clientes = this.clienteEntityRepository.obtenerClientesPorCiudad(filtroClientes.getCiudad());
+        }/*else{
             clientes = this.clienteEntityRepository
                     .obtenerCLientesPorSaldoMinimoYCiudad(filtroClientes.getLimInfSaldo(), filtroClientes.getCiudad());
         }*/
@@ -82,7 +82,7 @@ public class GestorController {
     }
 
     @GetMapping("/solicitudesAlta/verSolicitante")
-    public String doMostrarSolicitanteACliente(@Param("id") Integer id, Model model, HttpSession session){
+    public String doMostrarSolicitanteACliente(@RequestParam("id") Integer id, Model model, HttpSession session){
         if(session.getAttribute("usuario") == null) return "redirect:/";
 
         ClienteEntity solicitante = this.clienteEntityRepository.findById(id).orElse(null);
@@ -137,7 +137,7 @@ public class GestorController {
     }
 
     @GetMapping("/bloquearPorTransferencia")
-    public String bloquearSospechosa(@Param("cuenta") Integer cuenta){
+    public String bloquearSospechosa(@RequestParam("cuenta") Integer cuenta){
         setEstadoCuenta(cuenta,  (byte)0);
         return "redirect:/gestor/seguridadTransferencias";
     }
@@ -150,7 +150,32 @@ public class GestorController {
         this.cuentaEntityRepository.save(cuenta);
     }
 
+    @GetMapping("/solicitudesActivacion")
+    public String doMostrarSolicitudesActivacion(Model model){
+        model.addAttribute("cuentas", this.cuentaEntityRepository.getCuentasPendientesDeActivar());
+        return "solicitudesActivacionGestorView";
+    }
 
+    @GetMapping("/gestor/activar")
+    public String doActivarCuenta(@RequestParam("cuenta") Integer cuenta){
+        setEstadoCuenta(cuenta, (byte) 1);
+        return "redirect:/gestor/solicitudesActivacion";
+    }
+
+    @GetMapping("/solicitudesDesbloqueoEmpresa")
+    public String doMostrarSolicitudesDesbloqueoEmpresa(Model model){
+        model.addAttribute("rolesSolicitantes", this.rolusuarioEntityRepository.findRolesSolicitantesDeActivar());
+        return "solicitudesDesbloqueoEmpresaGestorView";
+    }
+
+    @GetMapping("/desbloquearEnEmpresa")
+    public String doDesbloquearUsuarioEmpresa(@RequestParam("rolUsuario") Integer rolUsuario){
+        RolusuarioEntity r = this.rolusuarioEntityRepository.findById(rolUsuario).orElse(null);
+        r.setBloqueado((byte) 0);
+        this.rolusuarioEntityRepository.save(r);
+
+        return "redirect:/gestor/desbloquearEnEmpresa";
+    }
 
     /*Zona destinada a la información de los clientes en tabla*/
     @GetMapping("/particular")

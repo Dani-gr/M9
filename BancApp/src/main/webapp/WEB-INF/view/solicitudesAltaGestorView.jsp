@@ -1,12 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.ClienteEntity" %>
-<%@ page import="es.proyectotaw.banca.bancapp.entity.DireccionEntity" %><%--
-  Created by IntelliJ IDEA.
-  User: carlo
-  Date: 06/05/2023
-  Time: 18:28
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="es.proyectotaw.banca.bancapp.entity.DireccionEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
