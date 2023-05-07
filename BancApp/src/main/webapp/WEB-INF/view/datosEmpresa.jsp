@@ -6,6 +6,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
+<% // María %>
 <html>
 <head>
     <title>Datos de la empresa</title>
