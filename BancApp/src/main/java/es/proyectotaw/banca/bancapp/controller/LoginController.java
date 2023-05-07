@@ -177,7 +177,9 @@ public class LoginController {
         /* TODO:
             - Testear algún gestor / socio
          */
+
         if (session.getAttribute("usuario") != null) return "redirect:/menu";
+
 
         model.addAttribute("error", "Credenciales incorrectas");
         model.addAttribute("entidad", entidad);
@@ -224,6 +226,7 @@ public class LoginController {
         session.setAttribute("nombresRoles", user.getRolusuariosById().stream()
                 .map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList());
 
+
         return "redirect:/menu";
     }
 
@@ -240,8 +243,9 @@ public class LoginController {
         if (session.getAttribute("menu") == null)
             session.setAttribute("menu", "normal");
         var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
+
         if (nombresRoles.contains("asistente"))
-            return "chats";
+            return "redirect:/chats/asistente";
         String mensaje = (String) session.getAttribute("mensaje");
         if (mensaje != null && !mensaje.isBlank()) {
             model.addAttribute("mensaje", mensaje);
@@ -250,7 +254,9 @@ public class LoginController {
         if (nombresRoles.contains("gestor"))
             return "redirect:/gestor/";
 
+
         return ru.get(0).getCuentaAsociada() == null ? "enespera" : "menu";
+
     }
 
     @PostMapping("/menu")
@@ -419,6 +425,7 @@ public class LoginController {
         cd1.setCantidad(7.25);
         cd2.setCantidad(20.00);
 
+
         cambDivisaEntityRepository.save(cd1);
         cambDivisaEntityRepository.save(cd2);*/
 
@@ -428,6 +435,7 @@ public class LoginController {
         t1.setCuentaByCuentaDestino(cu2);
         t1.setOperacionByOperacion(o3);
         t1.setCantidad(150.00);
+
 
         transferenciaEntityRepository.save(t1);
 

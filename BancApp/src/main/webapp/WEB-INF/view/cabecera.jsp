@@ -6,7 +6,7 @@
 </c:if>
 <nav class="navbar navbar-custom py-3 fixed-top shadow-sm">
     <div class="col-1">
-        <button style="background: transparent; outline: none; border: 0; width: 60px;" class="btn btn-secondary"
+        <button style="width: 60px;" class="btn btn-secondary"
                 onclick="window.location.href = '/menu';">
             Volver
         </button>
