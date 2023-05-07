@@ -18,9 +18,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
-
-    private final int DIAS_INACTIVIDAD = 30; //Segun la politica del banco (US-21)
-
     @Autowired
     protected ClienteEntityRepository clienteEntityRepository;
 
@@ -121,7 +118,7 @@ public class GestorController {
     public String doMostrarCuentasInactivas(HttpSession session, Model model){
         if(session.getAttribute("usuario") == null) return "redirect:/";
 
-        model.addAttribute("inactivas", this.cuentaEntityRepository.findAll());
+        model.addAttribute("inactivas", this.cuentaEntityRepository.getCuentasConUltimaOperacionHace30Dias());
         return "cuentasInactivasGestorView";
     }
 
@@ -169,7 +166,9 @@ public class GestorController {
     }
 
     @GetMapping("/desbloquearEnEmpresa")
-    public String doDesbloquearUsuarioEmpresa(@RequestParam("rolUsuario") Integer rolUsuario){
+    public String doDesbloquearUsuarioEmpresa(@RequestParam("rolUsuario") Integer rolUsuario, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+
         RolusuarioEntity r = this.rolusuarioEntityRepository.findById(rolUsuario).orElse(null);
         r.setBloqueado((byte) 0);
         this.rolusuarioEntityRepository.save(r);
