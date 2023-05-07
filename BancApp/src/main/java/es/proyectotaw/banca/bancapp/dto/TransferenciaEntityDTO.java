@@ -7,24 +7,30 @@ import java.util.Objects;
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.TransferenciaEntity} entity
  */
 public class TransferenciaEntityDTO implements Serializable {
-    private final Integer operacion;
+    private final Integer idTransferencia;
     private final Double cantidad;
+    private final String ibanDestino;
     private final OperacionEntityDTO operacionByOperacion;
     private final CuentaEntityDTO cuentaByCuentaDestino;
 
-    public TransferenciaEntityDTO(Integer operacion, Double cantidad, OperacionEntityDTO operacionByOperacion, CuentaEntityDTO cuentaByCuentaDestino) {
-        this.operacion = operacion;
+    public TransferenciaEntityDTO(Integer idTransferencia, Double cantidad, String ibanDestino, OperacionEntityDTO operacionByOperacion, CuentaEntityDTO cuentaByCuentaDestino) {
+        this.idTransferencia = idTransferencia;
         this.cantidad = cantidad;
+        this.ibanDestino = ibanDestino;
         this.operacionByOperacion = operacionByOperacion;
         this.cuentaByCuentaDestino = cuentaByCuentaDestino;
     }
 
-    public Integer getOperacion() {
-        return operacion;
+    public Integer getIdTransferencia() {
+        return idTransferencia;
     }
 
     public Double getCantidad() {
         return cantidad;
+    }
+
+    public String getIbanDestino() {
+        return ibanDestino;
     }
 
     public OperacionEntityDTO getOperacionByOperacion() {
@@ -40,23 +46,25 @@ public class TransferenciaEntityDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransferenciaEntityDTO entity = (TransferenciaEntityDTO) o;
-        return Objects.equals(this.operacion, entity.operacion) &&
+        return Objects.equals(this.idTransferencia, entity.idTransferencia) &&
                 Objects.equals(this.cantidad, entity.cantidad) &&
+                Objects.equals(this.ibanDestino, entity.ibanDestino) &&
                 Objects.equals(this.operacionByOperacion, entity.operacionByOperacion) &&
                 Objects.equals(this.cuentaByCuentaDestino, entity.cuentaByCuentaDestino);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(operacion, cantidad, operacionByOperacion, cuentaByCuentaDestino);
+        return Objects.hash(idTransferencia, cantidad, ibanDestino, operacionByOperacion, cuentaByCuentaDestino);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "operacion = " + operacion + ", " +
+                "idTransferencia = " + idTransferencia + ", " +
                 "cantidad = " + cantidad + ", " +
+                "ibanDestino = " + ibanDestino + ", " +
                 "operacionByOperacion = " + operacionByOperacion + ", " +
-                "cuentaByCuentaDestion = " + cuentaByCuentaDestino + ")";
+                "cuentaByCuentaDestino = " + cuentaByCuentaDestino + ")";
     }
 }
