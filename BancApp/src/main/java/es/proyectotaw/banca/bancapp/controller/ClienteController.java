@@ -52,43 +52,17 @@ public class ClienteController {
         return "redirect:/menu";
     }
 
-    @GetMapping("/perfil")
-    public String doVerPerfil(Model model, HttpSession session, @ModelAttribute("entidad") String entidad) {
-        //@RequestParam("idUsuario") Integer id
-        //UsuarioEntity usuario = usuarioRepository.buscarPorID(id);
-        /*model.addAttribute("entidad",
-                "empresa".equals(entidad) ? "empresa" : "persona"
-        );
-        if("empresa".equals(entidad)) {
-
-        } else {
-            UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-            ClienteEntity cliente = usuario.getClienteByCliente();
-            List<CuentaEntity> cuentas = cliente.getCuentasByIdCliente();
-            CuentaEntity cuenta = cuentas.get(0);
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("cliente", cliente);
-            List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
-            model.addAttribute("cuenta", cuenta);
-            model.addAttribute("operaciones", operaciones);
-        }*/
-        /*
-         * esto porque si no me da error pa probar VALE?
-         * TODO quitar
-         * */
-        CuentaEntity cuenta = cuentaEntityRepository.getById(5);
-        model.addAttribute("usuario", new UsuarioEntity());
-        model.addAttribute("cliente", new ClienteEntity());
-        model.addAttribute("Direccion", new DireccionEntity());
-        List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
-        model.addAttribute("cuenta", cuenta);
-        model.addAttribute("operaciones", operaciones);
+    @GetMapping("/verOperaciones")
+    public String doVerOperaciones(Model model, HttpSession session) {
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        CuentaEntity cuenta = usuario.getClienteByCliente().getCuentasByIdCliente().get(0);
+        model.addAttribute("operaciones", cuenta.getOperacionsByNumCuenta());
         model.addAttribute("filtro", new FiltroOperaciones());
         model.addAttribute("ordenar", new OrdenarOperaciones());
-
-        return "cliente";
+        model.addAttribute("usuario", new UsuarioEntity());
+        return "operacionesCliente";
     }
-
 
     @PostMapping("/filtrar")
     public String doFiltrar(@ModelAttribute("filtro") FiltroOperaciones filtro,

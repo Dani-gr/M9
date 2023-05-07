@@ -21,7 +21,7 @@ public class CuentaEntity {
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByCliente;
-    @OneToMany(mappedBy = "cuentaByCuentaRealiza")
+    @OneToMany(mappedBy = "cuentaByCuentaRealiza", fetch = FetchType.EAGER)
     private List<OperacionEntity> operacionsByNumCuenta;
     @OneToMany(mappedBy = "cuentaByCuentaDestino")
     private List<TransferenciaEntity> transferenciasRecibidasByNumCuenta;
