@@ -204,7 +204,7 @@ public class LoginController {
                 return "login";
             }
 
-            session.setAttribute("empresa", empresaEntityRepository.findByCif(Integer.valueOf(cif)));
+            session.setAttribute("empresa", empresaEntityRepository.findByCif(Integer.valueOf(cif)).orElseThrow());
         } else {
             List<RolEntity> rolesConPermiso = new ArrayList<>(3);
             rolesConPermiso.add(rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new));
