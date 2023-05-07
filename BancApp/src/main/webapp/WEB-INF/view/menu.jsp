@@ -18,9 +18,10 @@
 <div class="m-3">&nbsp;</div>
 <jsp:useBean id="mensaje" scope="request" type="java.lang.String"/>
 <c:if test="${not null and not empty mensaje}">
-<div class="d-flex justify-content-center">
-    <h4 style="color:limegreen"><%=mensaje%></h4>
-</div>
+    <div class="d-flex justify-content-center">
+        <h4 style="color:limegreen"><%=mensaje%>
+        </h4>
+    </div>
 </c:if>
 <div class="d-flex justify-content-center">
     <div class="card text-center w-75" style="margin: 5% auto auto;">
@@ -28,20 +29,20 @@
             <jsp:useBean id="menu" scope="session" type="java.lang.String"/>
             <c:choose>
                 <c:when test="${\"cajero\".equalsIgnoreCase(menu)}">
-                    <div class="row mt-3">
-                        <div class="col col-4">
+                    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 justify-content-center align-content-center">
+                        <div class="col" style="margin-top: 10px">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                  onclick="window.location.href='/operacion/transferencia'">
                                 Transferencia
                             </div>
                         </div>
-                        <div class="col col-4">
+                        <div class="col" style="margin-top: 10px">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                  onclick="window.location.href='/operacion/cambioDivisa'">
                                 Cambio de divisa + extracción
                             </div>
                         </div>
-                        <div class="col col-4">
+                        <div class="col" style="margin-top: 10px">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                  onclick="window.location.href='/operacion/extraccion'">
                                 Extracci&oacute;n
@@ -55,30 +56,28 @@
                             <!-- TODO por el gestor -->
                         </c:when>
                         <c:otherwise>
-                            <div class="row mt-3">
-                                <div class="col col-4">
+                            <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 justify-content-center align-content-center">
+                                <div class="col" style="margin-top: 10px">
                                     <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                          onclick="window.location.href='/operacion/transferencia'">
                                         Transferencia
                                     </div>
                                 </div>
-                                <div class="col col-4">
+                                <div class="col" style="margin-top: 10px">
                                     <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                          onclick="window.location.href='/operacion/cambioDivisa'">
                                         Cambio de divisa
                                     </div>
                                 </div>
-                            </div>
-                            <c:if test="${nombresRoles.contains(\"socio\")}">
-                                <div class="row">
-                                    <div class="col pt-3">
+                                <c:if test="${nombresRoles.contains(\"socio\")}">
+                                    <div class="col" style="margin-top: 10px">
                                         <div class="btn btn-lg btn-outline-secondary disabled">
                                             Gestión de socios y autorizados
                                             <!-- TODO link and enable -->
                                         </div>
                                     </div>
-                                </div>
-                            </c:if>
+                                </c:if>
+                            </div>
                         </c:otherwise>
                     </c:choose>
                 </c:otherwise>

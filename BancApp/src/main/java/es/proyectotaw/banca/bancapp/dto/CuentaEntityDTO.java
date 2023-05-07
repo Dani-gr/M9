@@ -1,7 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,16 +10,18 @@ import java.util.Objects;
 public class CuentaEntityDTO implements Serializable {
     private final Integer numCuenta;
     private final Double saldo;
+    private final Byte activa;
     private final ClienteEntityDTO clienteByCliente;
-    private final Collection<OperacionEntityDTO> operacionsByNumCuenta;
-    private final Collection<TransferenciaEntityDTO> transferenciasByNumCuenta;
+    private final List<OperacionEntityDTO> operacionsByNumCuenta;
+    private final List<TransferenciaEntityDTO> transferenciasRecibidasByNumCuenta;
 
-    public CuentaEntityDTO(Integer numCuenta, Double saldo, ClienteEntityDTO clienteByCliente, Collection<OperacionEntityDTO> operacionsByNumCuenta, Collection<TransferenciaEntityDTO> transferenciasByNumCuenta) {
+    public CuentaEntityDTO(Integer numCuenta, Double saldo, Byte activa, ClienteEntityDTO clienteByCliente, List<OperacionEntityDTO> operacionsByNumCuenta, List<TransferenciaEntityDTO> transferenciasRecibidasByNumCuenta) {
         this.numCuenta = numCuenta;
         this.saldo = saldo;
+        this.activa = activa;
         this.clienteByCliente = clienteByCliente;
         this.operacionsByNumCuenta = operacionsByNumCuenta;
-        this.transferenciasByNumCuenta = transferenciasByNumCuenta;
+        this.transferenciasRecibidasByNumCuenta = transferenciasRecibidasByNumCuenta;
     }
 
     public Integer getNumCuenta() {
@@ -30,16 +32,20 @@ public class CuentaEntityDTO implements Serializable {
         return saldo;
     }
 
+    public Byte getActiva() {
+        return activa;
+    }
+
     public ClienteEntityDTO getClienteByCliente() {
         return clienteByCliente;
     }
 
-    public Collection<OperacionEntityDTO> getOperacionsByNumCuenta() {
+    public List<OperacionEntityDTO> getOperacionsByNumCuenta() {
         return operacionsByNumCuenta;
     }
 
-    public Collection<TransferenciaEntityDTO> getTransferenciasByNumCuenta() {
-        return transferenciasByNumCuenta;
+    public List<TransferenciaEntityDTO> getTransferenciasRecibidasByNumCuenta() {
+        return transferenciasRecibidasByNumCuenta;
     }
 
     @Override
@@ -49,14 +55,15 @@ public class CuentaEntityDTO implements Serializable {
         CuentaEntityDTO entity = (CuentaEntityDTO) o;
         return Objects.equals(this.numCuenta, entity.numCuenta) &&
                 Objects.equals(this.saldo, entity.saldo) &&
+                Objects.equals(this.activa, entity.activa) &&
                 Objects.equals(this.clienteByCliente, entity.clienteByCliente) &&
                 Objects.equals(this.operacionsByNumCuenta, entity.operacionsByNumCuenta) &&
-                Objects.equals(this.transferenciasByNumCuenta, entity.transferenciasByNumCuenta);
+                Objects.equals(this.transferenciasRecibidasByNumCuenta, entity.transferenciasRecibidasByNumCuenta);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numCuenta, saldo, clienteByCliente, operacionsByNumCuenta, transferenciasByNumCuenta);
+        return Objects.hash(numCuenta, saldo, activa, clienteByCliente, operacionsByNumCuenta, transferenciasRecibidasByNumCuenta);
     }
 
     @Override
@@ -64,8 +71,9 @@ public class CuentaEntityDTO implements Serializable {
         return getClass().getSimpleName() + "(" +
                 "numCuenta = " + numCuenta + ", " +
                 "saldo = " + saldo + ", " +
+                "activa = " + activa + ", " +
                 "clienteByCliente = " + clienteByCliente + ", " +
                 "operacionsByNumCuenta = " + operacionsByNumCuenta + ", " +
-                "transferenciasByNumCuenta = " + transferenciasByNumCuenta + ")";
+                "transferenciasRecibidasByNumCuenta = " + transferenciasRecibidasByNumCuenta + ")";
     }
 }
