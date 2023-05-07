@@ -10,6 +10,8 @@
 
     <jsp:include page="cabeceraGestor.jsp"></jsp:include>
 
+    <br><br>
+    <br><br>
     <%
         List<ClienteEntity> solicitantes = (List<ClienteEntity>) request.getAttribute("solicitantes");
         if(solicitantes.isEmpty()){
@@ -22,7 +24,7 @@
 
     <h1 style="text-align: center">SOLICITANTES DE INGRESO EN EL BANCO</h1>
 
-        <table class="table table-success table-striped">
+        <table class="table table-striped">
             <tr>
                 <th>IDENTIFICACIÓN</th>
                 <th>DIRECCIÓN APORTADA</th>

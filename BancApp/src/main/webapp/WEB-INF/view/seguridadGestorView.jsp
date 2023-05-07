@@ -41,7 +41,7 @@
             </tr>
 
         </table>
-    </div>
+
 
     <%  List<TransferenciaEntity> transferencias = (List<TransferenciaEntity>) request.getAttribute("transferencias");
 
@@ -49,8 +49,8 @@
 
             <%
                 if(!transferencias.isEmpty()){ %>
-                <h3>NO HAY NINGUNA TRANSFERENCIA SOSPECHOSA</h3>
-                <table border="1">
+                <h3>HAY TRANSFERENCIAS SOSPECHOSA</h3>
+                <table class="table table-striped">
                     <tr>
                         <th>NÚMERO DE OPERACIÓN</th>
                         <th>CANTIDAD TRANSFERIDA</th>
@@ -64,12 +64,24 @@
                             <th> <%= t.getCantidad() %> </th>
                             <th> <%= t.getOperacionByOperacion().getCuentaByCuentaRealiza().getNumCuenta()%> </th>
                             <th> <%= t.getIbanDestino() %> </th>
-                            <th> <a href="/gestor/bloquearPorTransferencia?cuenta=<%= t.getOperacionByOperacion().getCuentaByCuentaRealiza().getNumCuenta()%>">
-                                        BLOQUEAR CUENTA</a> </th>
+                            <th>
+                                <%
+                                    if(t.getOperacionByOperacion().getCuentaByCuentaRealiza().getActiva() == 0){
+                                %>
+                                    Cuenta bloqueada
+                                <%
+                                    }else{
+                                %>
+                                        <a href="/gestor/bloquearPorTransferencia?cuenta=<%= t.getOperacionByOperacion().getCuentaByCuentaRealiza().getNumCuenta()%>">
+                                        BLOQUEAR CUENTA</a>
+                                <%
+                                    }
+                                %>
+                            </th>
                     <%  }   %>
                 </table>
 
              <% }%>
-
+    </div>
 </body>
 </html>
