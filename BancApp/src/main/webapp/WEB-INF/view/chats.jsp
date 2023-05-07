@@ -55,7 +55,7 @@
                             <td>Abierto</td>
                             <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Entrar</a></td>
                             <c:if test="<%=usuario.getClienteByCliente()!=null%>">
-                                <td><a href="" class="btn btn-warning">Cerrar asistencia</a></td>
+                                <td><a href="/chats/cerrarChat/${chat.id}" class="btn btn-warning">Cerrar asistencia</a></td>
                             </c:if>
                         </c:if>
                         <c:if test="${chat.activo == 0}">

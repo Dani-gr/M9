@@ -63,7 +63,11 @@ public class ChatController {
         model.addAttribute("chat",chat);
         return "chatDetails";
     }
-
+    @GetMapping("/cerrarChat/{id}")
+    String doCerrarChat(@PathVariable(value = "id") int id, Model model){
+        chatEntityRepository.updateActivoById((byte) 0, id);
+        return "redirect:/chats/?cliente=" + chatEntityRepository.findById(id).get().getClienteByClienteIdCliente().getIdCliente();
+    }
 
     @GetMapping("/busquedaChatsPorNombre")
     String doMostrarChatsPorNombre(@RequestParam("nombre") String nombre, Model model){
