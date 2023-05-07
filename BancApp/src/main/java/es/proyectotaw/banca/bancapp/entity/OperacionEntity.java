@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.OperacionEntityDTO;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
@@ -91,5 +93,14 @@ public class OperacionEntity {
 
     public void setTransferenciasByIdOperacion(List<TransferenciaEntity> transferenciasByIdOperacion) {
         this.transferenciasByIdOperacion = transferenciasByIdOperacion;
+    }
+
+    public OperacionEntityDTO toDTO() {
+        return new OperacionEntityDTO(
+                idOperacion, fecha, cambDivisasByIdOperacion.stream().map(CambDivisaEntity::toDTO).toList(),
+                extraccionsByIdOperacion.stream().map(ExtraccionEntity::toDTO).toList(),
+                cuentaByCuentaRealiza.toDTO(), transferenciasByIdOperacion.stream().map(TransferenciaEntity::toDTO).toList()
+
+        );
     }
 }

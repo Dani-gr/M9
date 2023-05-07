@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.ClientesEmpresaEntityDTO;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -55,5 +57,11 @@ public class ClientesEmpresaEntity {
 
     public void setClienteByIdCliente(ClienteEntity clienteByIdCliente) {
         this.clienteByIdCliente = clienteByIdCliente;
+    }
+
+    public ClientesEmpresaEntityDTO toDTO() {
+        return new ClientesEmpresaEntityDTO(
+                id, empresaByIdEmpresa.toDTO(), clienteByIdCliente.toDTO()
+        );
     }
 }

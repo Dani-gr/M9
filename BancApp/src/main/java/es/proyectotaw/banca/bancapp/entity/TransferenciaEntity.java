@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.TransferenciaEntityDTO;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -85,7 +87,13 @@ public class TransferenciaEntity {
         this.cuentaByCuentaDestino = cuentaByCuentaDestino;
     }
 
-    public String nombre(){
+    public String nombre() {
         return "Transferencia";
+    }
+
+    public TransferenciaEntityDTO toDTO() {
+        return new TransferenciaEntityDTO(
+                idTransferencia, cantidad, ibanDestino, operacionByOperacion.toDTO(), cuentaByCuentaDestino.toDTO()
+        );
     }
 }

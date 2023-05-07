@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.ExtraccionEntityDTO;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -60,7 +62,13 @@ public class ExtraccionEntity {
         this.operacionByOperacion = operacionByOperacion;
     }
 
-    public String nombre(){
+    public String nombre() {
         return "Extracción";
+    }
+
+    public ExtraccionEntityDTO toDTO() {
+        return new ExtraccionEntityDTO(
+                idExtraccion, cantidad, operacionByOperacion.toDTO()
+        );
     }
 }
