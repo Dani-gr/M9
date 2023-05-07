@@ -83,7 +83,11 @@ public class LoginController {
                              @ModelAttribute("direccionCalleEmpresa") String calleEmpresa, @ModelAttribute("direccionNumeroEmpresa") String numeroEmpresa,
                              @ModelAttribute("direccionPlantaEmpresa") String plantaEmpresa, @ModelAttribute("direccionCiudadEmpresa") String ciudadEmpresa, @ModelAttribute("direccionRegionEmpresa") String regionEmpresa,
                              @ModelAttribute("direccoinPaisEmpresa") String paisEmpresa, @ModelAttribute("direccionPostalEmpresa") String postalEmpresa,
-                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado, @RequestParam("btnRegistro") String boton) {
+                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado, @ModelAttribute("repNIF") String repNIF,
+                             @ModelAttribute("repNombre") String repnombre, @ModelAttribute("repNombreSegundo") String repsegundoNombre, @ModelAttribute("repApellidoPrimero") String repprimerApellido,
+                             @ModelAttribute("repApellidoSegundo") String repsegundoApellido, @ModelAttribute("repFechaNacimiento") Date repfechaNacimiento, @ModelAttribute("repEmail") String repemail,
+                             @ModelAttribute("repPassword") String reppassword,
+                             @RequestParam("btnRegistro") String boton) {
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
         //TODO añadir control de errores para los parámetros que no deberían ser nulos
@@ -110,6 +114,29 @@ public class LoginController {
                 model.addAttribute("entidad", "empresa");
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
+            // Creo al representante
+
+            UsuarioEntity representanteEmpresa = new UsuarioEntity();
+
+            representanteEmpresa.construct(repNIF, repnombre, repsegundoNombre, repprimerApellido, repsegundoApellido, repfechaNacimiento, repemail, reppassword);
+            ClienteEntity repcliente = new ClienteEntity();
+            DireccionEntity repdireccion = new DireccionEntity();
+            repdireccion.construct(calleEmpresa, Integer.valueOf(numeroEmpresa), plantaEmpresa, ciudadEmpresa, regionEmpresa, paisEmpresa, postalEmpresa);
+            direccionEntityRepository.save(repdireccion);
+            repcliente.setDireccionByDireccion(repdireccion);
+            clienteEntityRepository.save(repcliente);
+
+            representanteEmpresa.setClienteByCliente(repcliente);
+            usuarioEntityRepository.save(representanteEmpresa);
+
+            RolusuarioEntity reprolusuario = new RolusuarioEntity();
+            RolEntity rolrep = rolEntityRepository.findByNombre("representante").orElseThrow(RuntimeException::new);
+            reprolusuario.setRolByIdrol(rolrep);
+            reprolusuario.setUsuarioByIdusuario(representanteEmpresa);
+            reprolusuario.setEmpresaByIdempresa(empresa);
+            reprolusuario.setBloqueado((byte) 0);
+            rolusuarioEntityRepository.save(reprolusuario);
+
             // Creo al socio/autorizado
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
             usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
@@ -195,6 +222,7 @@ public class LoginController {
             List<RolEntity> rolesConPermiso = new ArrayList<>(4);
             rolesConPermiso.add(rolEntityRepository.findByNombre("autorizado").orElseThrow(RuntimeException::new));
             rolesConPermiso.add(rolEntityRepository.findByNombre("socio").orElseThrow(RuntimeException::new));
+            rolesConPermiso.add(rolEntityRepository.findByNombre("representante").orElseThrow(RuntimeException::new));
 
             var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, Integer.valueOf(cif));
 

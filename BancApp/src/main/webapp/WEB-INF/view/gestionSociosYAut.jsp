@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ page import="java.util.Optional" %>
@@ -16,6 +17,10 @@
 <jsp:include page="cabeceraMenu.jsp"/>
 <div class="m-3">&nbsp;</div>
 <div class="card text-center w-75" style="margin: 5% auto auto;">
+    <form:form modelAttribute="filtro" method="post" action="/empresa/filtrar">
+
+    </form:form>
+
     <h3>Lista de socios y autorizados</h3>
     <table class="table p-3">
         <thead>

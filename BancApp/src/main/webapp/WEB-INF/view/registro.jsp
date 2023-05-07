@@ -38,13 +38,13 @@
             <jsp:useBean id="cifEmpresa" scope="request" type="java.lang.String"/>
             <c:choose>
                 <c:when test="${\"empresa\".equals(entidad)}">
-                    Datos de la empresa: <br>
+                    <h4>Datos de la empresa:</h4> <br>
                     <label for="cif" class="form-label">CIF</label>
                     <input type="text" id="cif" name="cifEmpresa" class="form-control"
                             value="<%=cifEmpresa == null ? "" : cifEmpresa%>" maxlength="9" minlength="9" size="9"/>
                     <br/>
 
-                    Dirección de la empresa: <br>
+                    <h5>Dirección de la empresa:</h5> <br>
                     <label for="direccionCalleEmpresa" class="form-label">Calle</label>
                     <input type="text" id="direccionCalleEmpresa" name="direccionCalleEmpresa" class="form-control"
                            value="" maxlength="30" minlength="1" size="30"/>
@@ -79,6 +79,48 @@
                     <input type="text" id="direccionCodPostalEmpresa" name="direccionPostalEmpresa" class="form-control"
                            maxlength="5" minlength="5" size="5"/>
                     <br/>
+
+                    <h4>Datos del representante de la empresa</h4>
+
+                    <label for="repNIF" class="form-label">ID/NIF</label>
+                    <input type="text" id="repNIF" name="repNIF" class="form-control"
+                           value="" maxlength="9" minlength="9" size="9"/>
+                    <br/>
+
+                    <label for="repPNombre" class="form-label">Primer nombre</label>
+                    <input type="text" id="repPNombre" name="repNombre" class="form-control"
+                           value="" maxlength="20" minlength="1" size="20"/>
+                    <br/>
+
+                    <label for="repSNombre" class="form-label">Segundo nombre</label>
+                    <input type="text" id="repSNombre" name="repNombreSegundo" class="form-control"
+                           value="" maxlength="20" minlength="1" size="20"/>
+                    <br/>
+
+                    <label for="repPApellido" class="form-label">Primer apellido</label>
+                    <input type="text" id="repPApellido" name="repApellidoPrimero" class="form-control"
+                           value="" maxlength="20" minlength="1" size="20"/>
+                    <br/>
+
+                    <label for="repSApellido" class="form-label">Segundo apellido</label>
+                    <input type="text" id="repSApellido" name="repApellidoSegundo" class="form-control"
+                           value="" maxlength="20" minlength="1" size="20"/>
+                    <br/>
+
+                    <label for="repFechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                    <input type="date" id="repFechaNacimiento" name="repFechaNacimiento" class="form-control"
+                           value=""/>
+                    <br/>
+
+                    <label for="repEmail" class="form-label">Correo electr&oacute;nico</label>
+                    <input type="email" id="repEmail" name="repEmail" placeholder="hello@example.taw" class="form-control"
+                           value=""/>
+                    <br/>
+
+                    <label for="password" class="form-label">Contrase&ntilde;a</label>
+                    <input type="password" id="password" name="repPassword" class="form-control"/>
+                    <br/><br/>
+
 
                     Datos del
                     <label for="socio" class="form-label">socio</label>
