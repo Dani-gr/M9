@@ -104,7 +104,7 @@ public class EmpresaController {
     public String doMostrarOperaciones(Model model, HttpSession session){
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 
-        if(session.getAttribute("empresa") == null) { return "redirect:/cliente/verOperaciones";}
+        if(usuario.getClienteByCliente().getEmpresasByIdCliente() != null) { return "redirect:/cliente/verOperaciones";}
 
         List<RolusuarioEntity> listaRolUsuarioAsociados = usuario.getRolusuariosById();
         EmpresaEntity empresa = listaRolUsuarioAsociados.get(0).getEmpresaByIdempresa();

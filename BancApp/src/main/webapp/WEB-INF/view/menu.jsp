@@ -96,7 +96,6 @@ Autor: Andres Perez Garcia  Porcentaje: 20%
                                         Solicitar desbloqueo
                                     </div>
                                 </div>
-
                             </div>
 
                             <% } %>

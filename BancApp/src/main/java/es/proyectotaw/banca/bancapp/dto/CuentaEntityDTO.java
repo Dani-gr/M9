@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.CuentaEntity;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -75,5 +77,15 @@ public class CuentaEntityDTO implements Serializable {
                 "clienteByCliente = " + clienteByCliente + ", " +
                 "operacionsByNumCuenta = " + operacionsByNumCuenta + ", " +
                 "transferenciasRecibidasByNumCuenta = " + transferenciasRecibidasByNumCuenta + ")";
+    }
+
+    public CuentaEntity toEntity() {
+        CuentaEntity cuentaEntity = new CuentaEntity();
+        cuentaEntity.setNumCuenta(numCuenta);
+        cuentaEntity.setActiva(activa);
+        cuentaEntity.setSaldo(saldo);
+        cuentaEntity.setOperacionsByNumCuenta(operacionsByNumCuenta.stream().map(OperacionEntityDTO::toEntity).toList());
+
+        return cuentaEntity;
     }
 }

@@ -1,6 +1,11 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.OperacionEntity" %>
+
+<%
+    //Nuria Rodríguez Tortosa 30%
+%>
+
 <html>
 <% List<UsuarioEntity> listaUsuariosAsociados = (List<UsuarioEntity>) request.getAttribute("usuariosAsociados");%>
 <head>

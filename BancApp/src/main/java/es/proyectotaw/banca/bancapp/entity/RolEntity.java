@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.RolEntityDTO;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -58,5 +60,11 @@ public class RolEntity {
 
     public void setRolusuariosByIdrol(List<RolusuarioEntity> rolusuariosByIdrol) {
         this.rolusuariosByIdrol = rolusuariosByIdrol;
+    }
+
+    public RolEntityDTO toDTO() {
+        return new RolEntityDTO(
+                idrol, nombre, rolusuariosByIdrol.stream().map(RolusuarioEntity::toDTO).toList()
+        );
     }
 }

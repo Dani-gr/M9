@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.ClienteEntityDTO;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -78,8 +80,8 @@ public class ClienteEntity {
         return cuentasByIdCliente;
     }
 
-    public CuentaEntity getPrimeraCuentaByIdCliente(){
-        return (cuentasByIdCliente.isEmpty())? null: cuentasByIdCliente.get(0);
+    public CuentaEntity getPrimeraCuentaByIdCliente() {
+        return (cuentasByIdCliente.isEmpty()) ? null : cuentasByIdCliente.get(0);
     }
 
     public void setCuentasByIdCliente(List<CuentaEntity> cuentasByIdCliente) {
@@ -100,5 +102,15 @@ public class ClienteEntity {
 
     public void setUsuariosByIdCliente(List<UsuarioEntity> usuariosByIdCliente) {
         this.usuariosByIdCliente = usuariosByIdCliente;
+    }
+
+    public ClienteEntityDTO toDTO() {
+        return new ClienteEntityDTO(
+                idCliente, chatsByIdCliente.stream().map(ChatEntity::toDTO).toList(), direccionByDireccion.toDTO(),
+                clientesEmpresasByIdCliente.stream().map(ClientesEmpresaEntity::toDTO).toList(),
+                cuentasByIdCliente.stream().map(CuentaEntity::toDTO).toList(),
+                empresasByIdCliente.stream().map(EmpresaEntity::toDTO).toList(),
+                usuariosByIdCliente.stream().map(UsuarioEntity::toDTO).toList()
+        );
     }
 }

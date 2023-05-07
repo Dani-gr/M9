@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -132,5 +134,19 @@ public class UsuarioEntityDTO implements Serializable {
                 "mensajesById = " + mensajesById + ", " +
                 "rolusuariosById = " + rolusuariosById + ", " +
                 "clienteByCliente = " + clienteByCliente + ")";
+    }
+
+    public UsuarioEntity toEntity() {
+        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        usuarioEntity.construct(
+                nif, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password
+        );
+        usuarioEntity.setId(id);
+        usuarioEntity.setClienteByCliente(clienteByCliente.toEntity());
+        usuarioEntity.setRolusuariosById(rolusuariosById.stream().map(RolusuarioEntityDTO::toEntity).toList());
+        usuarioEntity.setChatsById(chatsById.stream().map(ChatEntityDTO::toEntity).toList());
+        usuarioEntity.setMensajesById(mensajesById.stream().map(MensajeEntityDTO::toEntity).toList());
+
+        return usuarioEntity;
     }
 }

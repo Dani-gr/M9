@@ -6,6 +6,11 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
+<%
+    ////Nuria Rodríguez Tortosa 40%
+    UsuarioEntity usuario = (UsuarioEntity) request.getAttribute("usuario");
+%>
+
         <html>
 <% // María %>
 <head>
@@ -47,6 +52,19 @@
             <form:button class="btn btn-primary" id="liveAlertBtn">Guardar</form:button>
         </form:form>
 </div>
+
+        <% if(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getActiva() == 0){  %>
+    <div class="row">
+        <div class="col pt-3">
+            <div class="btn btn-lg btn-outline-secondary "
+                 onclick="window.location.href='/cliente/solicitarDesbloqueo'">
+                Solicitar desbloqueo
+            </div>
+        </div>
+    <%
+        }
+    %>
+    </div>
 
 
     <!--form:form action="/datosUsuario/guardar" modelAttribute="usuario" method="post"-->

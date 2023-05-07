@@ -3,6 +3,8 @@ Autor: Andres Perez Garcia
  */
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.MensajeEntityDTO;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -86,5 +88,11 @@ public class MensajeEntity {
 
     public void setUsuarioByEmisor(UsuarioEntity usuarioByEmisor) {
         this.usuarioByEmisor = usuarioByEmisor;
+    }
+
+    public MensajeEntityDTO toDTO() {
+        return new MensajeEntityDTO(
+                idMensaje, fechaHora, contenido, chatByChat.toDTO(), usuarioByEmisor.toDTO()
+        );
     }
 }

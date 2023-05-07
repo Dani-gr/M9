@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.CuentasSospechosasEntityDTO;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -48,5 +50,9 @@ public class CuentasSospechosasEntity {
         int result = idcuentasSospechosas != null ? idcuentasSospechosas.hashCode() : 0;
         result = 31 * result + (iban != null ? iban.hashCode() : 0);
         return result;
+    }
+
+    public CuentasSospechosasEntityDTO toDTO() {
+        return new CuentasSospechosasEntityDTO(idcuentasSospechosas, iban);
     }
 }

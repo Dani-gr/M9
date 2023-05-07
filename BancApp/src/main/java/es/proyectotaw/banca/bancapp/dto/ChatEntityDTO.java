@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.ChatEntity;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -68,5 +70,15 @@ public class ChatEntityDTO implements Serializable {
                 "usuarioByAsistenteId = " + usuarioByAsistenteId + ", " +
                 "clienteByClienteIdCliente = " + clienteByClienteIdCliente + ", " +
                 "mensajesById = " + mensajesById + ")";
+    }
+
+    public ChatEntity toEntity() {
+        ChatEntity chatEntity = new ChatEntity();
+        chatEntity.setId(id);
+        chatEntity.setActivo(activo);
+        chatEntity.setClienteByClienteIdCliente(clienteByClienteIdCliente.toEntity());
+        chatEntity.setUsuarioByAsistenteId(usuarioByAsistenteId.toEntity());
+
+        return chatEntity;
     }
 }

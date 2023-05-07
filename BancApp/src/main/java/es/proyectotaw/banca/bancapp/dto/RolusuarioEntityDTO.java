@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -66,5 +68,16 @@ public class RolusuarioEntityDTO implements Serializable {
                 "rolByIdrol = " + rolByIdrol + ", " +
                 "usuarioByIdusuario = " + usuarioByIdusuario + ", " +
                 "empresaByIdempresa = " + empresaByIdempresa + ")";
+    }
+
+    public RolusuarioEntity toEntity() {
+        RolusuarioEntity rolusuarioEntity = new RolusuarioEntity();
+        rolusuarioEntity.setId(id);
+        rolusuarioEntity.setBloqueado(bloqueado);
+        rolusuarioEntity.setEmpresaByIdempresa(empresaByIdempresa.toEntity());
+        rolusuarioEntity.setUsuarioByIdusuario(usuarioByIdusuario.toEntity());
+        rolusuarioEntity.setRolByIdrol(rolByIdrol.toEntity());
+
+        return rolusuarioEntity;
     }
 }
