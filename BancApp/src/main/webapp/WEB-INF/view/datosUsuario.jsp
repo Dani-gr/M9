@@ -7,6 +7,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
         <html>
+<% // María %>
 <head>
     <title>Datos del usuario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"

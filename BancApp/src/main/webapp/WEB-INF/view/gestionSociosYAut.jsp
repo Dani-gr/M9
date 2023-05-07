@@ -7,6 +7,7 @@
 <% List<UsuarioEntity> listaUsuariosAsociados = (List<UsuarioEntity>) request.getAttribute("usuariosAsociados");%>
 <% List<UsuarioEntity> usuariosBloqueados = (List<UsuarioEntity>) request.getAttribute("usuariosBloqueados");%>
 
+<% // María %>
 <html>
 <head>
     <title>Autorizados y asociados</title>
