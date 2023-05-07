@@ -20,7 +20,8 @@
             <th scope="col" class="col col-3">Nombre</th>
             <th scope="col" class="col col-3">Apellidos</th>
             <th scope="col" class="col col-2">Descripción</th>
-            <th scope="col" class="col col-3">Fecha</th>
+            <th scope="col" class="col col-1">Cantidad</th>
+            <th scope="col" class="col col-2">Fecha</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,9 @@
             <td><%= operacion.getCambDivisasByIdOperacion().isEmpty() ? "" : "Cambio de divisas"%>
                     <%= operacion.getExtraccionsByIdOperacion().isEmpty() ? "" : "Extraccion"%>
                     <%= operacion.getTransferenciasByIdOperacion().isEmpty() ? "" : "Transferencia"%></td>
+            <td><%= operacion.getCambDivisasByIdOperacion().isEmpty() ? "" : operacion.getCambDivisasByIdOperacion().get(0).getCantidad()%>
+                <%= operacion.getExtraccionsByIdOperacion().isEmpty() ? "" : operacion.getExtraccionsByIdOperacion().get(0).getCantidad()%>
+                <%= operacion.getTransferenciasByIdOperacion().isEmpty() ? "" : operacion.getTransferenciasByIdOperacion().get(0).getCantidad()%></td>
             <td><%=operacion.getFecha().toString()%></td>
         </tr>
         <% } %>

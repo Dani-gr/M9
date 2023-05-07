@@ -106,4 +106,12 @@ public class EmpresaController {
         return "operaciones";
     }
 
+    @GetMapping("/solicitarDesbloqueo")
+    public String doSolicitudDesbloqueo(Model model, HttpSession session){
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        usuario.getRolusuariosById().get(0).setBloqueado((byte) 2);
+        usuarioEntityRepository.saveAndFlush(usuario);
+        return "redirect:/menu";
+    }
+
 }
