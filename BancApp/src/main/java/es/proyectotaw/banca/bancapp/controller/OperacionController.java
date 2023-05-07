@@ -14,9 +14,10 @@ import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.List;
 
-/*
-* Nuria Rodríguez Tortosa 40%
-* */
+/**
+* @author Nuria Rodríguez Tortosa 40%
+* @author Daniel García Rodríguez 60%
+*/
 
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller

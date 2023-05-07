@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 /**
  * A DTO for the {@link CambDivisaEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 @SuppressWarnings("unused")
 public class CambDivisaEntityDTO implements Serializable {

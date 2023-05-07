@@ -9,6 +9,7 @@ import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.UsuarioEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class UsuarioEntityDTO implements Serializable {
     private final Integer id;

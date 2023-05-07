@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.RolEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class RolEntityDTO implements Serializable {
     private final Integer idrol;

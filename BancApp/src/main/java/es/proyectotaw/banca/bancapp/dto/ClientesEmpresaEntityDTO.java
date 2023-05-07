@@ -7,6 +7,7 @@ import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.ClientesEmpresaEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 @SuppressWarnings("unused")
 public class ClientesEmpresaEntityDTO implements Serializable {
