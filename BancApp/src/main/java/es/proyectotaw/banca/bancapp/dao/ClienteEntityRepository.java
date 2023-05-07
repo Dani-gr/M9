@@ -16,16 +16,20 @@ public interface ClienteEntityRepository extends JpaRepository<ClienteEntity, In
     List<ClienteEntity> obtenerClientesDadosDeAlta();
 
 
-    /*@Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
-                                            " c.")
-    List<ClienteEntity> obtenerClientesPorSaldoMinimo(@Param("lim") Double lim);*/
+    @Query("SELECT DISTINCT c FROM ClienteEntity c JOIN c.cuentasByIdCliente cc WHERE cc.saldo >= :limiteInferior")
+    List<ClienteEntity> obtenerCLientesPorSaldoMinimo(@Param("limiteInferior") Double limiteInferior);
+
 
     @Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
                                             "UPPER(c.direccionByDireccion.ciudad) like CONCAT('%', UPPER(:ciudad), '%')  ")
     List<ClienteEntity> obtenerClientesPorCiudad(@Param("ciudad") String ciudad);
 
-    /*@Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
-            "c.cuentasByIdCliente[0].saldo >= :lim and c.direccionByDireccion.ciudad like CONCAT('%', :ciudad, '%')  ")
-    List<ClienteEntity> obtenerCLientesPorSaldoMinimoYCiudad(@Param("lim") Double lim, @Param("ciudad") String ciudad);
-    */
+
+    default List<ClienteEntity> obtenerCLientesPorSaldoMinimoYCiudad(@Param("lim") Double lim, @Param("ciudad") String ciudad){
+        List<ClienteEntity> res = obtenerCLientesPorSaldoMinimo(lim);
+        res.retainAll(obtenerClientesPorCiudad(ciudad));
+
+        return res;
+    }
+
 }

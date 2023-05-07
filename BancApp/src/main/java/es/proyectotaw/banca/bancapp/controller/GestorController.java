@@ -55,14 +55,14 @@ public class GestorController {
         if(filtroClientes == null || (filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad() == null) ){
             filtroClientes = new FiltroClientes();
             clientes = this.clienteEntityRepository.findAll();
-        }/* else if (filtroClientes.getCiudad() == null) {
-            clientes = this.clienteEntityRepository.obtenerClientesPorSaldoMinimo(filtroClientes.getLimInfSaldo());
-        }*/ else if (filtroClientes.getLimInfSaldo() == null) {
+        } else if (filtroClientes.getCiudad() == null) {
+            clientes = this.clienteEntityRepository.obtenerCLientesPorSaldoMinimo(filtroClientes.getLimInfSaldo());
+        } else if (filtroClientes.getLimInfSaldo() == null) {
             clientes = this.clienteEntityRepository.obtenerClientesPorCiudad(filtroClientes.getCiudad());
-        }/*else{
+        }else{
             clientes = this.clienteEntityRepository
                     .obtenerCLientesPorSaldoMinimoYCiudad(filtroClientes.getLimInfSaldo(), filtroClientes.getCiudad());
-        }*/
+        }
 
         model.addAttribute("clientes", clientes);
         model.addAttribute("filtroCLientes", filtroClientes);
@@ -173,7 +173,7 @@ public class GestorController {
         r.setBloqueado((byte) 0);
         this.rolusuarioEntityRepository.save(r);
 
-        return "redirect:/gestor/desbloquearEnEmpresa";
+        return "redirect:/gestor/solicitudesDesbloqueoEmpresa";
     }
 
     /*Zona destinada a la información de los clientes en tabla*/
