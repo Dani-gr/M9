@@ -196,7 +196,8 @@ public class ClienteController {
 
     @GetMapping("/datosUsuario")
     public String doVerMisDatos(HttpSession session, Model model){;
-        model.addAttribute("usuario", session.getAttribute("usuario"));
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        model.addAttribute("usuario", usuario);
 
         return "datosUsuario";
     }

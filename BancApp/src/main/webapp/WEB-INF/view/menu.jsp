@@ -81,7 +81,7 @@
                             </div>
                             <% } %>
 
-                            <% if(nombresRoles.contains("representante")){  %>
+                        <!--    <%// if(nombresRoles.contains("representante")){  %>
                             <div class="row">
                                 <div class="col pt-3">
                                     <div class="btn btn-lg btn-outline-secondary "
@@ -90,7 +90,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <% } %>
+                            <%// } %>
+                            -->
 
                         </c:otherwise>
                     </c:choose>

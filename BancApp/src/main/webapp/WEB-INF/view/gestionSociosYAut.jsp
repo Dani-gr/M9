@@ -4,8 +4,8 @@
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.ArrayList" %>
-<% Optional<UsuarioEntity> usuariosAsociados = (Optional<UsuarioEntity>) request.getAttribute("usuariosAsociados");%>
-<% Optional<UsuarioEntity> usuariosBloqueados = (Optional<UsuarioEntity>) request.getAttribute("usuariosBloqueados");%>
+<% List<UsuarioEntity> listaUsuariosAsociados = (List<UsuarioEntity>) request.getAttribute("usuariosAsociados");%>
+<% List<UsuarioEntity> usuariosBloqueados = (List<UsuarioEntity>) request.getAttribute("usuariosBloqueados");%>
 
 <html>
 <head>
@@ -33,10 +33,7 @@
         </tr>
         </thead>
         <tbody>
-        <% if(usuariosAsociados.isPresent()) {
-            List<UsuarioEntity> listaUsuariosAsociados = new ArrayList<>();
-            usuariosAsociados.ifPresent(listaUsuariosAsociados::add);
-        %>
+
         <% for (UsuarioEntity usuario : listaUsuariosAsociados) { %>
         <tr>
             <th scope="row">1</th>
@@ -47,7 +44,6 @@
                 <%= usuario.getRolusuariosById().get(0).getBloqueado() == (byte) 1 ? " disabled" : "" %>
                 "> X </button></td>
         </tr>
-        <% } %>
         <% } %>
         </tbody>
     </table>

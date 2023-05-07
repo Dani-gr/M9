@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, Integer> {
@@ -16,8 +17,8 @@ public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, In
     UsuarioEntity buscarPorID(@Param("id") Integer id);
 
     @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :id")
-    Optional<UsuarioEntity> findUsuariosByEmpresa(@Param("id") Integer id);
+    List<UsuarioEntity> findUsuariosByEmpresa(@Param("id") Integer id);
 
     @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :id and ru.bloqueado = 1")
-    Optional<UsuarioEntity> findUsuariosBloqueadosByEmpresa(@Param("id") Integer id);
+    List<UsuarioEntity> findUsuariosBloqueadosByEmpresa(@Param("id") Integer id);
 }
