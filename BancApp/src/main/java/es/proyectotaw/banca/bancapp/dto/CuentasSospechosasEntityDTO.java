@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.CuentasSospechosasEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -42,5 +44,13 @@ public class CuentasSospechosasEntityDTO implements Serializable {
         return getClass().getSimpleName() + "(" +
                 "idcuentasSospechosas = " + idcuentasSospechosas + ", " +
                 "iban = " + iban + ")";
+    }
+
+    public CuentasSospechosasEntity toEntity() {
+        CuentasSospechosasEntity cuentasSospechosasEntity = new CuentasSospechosasEntity();
+        cuentasSospechosasEntity.setIdcuentasSospechosas(idcuentasSospechosas);
+        cuentasSospechosasEntity.setIban(iban);
+
+        return cuentasSospechosasEntity;
     }
 }

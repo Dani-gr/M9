@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.EmpresaEntity;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -7,6 +9,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.EmpresaEntity} entity
  */
+@SuppressWarnings("unused")
 public class EmpresaEntityDTO implements Serializable {
     private final Integer idEmpresa;
     private final Integer cif;
@@ -67,5 +70,16 @@ public class EmpresaEntityDTO implements Serializable {
                 "clientesEmpresasByIdEmpresa = " + clientesEmpresasByIdEmpresa + ", " +
                 "clienteByCliente = " + clienteByCliente + ", " +
                 "rolusuariosByIdEmpresa = " + rolusuariosByIdEmpresa + ")";
+    }
+
+    public EmpresaEntity toEntity() {
+        EmpresaEntity empresaEntity = new EmpresaEntity();
+        empresaEntity.setIdEmpresa(idEmpresa);
+        empresaEntity.setCif(cif);
+        empresaEntity.setClienteByCliente(clienteByCliente.toEntity());
+        empresaEntity.setClientesEmpresasByIdEmpresa(clientesEmpresasByIdEmpresa.stream().map(ClientesEmpresaEntityDTO::toEntity).toList());
+        empresaEntity.setRolusuariosByIdEmpresa(rolusuariosByIdEmpresa.stream().map(RolusuarioEntityDTO::toEntity).toList());
+
+        return empresaEntity;
     }
 }

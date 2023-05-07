@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.DireccionEntity;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -99,5 +101,16 @@ public class DireccionEntityDTO implements Serializable {
                 "pais = " + pais + ", " +
                 "codpostal = " + codpostal + ", " +
                 "clientesById = " + clientesById + ")";
+    }
+
+    public DireccionEntity toEntity() {
+        DireccionEntity direccionEntity = new DireccionEntity();
+        direccionEntity.construct(
+                calle, numero, plantaPuertaOficina, ciudad, region, pais, codpostal
+        );
+        direccionEntity.setId(id);
+        direccionEntity.setClientesById(clientesById.stream().map(ClienteEntityDTO::toEntity).toList());
+
+        return direccionEntity;
     }
 }

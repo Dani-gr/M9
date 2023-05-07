@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.OperacionEntity;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -76,5 +78,17 @@ public class OperacionEntityDTO implements Serializable {
                 "extraccionsByIdOperacion = " + extraccionsByIdOperacion + ", " +
                 "cuentaByCuentaRealiza = " + cuentaByCuentaRealiza + ", " +
                 "transferenciasByIdOperacion = " + transferenciasByIdOperacion + ")";
+    }
+
+    public OperacionEntity toEntity() {
+        OperacionEntity operacionEntity = new OperacionEntity();
+        operacionEntity.setIdOperacion(idOperacion);
+        operacionEntity.setFecha(fecha);
+        operacionEntity.setCuentaByCuentaRealiza(cuentaByCuentaRealiza.toEntity());
+        operacionEntity.setExtraccionsByIdOperacion(extraccionsByIdOperacion.stream().map(ExtraccionEntityDTO::toEntity).toList());
+        operacionEntity.setTransferenciasByIdOperacion(transferenciasByIdOperacion.stream().map(TransferenciaEntityDTO::toEntity).toList());
+        operacionEntity.setCambDivisasByIdOperacion(cambDivisasByIdOperacion.stream().map(CambDivisaEntityDTO::toEntity).toList());
+
+        return operacionEntity;
     }
 }

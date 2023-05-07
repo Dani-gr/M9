@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.ClientesEmpresaEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -51,5 +53,14 @@ public class ClientesEmpresaEntityDTO implements Serializable {
                 "id = " + id + ", " +
                 "empresaByIdEmpresa = " + empresaByIdEmpresa + ", " +
                 "clienteByIdCliente = " + clienteByIdCliente + ")";
+    }
+
+    public ClientesEmpresaEntity toEntity() {
+        ClientesEmpresaEntity clientesEmpresaEntity = new ClientesEmpresaEntity();
+        clientesEmpresaEntity.setId(id);
+        clientesEmpresaEntity.setClienteByIdCliente(clienteByIdCliente.toEntity());
+        clientesEmpresaEntity.setEmpresaByIdEmpresa(empresaByIdEmpresa.toEntity());
+
+        return clientesEmpresaEntity;
     }
 }
