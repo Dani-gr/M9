@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%
+  //Nuria Rodríguez Tortosa 100%
+%>
 <html>
 <head>
     <title>En espera</title>
