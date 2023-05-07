@@ -228,7 +228,7 @@ public class LoginController {
         var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
 
         if (nombresRoles.contains("asistente"))
-            return "chats";
+            return "redirect:/chats/asistente";
         String mensaje = (String) session.getAttribute("mensaje");
         if (mensaje != null && !mensaje.isBlank()) {
             model.addAttribute("mensaje", mensaje);
@@ -348,8 +348,8 @@ public class LoginController {
         cd1.setDestino("USD");
         cd2.setDestino("GBP");
 
-        cambDivisaEntityRepository.save(cd1);
-        cambDivisaEntityRepository.save(cd2);
+//        cambDivisaEntityRepository.save(cd1);
+//        cambDivisaEntityRepository.save(cd2);
 
         RolusuarioEntity ru1 = new RolusuarioEntity(), ru2 = new RolusuarioEntity(), ru3 = new RolusuarioEntity(), ru4 = new RolusuarioEntity(), ru5 = new RolusuarioEntity();
         ru1.setUsuarioByIdusuario(u1);

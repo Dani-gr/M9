@@ -27,8 +27,8 @@
                     <th>ID</th>
                     <th>Asistente Asignado</th>
                     <th>Cliente</th>
-                    <th>Estado</th>
                     <th>Ultimo mensaje</th>
+                    <th>Estado</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -41,14 +41,16 @@
                                 ${chat.clienteByClienteIdCliente.usuariosByIdCliente.get(0).primerNombre}
                                 ${chat.clienteByClienteIdCliente.usuariosByIdCliente.get(0).primerApellido}
                         </td>
+                        <td>Pendiente de hacer</td>
                         <c:if test="${chat.activo == 1}">
                             <td>Abierto</td>
+                            <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Entrar</a></td>
                         </c:if>
                         <c:if test="${chat.activo == 0}">
                             <td>Cerrado</td>
+                            <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Ver Chat</a></td>
                         </c:if>
-                        <td>Pendiente de hacer</td>
-                        <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Entrar</a></td>
+
                     </tr>
                 </c:forEach>
                 </tbody>

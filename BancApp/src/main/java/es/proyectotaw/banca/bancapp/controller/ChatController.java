@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -61,12 +62,13 @@ public class ChatController {
                            @RequestParam("idUsuario") int user,
                            Model model){
         MensajeEntity mens = new MensajeEntity();
-        mens.setEmisor(user);
+        UsuarioEntity userEmisor = (UsuarioEntity) usuarioEntityRepository.findById(user).get();
+        mens.setUsuarioByEmisor(userEmisor);
         mens.setContenido(mensaje);
         ChatEntity chatDestino = (ChatEntity) chatEntityRepository.findById(chat).get();
         mens.setChatByChat(chatDestino);
-        mens.setFechaHora(new Date(System.currentTimeMillis()));
-        UsuarioEntity userEmisor = (UsuarioEntity) usuarioEntityRepository.findById(user).get();
+        LocalDateTime time = java.time.LocalDateTime.now();
+        mens.setFechaHora(Timestamp.valueOf(time));
         mens.setUsuarioByEmisor(userEmisor);
         mensajeEntityRepository.saveAndFlush(mens);
         return "redirect:/chats/detallesChat/" + chat;
