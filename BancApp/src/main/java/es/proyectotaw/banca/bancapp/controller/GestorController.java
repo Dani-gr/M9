@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/gestor")
@@ -27,7 +29,8 @@ public class GestorController {
 
     /*Zona destinada a controlar la pantalla de gestor*/
     @GetMapping("/")
-    public String doInicializarPantallaPrincipal(Model model){
+    public String doInicializarPantallaPrincipal(Model model, HttpSession session){
+        if(session.getAttribute("usuario") == null) return "redirect:/";
         return  procesarFiltradoClientes(model, null);
     }
 

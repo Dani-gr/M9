@@ -12,10 +12,9 @@
 
         <jsp:include page="cabeceraMenu.jsp"></jsp:include>
 
-
         <br><br><br><br>
 
-        <h1 style="text-align: center">SISTEMA DE GESTIÓN DEL BANCO</h1>
+        <h1 style="text-align: center">SISTEMA DE GESTIÓN DEL BANCO</h1><hr>
 
         <div class="container-md">
             <h3>OPERACIONES DE GESTIÓN</h3>
@@ -42,6 +41,7 @@
         <div class="container-md">
             <h3 style="text-align: center">RELACIÓN DE CLIENTES DEL BANCO</h3>
 
+            <fieldset>
             <table>
                 <tr>
                     <strong>FILTROS PARA VISUALIZAR CLIENTES</strong>
@@ -71,6 +71,7 @@
 
                 </tr>
             </table>
+            </fieldset>
 
             <br><br>
 
