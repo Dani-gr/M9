@@ -13,6 +13,9 @@
     <title>Solicitudes de Alta</title>
 </head>
 <body>
+
+    <jsp:include page="cabeceraGestor.jsp"></jsp:include>
+
     <%
         List<ClienteEntity> solicitantes = (List<ClienteEntity>) request.getAttribute("solicitantes");
         if(solicitantes.isEmpty()){
@@ -44,9 +47,17 @@
 
                 <td>
                     <%= (esEmpresa) ?
-                            "<a class=\"btn btn-dark\" href='/gestor/empresa?id=" + c.getIdCliente() + "'>VER EMPRESA</a>" :
-                            "<a class=\"btn btn-secondary\" href='/gestor/particular?id=" + c.getIdCliente() + "'>VER PARTICULAR</a>"
+                            "ES UNA EMPRESA" :
+                            "ES UN PARTICULAR"
                     %>
+                    <a href="/gestor/solicitudesAlta/verSolicitante?id=<%=c.getIdCliente()%>"
+                </td>
+
+                <td>
+                    <a href="gestor/asignarCuenta?id=<%=c.getIdCliente()%>">ACEPTAR</a>
+                </td>
+                <td>
+                    <a href="gestor/borrarCliente?id=<%=c.getIdCliente()%>">DENEGAR</a>
                 </td>
 
             </tr>
