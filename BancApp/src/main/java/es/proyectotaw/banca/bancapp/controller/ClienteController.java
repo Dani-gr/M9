@@ -183,7 +183,7 @@ public class ClienteController {
     @GetMapping("/solicitarDesbloqueo")
     public String doSolicitudDesbloqueo(Model model, HttpSession session){
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        usuario.getRolusuariosById().get(0).setBloqueado((byte) 2);
+        usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getActiva(2);
         usuarioEntityRepository.saveAndFlush(usuario);
         model.addAttribute("usuario", usuario);
         return "redirect:/menu";
