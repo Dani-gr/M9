@@ -1,3 +1,6 @@
+/*
+Autor: Andres Perez Garcia
+ */
 package es.proyectotaw.banca.bancapp.entity;
 
 import es.proyectotaw.banca.bancapp.dto.ChatEntityDTO;

@@ -1,9 +1,13 @@
+<!--
+Autor: Andres Perez Garcia
+-->
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
 %>
 <html>
 <head>
@@ -51,7 +55,7 @@
     </c:forEach>
 </div>
 <div class="container" style="text-align: right;">
-    <c:if test="${chat.activo == 1 && usuario.getId()==chat.usuarioByAsistenteId.id}">
+    <c:if test="${chat.activo == 1 && (usuario.getId()==chat.usuarioByAsistenteId.id || usuario.getClienteByCliente().getIdCliente()==chat.clienteByClienteIdCliente.idCliente)}">
         <form action="/chats/crearMensaje" method="post">       <!-- AQUI HAY QUE HACER 2 CASOS (CLIENTE Y ASISTENTE) -->
         <c:if test="<%=usuario.getClienteByCliente()==null%>">
             <!-- NO ES CLIENTE, POR LO TANTO ES ASISTENTE -->

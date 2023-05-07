@@ -2,6 +2,7 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.ClienteEntity" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.DireccionEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<!-- Carlos Castaño Moreno -->
 <html>
 <head>
     <title>Solicitudes de Alta</title>
