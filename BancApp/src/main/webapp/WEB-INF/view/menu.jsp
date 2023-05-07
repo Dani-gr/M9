@@ -38,7 +38,7 @@
                         <div class="col col-4">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                  onclick="window.location.href='/operacion/cambioDivisa'">
-                                Cambio de divisa
+                                Cambio de divisa + extracción
                             </div>
                         </div>
                         <div class="col col-4">

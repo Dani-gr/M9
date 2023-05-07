@@ -162,22 +162,33 @@ public class OperacionController {
     }
 
     @PostMapping("/guardarDivisa")
-    public String doGuardarDivisa(HttpSession session, @ModelAttribute("cambioDivisa") CambDivisaEntity cambioDivisa) {
+    public String doGuardarDivisa(Model model, HttpSession session, @ModelAttribute("cambioDivisa") CambDivisaEntity cambioDivisa) {
         if (cambioDivisa == null || incumplePermisos(session)) return "redirect:/menu";
         OperacionEntity operacion = crearOperacion(session);
+
+        /*
+         * TODO Por hacer porque me tengo que estudiar los cambios de monedas a monedas
+         */
+
         // Éxito
         operacionEntityRepository.save(operacion);
         cambioDivisa.setOperacionByOperacion(operacion);
         cambDivisaEntityRepository.save(cambioDivisa);
 
-        /*
-         * TODO Por hacer porque me tengo que estudiar los cambios de monedas a monedas
-         */
-        return "menu";
+        String urlTo = "redirect:/menu";
+        if ("cajero".equalsIgnoreCase((String) session.getAttribute("menu"))) {
+            ExtraccionEntity extra = new ExtraccionEntity();
+            extra.setCantidad(cambioDivisa.getCantidad());
+            urlTo = guardarExtraccion(model, session, extra);
+            session.setAttribute("mensaje", "Sacando " + cambioDivisa.getCantidad() + " " +
+                    cambioDivisa.getOrigen() + " en " + cambioDivisa.getDestino() + "...");
+        } else session.setAttribute("mensaje", "¡Cambiados " + cambioDivisa.getCantidad() + " " +
+                cambioDivisa.getOrigen() + " a " + cambioDivisa.getDestino() + " !");
+        return "extraccion".equalsIgnoreCase(urlTo) ? "cambiodivisa" : urlTo;
     }
 
     @GetMapping("/extraccion")
-    public String doExtraccion(Model model, HttpSession session) {
+    public String doExtraccion(Model model, HttpSession session, @ModelAttribute("tipo") String tipo) {
         if (incumplePermisos(session)) return "redirect:/menu";
 
         ExtraccionEntity extraccion = new ExtraccionEntity();
@@ -190,6 +201,10 @@ public class OperacionController {
 
     @PostMapping("/guardarExtraccion")
     public String doGuardarExtraccion(Model model, HttpSession session, @ModelAttribute("extraer") ExtraccionEntity extra) {
+        return guardarExtraccion(model, session, extra);
+    }
+
+    private String guardarExtraccion(Model model, HttpSession session, ExtraccionEntity extra) {
         if (extra == null || incumplePermisos(session)) return "redirect:/menu";
 
         OperacionEntity operacion = crearOperacion(session);
@@ -207,7 +222,9 @@ public class OperacionController {
             operacionEntityRepository.save(operacion);
             extra.setOperacionByOperacion(operacion);
             extraccionEntityRepository.save(extra);
-            return "menu";
+
+            session.setAttribute("mensaje", "Sacando " + cantidad + " EUR en efectivo...");
+            return "redirect:/menu";
         } else {
             // Estás pobre :(
             model.addAttribute("error", "¡No tienes suficiente saldo!\nTienes " + mia.getSaldo() + "€.");
