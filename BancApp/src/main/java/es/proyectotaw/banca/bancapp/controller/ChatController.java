@@ -73,6 +73,4 @@ public class ChatController {
         mensajeEntityRepository.saveAndFlush(mens);
         return "redirect:/chats/detallesChat/" + chat;
     }
-    //TODO: Para cuando se introduzca la fecha bien LocalDateTime time = java.time.LocalDateTime.now();
-
 }
