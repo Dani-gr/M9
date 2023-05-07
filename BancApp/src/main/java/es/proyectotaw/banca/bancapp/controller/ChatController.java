@@ -1,6 +1,4 @@
 package es.proyectotaw.banca.bancapp.controller;
-
-
 import es.proyectotaw.banca.bancapp.dao.ChatEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.MensajeEntityRepository;
@@ -9,18 +7,16 @@ import es.proyectotaw.banca.bancapp.entity.ChatEntity;
 import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.MensajeEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
-import net.bytebuddy.TypeCache;
-import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/chats")
@@ -42,15 +38,27 @@ public class ChatController {
     }
 
     @PostMapping("/solicitudAsistencia")
-    String doInicializarChatConAsistente(@RequestParam("usuario") int usuarioId, Model model){
-        //TODO: Crear el chat con el asistente
+    String doInicializarChatConAsistente(@RequestParam("usuario") int usuarioId){
+        // Generar asistente encargado:
+        List<UsuarioEntity> asistentes = (List<UsuarioEntity>) usuarioEntityRepository.findByRolusuariosById_RolByIdrol_Nombre("asistente");
+        Random rand = new Random();
+        int i = rand.nextInt(asistentes.size());
+        UsuarioEntity asistente = asistentes.get(i);
+
+        // Extraer cliente e inicializar objetos
         UsuarioEntity user = (UsuarioEntity) usuarioEntityRepository.findById(usuarioId).get();
-        //TODO: Crear chat
-            // TODO: asignar asistente en base a algun criterio
-            // TODO: asignar valores de un chat
-            // TODO: guardar este chat creado
-        //model.addAttribute("chats",chats);
-        return "chats"; //TODO: Redirigir al chat (vista cliente??)
+        List<MensajeEntity> msgList = new ArrayList<>();
+        ChatEntity chatNuevo = new ChatEntity();
+
+        //Asignar valores
+        chatNuevo.setMensajesById(msgList);
+        chatNuevo.setActivo((byte) 1);
+        chatNuevo.setUsuarioByAsistenteId(asistente);
+        chatNuevo.setClienteByClienteIdCliente(user.getClienteByCliente());
+
+        chatEntityRepository.saveAndFlush(chatNuevo);
+
+        return "redirect:/chats/?cliente=" + user.getClienteByCliente().getIdCliente();
     }
     @GetMapping("/")
     String doInicializarListaChats(@RequestParam("cliente") int id, Model model){

@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, Integer> {
+    List<UsuarioEntity> findByRolusuariosById_RolByIdrol_Nombre(String nombre);
     @Query("select u from UsuarioEntity u where upper(u.email) = upper(?1)")
     Optional<UsuarioEntity> findByEmailIgnoreCase(@NonNull String email);
 

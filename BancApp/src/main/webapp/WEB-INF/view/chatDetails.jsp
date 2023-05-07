@@ -1,12 +1,6 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: andil
-  Date: 06/05/2023
-  Time: 14:46
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
@@ -34,25 +28,7 @@
 
     </style>
 </head>
-<nav class="navbar navbar-custom py-3 fixed-top shadow-sm">
-    <div class="col-1">
-        <c:if test="<%=usuario.getClienteByCliente()!=null%>">
-            <button style="border: 1px; width: 60px;" class="btn btn-primary"
-                    onclick="window.location.href = '/menu';">
-                Volver
-            </button>
-        </c:if>
-    </div>
-    <div class="col">
-        <h3 id="saludo">Bienvenido, ${usuario.getPrimerNombre()} ${usuario.getSegundoNombre()}</h3>
-    </div>
-    <div class="col-1">
-        <button style="width: 60px" class="btn btn-danger"
-                onclick="window.location.href = '/logout';">
-            Salir
-        </button>
-    </div>
-</nav>
+<jsp:include page="cabecera.jsp"/>
 <body>
 <div class="header">Chat de asistencia</div>
 <div class="container" style="text-align: right;">
@@ -75,7 +51,7 @@
     </c:forEach>
 </div>
 <div class="container" style="text-align: right;">
-    <c:if test="${chat.activo == 1}">
+    <c:if test="${chat.activo == 1 && usuario.getId()==chat.usuarioByAsistenteId.id}">
         <form action="/chats/crearMensaje" method="post">       <!-- AQUI HAY QUE HACER 2 CASOS (CLIENTE Y ASISTENTE) -->
         <c:if test="<%=usuario.getClienteByCliente()==null%>">
             <!-- NO ES CLIENTE, POR LO TANTO ES ASISTENTE -->

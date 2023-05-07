@@ -25,19 +25,20 @@
                         <input type="text" id="nombre" name="nombre" placeholder="Buscar por cliente...">
                         <input type="submit" value="Buscar">
                     </form>
+                    <form action="filtrarPorActivo">
+                        Filtro:
+                        <select name="filtro" id="filtro">
+                            <option value="Abiertos">Selección: Sólo Abiertos</option>
+                            <option value="Cerrados">Selección: Sólo Cerrados</option>
+                            <option value="OrdenPrimeroAbiertos">Orden: Primero Abiertos</option>
+                            <option value="OrdenPrimeroCerrados">Orden: Primero Cerrados</option>
+                            <option value="OrdenAlfabeticoAsistente">Orden: Asistente Alfabetico</option>
+                            <option value="Reset">Reiniciar</option>
+                        </select>
+                        <input type="submit" value="Filtrar">
+                    </form>
                 </c:if>
-                <form action="filtrarPorActivo">
-                    Filtro:
-                    <select name="filtro" id="filtro">
-                        <option value="Abiertos">Selección: Sólo Abiertos</option>
-                        <option value="Cerrados">Selección: Sólo Cerrados</option>
-                        <option value="OrdenPrimeroAbiertos">Orden: Primero Abiertos</option>
-                        <option value="OrdenPrimeroCerrados">Orden: Primero Cerrados</option>
-                        <option value="OrdenAlfabeticoAsistente">Orden: Asistente Alfabetico</option>
-                        <option value="Reset">Reiniciar</option>
-                    </select>
-                    <input type="submit" value="Filtrar">
-                </form>
+
             </nav>
             <table class="table table-striped table-info">
                 <thead>
