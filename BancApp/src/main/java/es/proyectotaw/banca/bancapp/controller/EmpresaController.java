@@ -1,22 +1,18 @@
 package es.proyectotaw.banca.bancapp.controller;
 
 
-import es.proyectotaw.banca.bancapp.dao.EmpresaEntityRepository;
-import es.proyectotaw.banca.bancapp.dao.RolEntityRepository;
-import es.proyectotaw.banca.bancapp.dao.RolusuarioEntityRepository;
-import es.proyectotaw.banca.bancapp.dao.UsuarioEntityRepository;
-import es.proyectotaw.banca.bancapp.entity.EmpresaEntity;
-import es.proyectotaw.banca.bancapp.entity.RolEntity;
-import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
-import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
+import es.proyectotaw.banca.bancapp.dao.*;
+import es.proyectotaw.banca.bancapp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +30,11 @@ public class EmpresaController {
     @Autowired
     private EmpresaEntityRepository empresaEntityRepository;
 
+    @Autowired
+    private DireccionEntityRepository direccionEntityRepository;
+
+    @Autowired
+    private ClienteEntityRepository clienteEntityRepository;
     @GetMapping("/")
     public String doMostrar(Model model, HttpSession session){
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
@@ -78,5 +79,43 @@ public class EmpresaController {
         usuario.getRolusuariosById().get(0).setBloqueado((byte) 1);
         usuarioEntityRepository.save(usuario);
         return "redirect:/empresa/";
+    }
+
+    @GetMapping("/addSocios")
+    public String doAñadirSocios(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("userNIF") String NIF,
+                                 @ModelAttribute("userNombre") String nombre, @ModelAttribute("userNombreSegundo") String segundoNombre, @ModelAttribute("userApellidoPrimero") String primerApellido,
+                                 @ModelAttribute("userApellidoSegundo") String segundoApellido, @ModelAttribute("userFechaNacimiento") java.util.Date fechaNacimiento, @ModelAttribute("userEmail") String email,
+                                 @ModelAttribute("userPassword") String password, @ModelAttribute("direccionCalle") String calle, @ModelAttribute("direccionNumero") String numero,
+                                 @ModelAttribute("direccionPlanta") String planta, @ModelAttribute("direccionCiudad") String ciudad, @ModelAttribute("direccionRegion") String region,
+                                 @ModelAttribute("direccoinPais") String pais, @ModelAttribute("direccionPostal") String postal, @RequestParam("btnRegistro") String boton, @ModelAttribute("rol") String rolSeleccionado){
+
+        java.sql.Date sqlFechaNacimiento = new java.sql.Date(fechaNacimiento.getTime());
+        UsuarioEntity usuarioEmpresa = new UsuarioEntity();
+        usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
+
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
+        List<RolusuarioEntity> listaRolUsuarioAsociados = usuario.getRolusuariosById();
+        EmpresaEntity empresa = listaRolUsuarioAsociados.get(0).getEmpresaByIdempresa();
+
+        // TODO check for existing users
+        ClienteEntity cliente = new ClienteEntity();
+        DireccionEntity direccion = new DireccionEntity();
+        direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
+        direccionEntityRepository.save(direccion);
+        cliente.setDireccionByDireccion(direccion);
+        clienteEntityRepository.save(cliente);
+
+        usuarioEmpresa.setClienteByCliente(cliente);
+        usuarioEntityRepository.save(usuarioEmpresa);
+
+        RolusuarioEntity rolusuario = new RolusuarioEntity();
+        RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
+        rolusuario.setRolByIdrol(rol);
+        rolusuario.setUsuarioByIdusuario(usuarioEmpresa);
+        rolusuario.setEmpresaByIdempresa(empresa);
+        rolusuario.setBloqueado((byte) 0);
+        rolusuarioEntityRepository.save(rolusuario);
+        return "registroNuevoSocio";
     }
 }

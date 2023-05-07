@@ -76,7 +76,7 @@ public class LoginController {
     @PostMapping("/registro")
     String doGuardarRegistro(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("userNIF") String NIF,
                              @ModelAttribute("userNombre") String nombre, @ModelAttribute("userNombreSegundo") String segundoNombre, @ModelAttribute("userApellidoPrimero") String primerApellido,
-                             @ModelAttribute("userApellidoSegundo") String segundoApellido, @ModelAttribute("userFechaNacimiento") Date fechaNacimiento, @ModelAttribute("userEmail") String email,
+                             @ModelAttribute("userApellidoSegundo") String segundoApellido, @ModelAttribute("userFechaNacimiento") java.util.Date fechaNacimiento, @ModelAttribute("userEmail") String email,
                              @ModelAttribute("userPassword") String password, @ModelAttribute("direccionCalle") String calle, @ModelAttribute("direccionNumero") String numero,
                              @ModelAttribute("direccionPlanta") String planta, @ModelAttribute("direccionCiudad") String ciudad, @ModelAttribute("direccionRegion") String region,
                              @ModelAttribute("direccoinPais") String pais, @ModelAttribute("direccionPostal") String postal,
@@ -85,9 +85,12 @@ public class LoginController {
                              @ModelAttribute("direccoinPaisEmpresa") String paisEmpresa, @ModelAttribute("direccionPostalEmpresa") String postalEmpresa,
                              @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado, @ModelAttribute("repNIF") String repNIF,
                              @ModelAttribute("repNombre") String repnombre, @ModelAttribute("repNombreSegundo") String repsegundoNombre, @ModelAttribute("repApellidoPrimero") String repprimerApellido,
-                             @ModelAttribute("repApellidoSegundo") String repsegundoApellido, @ModelAttribute("repFechaNacimiento") Date repfechaNacimiento, @ModelAttribute("repEmail") String repemail,
+                             @ModelAttribute("repApellidoSegundo") String repsegundoApellido, @ModelAttribute("repFechaNacimiento") java.util.Date repfechaNacimiento, @ModelAttribute("repEmail") String repemail,
                              @ModelAttribute("repPassword") String reppassword,
                              @RequestParam("btnRegistro") String boton) {
+
+        java.sql.Date sqlFechaNacimiento = new java.sql.Date(fechaNacimiento.getTime());
+        java.sql.Date sqlRepFechaNacimiento = new java.sql.Date(repfechaNacimiento.getTime());
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
         //TODO añadir control de errores para los parámetros que no deberían ser nulos
@@ -118,7 +121,7 @@ public class LoginController {
 
             UsuarioEntity representanteEmpresa = new UsuarioEntity();
 
-            representanteEmpresa.construct(repNIF, repnombre, repsegundoNombre, repprimerApellido, repsegundoApellido, repfechaNacimiento, repemail, reppassword);
+            representanteEmpresa.construct(repNIF, repnombre, repsegundoNombre, repprimerApellido, repsegundoApellido, sqlRepFechaNacimiento, repemail, reppassword);
             ClienteEntity repcliente = new ClienteEntity();
             DireccionEntity repdireccion = new DireccionEntity();
             repdireccion.construct(calleEmpresa, Integer.valueOf(numeroEmpresa), plantaEmpresa, ciudadEmpresa, regionEmpresa, paisEmpresa, postalEmpresa);
@@ -139,7 +142,7 @@ public class LoginController {
 
             // Creo al socio/autorizado
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
-            usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
+            usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
             // TODO check for existing users
             ClienteEntity cliente = new ClienteEntity();
@@ -163,7 +166,7 @@ public class LoginController {
             session.setAttribute("empresa", empresa);
         } else {
             UsuarioEntity usuario = new UsuarioEntity();
-            usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
+            usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
             // TODO check for existing users
 

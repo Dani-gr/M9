@@ -81,6 +81,17 @@
                             </div>
                             <% } %>
 
+                            <% if(nombresRoles.contains("representante")){  %>
+                            <div class="row">
+                                <div class="col pt-3">
+                                    <div class="btn btn-lg btn-outline-secondary "
+                                         onclick="window.location.href='/empresa/addSocios'">
+                                        Añadir nuevos socios y autorizados
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+
                         </c:otherwise>
                     </c:choose>
                 </c:otherwise>
