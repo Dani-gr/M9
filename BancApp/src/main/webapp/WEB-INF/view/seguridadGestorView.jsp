@@ -7,7 +7,7 @@
     <title>Gestor - seguridad</title>
 </head>
 <body>
-
+    <!-- Carlos Castaño Moreno -->
     <jsp:include page="cabeceraGestor.jsp"></jsp:include>
 
     <br>

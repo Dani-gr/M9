@@ -1,6 +1,7 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.CuentaEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!-- Carlos Castaño Moreno -->
 <html>
 <head>
     <title>Gestor - Activacion cuentas</title>
