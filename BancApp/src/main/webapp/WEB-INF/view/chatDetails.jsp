@@ -34,8 +34,27 @@
 
     </style>
 </head>
+<nav class="navbar navbar-custom py-3 fixed-top shadow-sm">
+    <div class="col-1">
+        <c:if test="<%=usuario.getClienteByCliente()!=null%>">
+            <button style="border: 1px; width: 60px;" class="btn btn-primary"
+                    onclick="window.location.href = '/menu';">
+                Volver
+            </button>
+        </c:if>
+    </div>
+    <div class="col">
+        <h3 id="saludo">Bienvenido, ${usuario.getPrimerNombre()} ${usuario.getSegundoNombre()}</h3>
+    </div>
+    <div class="col-1">
+        <button style="width: 60px" class="btn btn-danger"
+                onclick="window.location.href = '/logout';">
+            Salir
+        </button>
+    </div>
+</nav>
 <body>
-<div class="header">Chat con ${chat.clienteByClienteIdCliente.usuariosByIdCliente.get(0).primerNombre}</div>
+<div class="header">Chat de asistencia</div>
 <div class="container" style="text-align: right;">
     <c:forEach items="${mensajes}" var="mensaje">
         <c:if test="${mensaje.usuarioByEmisor.clienteByCliente == null}">
@@ -68,7 +87,7 @@
             <input type="hidden" id="rol" name="rol" value="Cliente">
         </c:if>
             <input type="hidden" id="idChat" name="idChat" value="${chat.id}">
-            <input type="text" id="mensaje" name="mensaje" placeholder="Escriba aqui su mensaje...">
+            <input type="text" id="mensaje" name="mensaje" placeholder="Escriba aqui su mensaje..." required>
             <input type="submit" value="Enviar">
         </form>
     </c:if>
