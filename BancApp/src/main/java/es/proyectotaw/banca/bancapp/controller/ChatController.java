@@ -50,7 +50,7 @@ public class ChatController {
         //model.addAttribute("chats",chats);
         return "chats"; //TODO: Redirigir al chat (vista cliente??)
     }
-    @GetMapping("/cliente/")
+    @GetMapping("/")
     String doInicializarListaChats(@RequestParam("cliente") int id, Model model){
         List<ChatEntity> chats = (List<ChatEntity>) chatEntityRepository.findByClienteByClienteIdCliente_IdCliente(id);
         model.addAttribute("chats", chats);
@@ -63,12 +63,7 @@ public class ChatController {
         model.addAttribute("chat",chat);
         return "chatDetails";
     }
-    @GetMapping("cliente/detallesChat/{id}")
-    String doMostrarChatCliente(@PathVariable(value = "id") int id, Model model){
-        ChatEntity chat = chatEntityRepository.getById(id);
-        model.addAttribute("chat",chat);
-        return "chatDetails";
-    }
+
 
     @GetMapping("/busquedaChatsPorNombre")
     String doMostrarChatsPorNombre(@RequestParam("nombre") String nombre, Model model){

@@ -1,5 +1,9 @@
+<%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+%>
 <html>
 <head>
     <title>Area Asistente</title>
@@ -16,10 +20,12 @@
         <div class="col-md-12">
             <nav>
                 <h1>Lista de Chats</h1>
-                <form action="busquedaChatsPorNombre">
-                    <input type="text" id="nombre" name="nombre" placeholder="Buscar...">
-                    <input type="submit" value="Buscar">
-                </form>
+                <c:if test="<%=usuario.getClienteByCliente()==null%>">
+                    <form action="busquedaChatsPorNombre">
+                        <input type="text" id="nombre" name="nombre" placeholder="Buscar...">
+                        <input type="submit" value="Buscar">
+                    </form>
+                </c:if>
             </nav>
             <table class="table table-striped table-info">
                 <thead>
@@ -27,9 +33,12 @@
                     <th>ID</th>
                     <th>Asistente Asignado</th>
                     <th>Cliente</th>
-                    <th>Ultimo mensaje</th>
+                    <th>Ult. mensaje</th>
                     <th>Estado</th>
                     <th></th>
+                    <c:if test="<%=usuario.getClienteByCliente()!=null%>">
+                        <th></th>
+                    </c:if>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,11 +54,18 @@
                         <c:if test="${chat.activo == 1}">
                             <td>Abierto</td>
                             <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Entrar</a></td>
+                            <c:if test="<%=usuario.getClienteByCliente()!=null%>">
+                                <td><a href="" class="btn btn-warning">Cerrar asistencia</a></td>
+                            </c:if>
                         </c:if>
                         <c:if test="${chat.activo == 0}">
                             <td>Cerrado</td>
-                            <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Ver Chat</a></td>
+                            <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Entrar</a></td>
+                            <c:if test="<%=usuario.getClienteByCliente()!=null%>">
+                                <td></td>
+                            </c:if>
                         </c:if>
+
 
                     </tr>
                 </c:forEach>

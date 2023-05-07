@@ -102,7 +102,7 @@
                         </div>
                     </form:form>
                     <br/>
-                    <form:form action="/chats/cliente/" method="get">
+                    <form:form action="/chats/" method="get">
                         <div class="col">
                             <input type="hidden" id="cliente" name="cliente" value="<%=usuario.getClienteByCliente().getIdCliente()%>">
                             <input type="submit" class="btn btn-lg btn-outline-secondary" value="Acceder a los chats con asistentes">
