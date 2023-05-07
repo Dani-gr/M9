@@ -27,6 +27,25 @@
     </div>
     <div class="col-2" aria-hidden="true"></div>
     <div class="col-1">
+        <button style="width: 100px;" class="btn btn-info"
+            onclick="window.location.href = '/cliente/datosUsuario';">
+            Mis datos
+        </button>
+    </div>
+    <div class="col-1">
+        <button style="width: 100px;" class="btn btn-info"
+                onclick="window.location.href = '/empresa/datosEmpresa';">
+            Datos de mi empresa
+        </button>
+    </div>
+
+    <div class="col-1">
+        <button style="width: 100px;" class="btn btn-info"
+                onclick="window.location.href = '/empresa/operaciones';">
+            Ver operaciones
+        </button>
+    </div>
+    <div class="col-1">
         <button style="width: 60px;" class="btn btn-danger"
                 onclick="window.location.href = '/logout';">
             Salir

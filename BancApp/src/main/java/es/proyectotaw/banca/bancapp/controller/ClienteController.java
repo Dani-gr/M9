@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import javax.servlet.http.HttpSession;
+
 import java.util.ArrayList;
+
 import java.util.List;
 
 @SuppressWarnings("SpringMVCViewInspection")
@@ -84,6 +88,7 @@ public class ClienteController {
 
         return "cliente";
     }
+
 
     @PostMapping("/filtrar")
     public String doFiltrar(@ModelAttribute("filtro") FiltroOperaciones filtro,
@@ -181,9 +186,21 @@ public class ClienteController {
     }
 
     @PostMapping("/guardar")
-    public String doGuardarPerfil(HttpSession session, @ModelAttribute("usuario") UsuarioEntity usur) {
+    public String doGuardarPerfil(Model model,  HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute("usuario") UsuarioEntity usur) {
         //si es particular
-        usuarioEntityRepository.save(usur);
-        return "redirect:/customer/";
+        usuarioEntityRepository.saveAndFlush(usur);
+        redirectAttributes.addFlashAttribute("mensaje", "Los datos se han guardado correctamente");
+        session.setAttribute("usuario", usur);
+        return "redirect:/cliente/datosUsuario";
     }
+
+    @GetMapping("/datosUsuario")
+    public String doVerMisDatos(HttpSession session, Model model){;
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        model.addAttribute("usuario", usuario);
+
+        return "datosUsuario";
+    }
+
+
 }

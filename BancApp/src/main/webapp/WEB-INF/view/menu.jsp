@@ -6,8 +6,7 @@
 <jsp:useBean id="nombresRoles" type="java.util.List<java.lang.String>" scope="session"/>
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-    int idUsuario = usuario.getId();
-    boolean bloqueado = usuario.getRolusuariosById().stream().map(RolusuarioEntity::getBloqueado).toList().contains((byte) 1);
+    boolean bloqueado = !(usuario.getRolusuariosById().stream().map(RolusuarioEntity::getBloqueado).toList().contains((byte) 0));
 %>
 <html>
 <head>
@@ -71,15 +70,47 @@
                                         Cambio de divisa
                                     </div>
                                 </div>
-                                <c:if test="${nombresRoles.contains(\"socio\")}">
-                                    <div class="col" style="margin-top: 10px">
-                                        <div class="btn btn-lg btn-outline-secondary disabled">
-                                            Gestión de socios y autorizados
-                                            <!-- TODO link and enable -->
-                                        </div>
-                                    </div>
-                                </c:if>
                             </div>
+
+                            <% if(nombresRoles.contains("socio")){  %>
+                            <div class="row">
+                                <div class="col pt-3">
+                                    <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%> "
+                                         onclick="window.location.href='/empresa/'">
+                                        Gestión de socios y autorizados
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <% } %>
+
+                            <% if((nombresRoles.contains("socio") || nombresRoles.contains("autorizado")) && usuario.getRolusuariosById().get(0).getBloqueado() == 1){  %>
+                            <div class="row">
+                                <div class="col pt-3">
+                                    <div class="btn btn-lg btn-outline-secondary "
+                                         onclick="window.location.href='/empresa/solicitarDesbloqueo'">
+                                        Solicitar desbloqueo
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <% } %>
+
+
+                        <!--    <%// if(nombresRoles.contains("representante")){  %>
+                            <div class="row">
+                                <div class="col pt-3">
+                                    <div class="btn btn-lg btn-outline-secondary "
+                                         onclick="window.location.href='/empresa/addSocios'">
+                                        Añadir nuevos socios y autorizados
+                                    </div>
+                                </div>
+                            </div>
+                            <%// } %>
+                            -->
+
                         </c:otherwise>
                     </c:choose>
                 </c:otherwise>

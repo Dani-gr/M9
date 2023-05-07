@@ -87,7 +87,10 @@ public class LoginController {
                              @ModelAttribute("direccionCalleEmpresa") String calleEmpresa, @ModelAttribute("direccionNumeroEmpresa") String numeroEmpresa,
                              @ModelAttribute("direccionPlantaEmpresa") String plantaEmpresa, @ModelAttribute("direccionCiudadEmpresa") String ciudadEmpresa, @ModelAttribute("direccionRegionEmpresa") String regionEmpresa,
                              @ModelAttribute("direccoinPaisEmpresa") String paisEmpresa, @ModelAttribute("direccionPostalEmpresa") String postalEmpresa,
-                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado, @RequestParam("btnRegistro") String boton) {
+                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado,
+                             @RequestParam("btnRegistro") String boton) {
+
+        Date sqlFechaNacimiento = new Date(fechaNacimiento.getTime());
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
         //TODO añadir control de errores para los parámetros que no deberían ser nulos
@@ -114,9 +117,10 @@ public class LoginController {
                 model.addAttribute("entidad", "empresa");
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
+
             // Creo al socio/autorizado
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
-            usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
+            usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
             // TODO check for existing users
             ClienteEntity cliente = new ClienteEntity();
@@ -140,7 +144,7 @@ public class LoginController {
             session.setAttribute("empresa", empresa);
         } else {
             UsuarioEntity usuario = new UsuarioEntity();
-            usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
+            usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
             // TODO check for existing users
 
@@ -197,6 +201,7 @@ public class LoginController {
             List<RolEntity> rolesConPermiso = new ArrayList<>(2);
             rolesConPermiso.add(rolEntityRepository.findByNombre("autorizado").orElseThrow(RuntimeException::new));
             rolesConPermiso.add(rolEntityRepository.findByNombre("socio").orElseThrow(RuntimeException::new));
+            rolesConPermiso.add(rolEntityRepository.findByNombre("representante").orElseThrow(RuntimeException::new));
 
             var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, Integer.valueOf(cif));
 
@@ -424,6 +429,8 @@ public class LoginController {
         cd2.setDestino("GBP");
         cd1.setCantidad(7.25);
         cd2.setCantidad(20.00);
+
+
 
 
         cambDivisaEntityRepository.save(cd1);
