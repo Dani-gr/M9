@@ -21,6 +21,7 @@
         <c:if test="${not empty mensaje}">
             <div class="alert alert-success">${mensaje}</div>
         </c:if>
+        <%--@elvariable id="usuario" type="es.proyectotaw.banca.bancapp.entity.UsuarioEntity"--%>
         <form:form action="/cliente/guardar" modelAttribute="usuario" method="post">
             <form:hidden path="id"/>
             NIF: <form:input readonly="true" path="nif" size="9" maxlength="9"  /><br/><br/>
@@ -33,6 +34,8 @@
             Contraseña: <form:input path="password" type="password" size="30" maxlength="30"/><br/><br/>
             <h5>Dirección</h5>
             <form:hidden path="clienteByCliente.idCliente"/>
+            <form:hidden path="clienteByCliente.cuentasByIdCliente"/>
+            <form:hidden path="rolusuariosById"/>
             Calle: <form:input path="clienteByCliente.direccionByDireccion.calle" size="50" maxlength="50"/><br/><br/>
             Número: <form:input path="clienteByCliente.direccionByDireccion.numero" size="2" maxlength="2"/><br/><br/>
             Planta/Puerta/Oficina: <form:input path="clienteByCliente.direccionByDireccion.plantaPuertaOficina" size="2" maxlength="2"/><br/><br/>

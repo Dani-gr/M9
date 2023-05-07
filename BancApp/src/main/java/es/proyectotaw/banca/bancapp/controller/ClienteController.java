@@ -188,7 +188,7 @@ public class ClienteController {
     @PostMapping("/guardar")
     public String doGuardarPerfil(Model model,  HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute("usuario") UsuarioEntity usur) {
         //si es particular
-        usuarioEntityRepository.save(usur);
+        usuarioEntityRepository.saveAndFlush(usur);
         redirectAttributes.addFlashAttribute("mensaje", "Los datos se han guardado correctamente");
         session.setAttribute("usuario", usur);
         return "redirect:/cliente/datosUsuario";

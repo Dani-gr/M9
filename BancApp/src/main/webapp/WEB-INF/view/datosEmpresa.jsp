@@ -23,10 +23,12 @@
         </c:if>
 
         <%--@elvariable id="empresa" type="es.proyectotaw.banca.bancapp.entity.EmpresaEntity"--%>
-        <form:form action="/cliente/guardar" modelAttribute="empresa" method="post">
+        <form:form action="/empresa/guardar" modelAttribute="empresa" method="post">
             <form:hidden path="idEmpresa"/>
             CIF: <form:input path="cif" size="9" maxlength="9"/><br/><br/>
             <h5>Dirección</h5>
+            <form:hidden path="clienteByCliente.idCliente"/>
+            <form:hidden path="clienteByCliente.direccionByDireccion.id"/>
             Calle: <form:input path="clienteByCliente.direccionByDireccion.calle" size="50" maxlength="50"/><br/><br/>
             Número: <form:input path="clienteByCliente.direccionByDireccion.numero" size="2" maxlength="2"/><br/><br/>
             Planta/Puerta/Oficina: <form:input path="clienteByCliente.direccionByDireccion.plantaPuertaOficina" size="2" maxlength="2"/><br/><br/>

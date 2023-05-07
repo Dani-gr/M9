@@ -80,48 +80,6 @@
                            maxlength="5" minlength="5" size="5"/>
                     <br/>
 
-                    <h4>Datos del representante de la empresa</h4>
-
-                    <label for="repNIF" class="form-label">ID/NIF</label>
-                    <input type="text" id="repNIF" name="repNIF" class="form-control"
-                           value="" maxlength="9" minlength="9" size="9"/>
-                    <br/>
-
-                    <label for="repPNombre" class="form-label">Primer nombre</label>
-                    <input type="text" id="repPNombre" name="repNombre" class="form-control"
-                           value="" maxlength="20" minlength="1" size="20"/>
-                    <br/>
-
-                    <label for="repSNombre" class="form-label">Segundo nombre</label>
-                    <input type="text" id="repSNombre" name="repNombreSegundo" class="form-control"
-                           value="" maxlength="20" minlength="1" size="20"/>
-                    <br/>
-
-                    <label for="repPApellido" class="form-label">Primer apellido</label>
-                    <input type="text" id="repPApellido" name="repApellidoPrimero" class="form-control"
-                           value="" maxlength="20" minlength="1" size="20"/>
-                    <br/>
-
-                    <label for="repSApellido" class="form-label">Segundo apellido</label>
-                    <input type="text" id="repSApellido" name="repApellidoSegundo" class="form-control"
-                           value="" maxlength="20" minlength="1" size="20"/>
-                    <br/>
-
-                    <label for="repFechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                    <input type="date" id="repFechaNacimiento" name="repFechaNacimiento" class="form-control"
-                           value=""/>
-                    <br/>
-
-                    <label for="repEmail" class="form-label">Correo electr&oacute;nico</label>
-                    <input type="email" id="repEmail" name="repEmail" placeholder="hello@example.taw" class="form-control"
-                           value=""/>
-                    <br/>
-
-                    <label for="password" class="form-label">Contrase&ntilde;a</label>
-                    <input type="password" id="password" name="repPassword" class="form-control"/>
-                    <br/><br/>
-
-
                     Datos del
                     <label for="socio" class="form-label">socio</label>
                         <input id="socio" type="radio" name="rol" value="socio" checked>

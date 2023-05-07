@@ -80,21 +80,17 @@ public class LoginController {
     @PostMapping("/registro")
     String doGuardarRegistro(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("userNIF") String NIF,
                              @ModelAttribute("userNombre") String nombre, @ModelAttribute("userNombreSegundo") String segundoNombre, @ModelAttribute("userApellidoPrimero") String primerApellido,
-                             @ModelAttribute("userApellidoSegundo") String segundoApellido, @ModelAttribute("userFechaNacimiento") java.util.Date fechaNacimiento, @ModelAttribute("userEmail") String email,
+                             @ModelAttribute("userApellidoSegundo") String segundoApellido, @ModelAttribute("userFechaNacimiento") Date fechaNacimiento, @ModelAttribute("userEmail") String email,
                              @ModelAttribute("userPassword") String password, @ModelAttribute("direccionCalle") String calle, @ModelAttribute("direccionNumero") String numero,
                              @ModelAttribute("direccionPlanta") String planta, @ModelAttribute("direccionCiudad") String ciudad, @ModelAttribute("direccionRegion") String region,
                              @ModelAttribute("direccoinPais") String pais, @ModelAttribute("direccionPostal") String postal,
                              @ModelAttribute("direccionCalleEmpresa") String calleEmpresa, @ModelAttribute("direccionNumeroEmpresa") String numeroEmpresa,
                              @ModelAttribute("direccionPlantaEmpresa") String plantaEmpresa, @ModelAttribute("direccionCiudadEmpresa") String ciudadEmpresa, @ModelAttribute("direccionRegionEmpresa") String regionEmpresa,
                              @ModelAttribute("direccoinPaisEmpresa") String paisEmpresa, @ModelAttribute("direccionPostalEmpresa") String postalEmpresa,
-                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado, @ModelAttribute("repNIF") String repNIF,
-                             @ModelAttribute("repNombre") String repnombre, @ModelAttribute("repNombreSegundo") String repsegundoNombre, @ModelAttribute("repApellidoPrimero") String repprimerApellido,
-                             @ModelAttribute("repApellidoSegundo") String repsegundoApellido, @ModelAttribute("repFechaNacimiento") java.util.Date repfechaNacimiento, @ModelAttribute("repEmail") String repemail,
-                             @ModelAttribute("repPassword") String reppassword,
+                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado,
                              @RequestParam("btnRegistro") String boton) {
 
-        java.sql.Date sqlFechaNacimiento = new java.sql.Date(fechaNacimiento.getTime());
-        java.sql.Date sqlRepFechaNacimiento = new java.sql.Date(repfechaNacimiento.getTime());
+        Date sqlFechaNacimiento = new Date(fechaNacimiento.getTime());
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
         //TODO añadir control de errores para los parámetros que no deberían ser nulos
@@ -121,28 +117,6 @@ public class LoginController {
                 model.addAttribute("entidad", "empresa");
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
-            // Creo al representante
-
-            UsuarioEntity representanteEmpresa = new UsuarioEntity();
-
-            representanteEmpresa.construct(repNIF, repnombre, repsegundoNombre, repprimerApellido, repsegundoApellido, sqlRepFechaNacimiento, repemail, reppassword);
-            ClienteEntity repcliente = new ClienteEntity();
-            DireccionEntity repdireccion = new DireccionEntity();
-            repdireccion.construct(calleEmpresa, Integer.valueOf(numeroEmpresa), plantaEmpresa, ciudadEmpresa, regionEmpresa, paisEmpresa, postalEmpresa);
-            direccionEntityRepository.save(repdireccion);
-            repcliente.setDireccionByDireccion(repdireccion);
-            clienteEntityRepository.save(repcliente);
-
-            representanteEmpresa.setClienteByCliente(repcliente);
-            usuarioEntityRepository.save(representanteEmpresa);
-
-            RolusuarioEntity reprolusuario = new RolusuarioEntity();
-            RolEntity rolrep = rolEntityRepository.findByNombre("representante").orElseThrow(RuntimeException::new);
-            reprolusuario.setRolByIdrol(rolrep);
-            reprolusuario.setUsuarioByIdusuario(representanteEmpresa);
-            reprolusuario.setEmpresaByIdempresa(empresa);
-            reprolusuario.setBloqueado((byte) 0);
-            rolusuarioEntityRepository.save(reprolusuario);
 
             // Creo al socio/autorizado
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
