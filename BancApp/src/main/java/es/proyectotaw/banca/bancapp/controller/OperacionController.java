@@ -78,8 +78,7 @@ public class OperacionController {
     }
 
     private OperacionEntity crearOperacion(HttpSession session) {
-        // TODO refactor for new method getCuentaAsociada() in Rolusuario
-        CuentaEntity cuenta = ((UsuarioEntity) session.getAttribute("usuario")).getClienteByCliente().getCuentasByIdCliente().get(0);
+        CuentaEntity cuenta = ((UsuarioEntity) session.getAttribute("usuario")).getRolusuariosById().get(0).getCuentaAsociada();
 
         OperacionEntity operacion = new OperacionEntity();
         operacion.setCuentaByCuentaRealiza(cuenta);
@@ -189,7 +188,8 @@ public class OperacionController {
 
     @GetMapping("/extraccion")
     public String doExtraccion(Model model, HttpSession session, @ModelAttribute("tipo") String tipo) {
-        if (incumplePermisos(session)) return "redirect:/menu";
+        if (incumplePermisos(session) || !("cajero".equalsIgnoreCase((String) session.getAttribute("menu"))))
+            return "redirect:/menu";
 
         ExtraccionEntity extraccion = new ExtraccionEntity();
         extraccion.setCantidad(0.0);
@@ -205,7 +205,8 @@ public class OperacionController {
     }
 
     private String guardarExtraccion(Model model, HttpSession session, ExtraccionEntity extra) {
-        if (extra == null || incumplePermisos(session)) return "redirect:/menu";
+        if (extra == null || incumplePermisos(session) || !("cajero".equalsIgnoreCase((String) session.getAttribute("menu"))))
+            return "redirect:/menu";
 
         OperacionEntity operacion = crearOperacion(session);
         CuentaEntity mia = operacion.getCuentaByCuentaRealiza();
