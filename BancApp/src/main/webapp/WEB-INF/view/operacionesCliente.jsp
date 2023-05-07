@@ -7,6 +7,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
+    //@author Nuria Rodríguez Tortosa 100%
     @SuppressWarnings("unchecked")
     List<OperacionEntity> operaciones = (List<OperacionEntity>) request.getAttribute("operaciones");
     UsuarioEntity usuarioOpe = (UsuarioEntity) request.getAttribute("usuario");

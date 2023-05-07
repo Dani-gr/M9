@@ -20,6 +20,10 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+/*
+* Nuria Rodríguez Tortosa 90%
+* */
+
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/cliente")
@@ -176,5 +180,13 @@ public class ClienteController {
         return "datosUsuario";
     }
 
+    @GetMapping("/solicitarDesbloqueo")
+    public String doSolicitudDesbloqueo(Model model, HttpSession session){
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        usuario.getRolusuariosById().get(0).setBloqueado((byte) 2);
+        usuarioEntityRepository.saveAndFlush(usuario);
+        model.addAttribute("usuario", usuario);
+        return "redirect:/menu";
+    }
 
 }

@@ -1,7 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-
+<%
+    ////Nuria Rodríguez Tortosa 80%
+%>
 <html>
 <head>
     <jsp:useBean id="menu" scope="session" type="java.lang.String"/>
