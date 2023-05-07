@@ -1,3 +1,4 @@
+<%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -7,6 +8,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+%>
 <html>
 <head>
     <title>Chat</title>
@@ -53,8 +57,16 @@
 </div>
 <div class="container" style="text-align: right;">
     <c:if test="${chat.activo == 1}">
-        <form action="/chats/crearMensaje" method="post">
+        <form action="/chats/crearMensaje" method="post">       <!-- AQUI HAY QUE HACER 2 CASOS (CLIENTE Y ASISTENTE) -->
+        <c:if test="<%=usuario.getClienteByCliente()==null%>">
+            <!-- NO ES CLIENTE, POR LO TANTO ES ASISTENTE -->
             <input type="hidden" id="idUsuario" name="idUsuario" value="${chat.usuarioByAsistenteId.id}">
+            <input type="hidden" id="rol" name="rol" value="Asistente">
+        </c:if>
+        <c:if test="<%=usuario.getClienteByCliente()!=null%>">
+            <input type="hidden" id="idUsuario" name="idUsuario" value="${chat.clienteByClienteIdCliente.idCliente}">
+            <input type="hidden" id="rol" name="rol" value="Cliente">
+        </c:if>
             <input type="hidden" id="idChat" name="idChat" value="${chat.id}">
             <input type="text" id="mensaje" name="mensaje" placeholder="Escriba aqui su mensaje...">
             <input type="submit" value="Enviar">

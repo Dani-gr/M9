@@ -6,6 +6,7 @@ import es.proyectotaw.banca.bancapp.dao.ClienteEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.MensajeEntityRepository;
 import es.proyectotaw.banca.bancapp.dao.UsuarioEntityRepository;
 import es.proyectotaw.banca.bancapp.entity.ChatEntity;
+import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
 import es.proyectotaw.banca.bancapp.entity.MensajeEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.apache.tomcat.jni.Time;
@@ -62,6 +63,12 @@ public class ChatController {
         model.addAttribute("chat",chat);
         return "chatDetails";
     }
+    @GetMapping("cliente/detallesChat/{id}")
+    String doMostrarChatCliente(@PathVariable(value = "id") int id, Model model){
+        ChatEntity chat = chatEntityRepository.getById(id);
+        model.addAttribute("chat",chat);
+        return "chatDetails";
+    }
 
     @GetMapping("/busquedaChatsPorNombre")
     String doMostrarChatsPorNombre(@RequestParam("nombre") String nombre, Model model){
@@ -73,16 +80,21 @@ public class ChatController {
     String doEnviarMensaje(@RequestParam("mensaje") String mensaje,
                            @RequestParam("idChat") int chat,
                            @RequestParam("idUsuario") int user,
+                           @RequestParam("rol") String rol,
                            Model model){
         MensajeEntity mens = new MensajeEntity();
-        UsuarioEntity userEmisor = (UsuarioEntity) usuarioEntityRepository.findById(user).get();
-        mens.setUsuarioByEmisor(userEmisor);
+        if(rol.equals("Asistente")){
+            UsuarioEntity userEmisor = (UsuarioEntity) usuarioEntityRepository.findById(user).get();
+            mens.setUsuarioByEmisor(userEmisor);
+        }else{
+            ClienteEntity cliente = (ClienteEntity) clienteEntityRepository.findById(user).get();
+            mens.setUsuarioByEmisor(cliente.getUsuariosByIdCliente().get(0));
+        }
         mens.setContenido(mensaje);
         ChatEntity chatDestino = (ChatEntity) chatEntityRepository.findById(chat).get();
         mens.setChatByChat(chatDestino);
         LocalDateTime time = java.time.LocalDateTime.now();
         mens.setFechaHora(Timestamp.valueOf(time));
-        mens.setUsuarioByEmisor(userEmisor);
         mensajeEntityRepository.saveAndFlush(mens);
         return "redirect:/chats/detallesChat/" + chat;
     }
