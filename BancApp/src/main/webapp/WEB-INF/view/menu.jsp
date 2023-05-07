@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.RolusuarioEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -18,9 +19,10 @@
 <div class="m-3">&nbsp;</div>
 <jsp:useBean id="mensaje" scope="request" type="java.lang.String"/>
 <c:if test="${not null and not empty mensaje}">
-<div class="d-flex justify-content-center">
-    <h4 style="color:limegreen"><%=mensaje%></h4>
-</div>
+    <div class="d-flex justify-content-center">
+        <h4 style="color:limegreen"><%=mensaje%>
+        </h4>
+    </div>
 </c:if>
 <div class="d-flex justify-content-center">
     <div class="card text-center w-75" style="margin: 5% auto auto;">
@@ -28,20 +30,20 @@
             <jsp:useBean id="menu" scope="session" type="java.lang.String"/>
             <c:choose>
                 <c:when test="${\"cajero\".equalsIgnoreCase(menu)}">
-                    <div class="row mt-3">
-                        <div class="col col-4">
+                    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 justify-content-center align-content-center">
+                        <div class="col" style="margin-top: 10px">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                  onclick="window.location.href='/operacion/transferencia'">
                                 Transferencia
                             </div>
                         </div>
-                        <div class="col col-4">
+                        <div class="col" style="margin-top: 10px">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                  onclick="window.location.href='/operacion/cambioDivisa'">
-                                Cambio de divisa
+                                Cambio de divisa + extracción
                             </div>
                         </div>
-                        <div class="col col-4">
+                        <div class="col" style="margin-top: 10px">
                             <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                  onclick="window.location.href='/operacion/extraccion'">
                                 Extracci&oacute;n
@@ -55,14 +57,14 @@
                             <!-- TODO por el gestor -->
                         </c:when>
                         <c:otherwise>
-                            <div class="row mt-3">
-                                <div class="col col-4">
+                            <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 justify-content-center align-content-center">
+                                <div class="col" style="margin-top: 10px">
                                     <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                          onclick="window.location.href='/operacion/transferencia'">
                                         Transferencia
                                     </div>
                                 </div>
-                                <div class="col col-4">
+                                <div class="col" style="margin-top: 10px">
                                     <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%>"
                                          onclick="window.location.href='/operacion/cambioDivisa'">
                                         Cambio de divisa
@@ -123,9 +125,20 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col">
-                        <div class="btn btn-lg btn-outline-secondary disabled">Busca chat con un asistente</div>
-                    </div>
+                    <form:form action="/chats/solicitudAsistencia" method="post">
+                        <div class="col">
+                            <input type="hidden" id="usuario" name="usuario" value="<%=usuario.getId()%>">
+                            <input type="submit" href="/chats/solicitudAsistencia" class="btn btn-lg btn-outline-secondary" value="Busca chat con un asistente">
+                        </div>
+                    </form:form>
+                    <br/>
+                    <form:form action="/chats/" method="get">
+                        <div class="col">
+                            <input type="hidden" id="cliente" name="cliente" value="<%=usuario.getClienteByCliente().getIdCliente()%>">
+                            <input type="submit" class="btn btn-lg btn-outline-secondary" value="Acceder a los chats con asistentes">
+                        </div>
+                    </form:form>
+
                     <c:if test="${bloqueado}">
                         <div class="col">
                             <div class="btn btn-lg btn-outline-warning disabled">Solicitar desbloqueo</div>

@@ -19,6 +19,7 @@ public class ClienteEntity {
     private DireccionEntity direccionByDireccion;
     @OneToMany(mappedBy = "clienteByIdCliente")
     private List<ClientesEmpresaEntity> clientesEmpresasByIdCliente;
+
     @OneToMany(mappedBy = "clienteByCliente", fetch = FetchType.EAGER)
     private List<CuentaEntity> cuentasByIdCliente;
     @OneToMany(mappedBy = "clienteByCliente")
@@ -75,6 +76,10 @@ public class ClienteEntity {
 
     public List<CuentaEntity> getCuentasByIdCliente() {
         return cuentasByIdCliente;
+    }
+
+    public CuentaEntity getPrimeraCuentaByIdCliente(){
+        return (cuentasByIdCliente.isEmpty())? null: cuentasByIdCliente.get(0);
     }
 
     public void setCuentasByIdCliente(List<CuentaEntity> cuentasByIdCliente) {

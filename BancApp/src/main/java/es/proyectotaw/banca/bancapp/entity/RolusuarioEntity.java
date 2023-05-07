@@ -83,6 +83,16 @@ public class RolusuarioEntity {
     }
 
     public CuentaEntity getCuentaAsociada() {
-        return null;
+        return switch (rolByIdrol.getNombre()) {
+            case "cliente" -> {
+                var cuentas = usuarioByIdusuario.getClienteByCliente().getCuentasByIdCliente();
+                yield cuentas == null || cuentas.isEmpty() ? null : cuentas.get(0);
+            }
+            case "socio", "autorizado" -> {
+                var cuentas = empresaByIdempresa.getClienteByCliente().getCuentasByIdCliente();
+                yield cuentas == null || cuentas.isEmpty() ? null : cuentas.get(0);
+            }
+            default -> null;
+        };
     }
 }
