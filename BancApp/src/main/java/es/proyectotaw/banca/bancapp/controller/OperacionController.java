@@ -78,7 +78,13 @@ public class OperacionController {
     }
 
     private OperacionEntity crearOperacion(HttpSession session) {
-        CuentaEntity cuenta = ((UsuarioEntity) session.getAttribute("usuario")).getRolusuariosById().get(0).getCuentaAsociada();
+        var ru = ((UsuarioEntity) session.getAttribute("usuario")).getRolusuariosById();
+        EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
+        ru = ru.stream().filter(
+                rolusuario -> rolusuario.getEmpresaByIdempresa().equals(empresa)
+        ).toList();
+        if (ru.isEmpty()) throw new RuntimeException();
+        CuentaEntity cuenta = ru.get(0).getCuentaAsociada();
 
         OperacionEntity operacion = new OperacionEntity();
         operacion.setCuentaByCuentaRealiza(cuenta);
