@@ -29,8 +29,11 @@
                 <form action="filtrarPorActivo">
                     Filtro:
                     <select name="filtro" id="filtro">
-                        <option value="Abiertos">Abiertos</option>
-                        <option value="Cerrados">Cerrados</option>
+                        <option value="Abiertos">Selección: Sólo Abiertos</option>
+                        <option value="Cerrados">Selección: Sólo Cerrados</option>
+                        <option value="OrdenPrimeroAbiertos">Orden: Primero Abiertos</option>
+                        <option value="OrdenPrimeroCerrados">Orden: Primero Cerrados</option>
+                        <option value="OrdenAlfabeticoAsistente">Orden: Asistente Alfabetico</option>
                         <option value="Reset">Reiniciar</option>
                     </select>
                     <input type="submit" value="Filtrar">

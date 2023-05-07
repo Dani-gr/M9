@@ -87,7 +87,16 @@ public class ChatController {
             chats = (List<ChatEntity>) chatEntityRepository.findAllByActivo((byte) 1);
         }else if (filtro.equals("Cerrados")){
             chats = (List<ChatEntity>) chatEntityRepository.findAllByActivo((byte) 0);
-        }else{
+        } else if (filtro.equals("OrdenPrimeroAbiertos")) {
+            Sort sortByActivo = Sort.by("activo").descending();
+            chats = (List<ChatEntity>) chatEntityRepository.findAll(sortByActivo);
+        } else if (filtro.equals("OrdenPrimeroCerrados")) {
+            Sort sortByActivo = Sort.by("activo").ascending();
+            chats = (List<ChatEntity>) chatEntityRepository.findAll(sortByActivo);
+        } else if (filtro.equals("OrdenAlfabeticoAsistente")) {
+            Sort sortByAsistente = Sort.by("usuarioByAsistenteId.primerNombre").ascending();
+            chats = (List<ChatEntity>)  chatEntityRepository.findAll(sortByAsistente);
+        } else {
             return "redirect:/chats/asistente";
         }
         model.addAttribute("chats", chats);
