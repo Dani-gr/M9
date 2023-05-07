@@ -155,6 +155,8 @@ public class OperacionController {
         }
     }
 
+
+
     @GetMapping("/cambioDivisa")
     public String doDivisa(Model model, HttpSession session) {
         if (incumplePermisos(session)) return "redirect:/menu";
