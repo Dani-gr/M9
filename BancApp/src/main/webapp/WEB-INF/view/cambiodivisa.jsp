@@ -20,8 +20,8 @@
     <form:hidden path="idDivisa"/>
     <form:hidden path="operacionByOperacion"/>
     Cantidad: <form:input path="cantidad" cssClass="form-control"/>
-    Moneda actual: <form:input path="origen" size="30"  maxlength="30" cssClass="form-control"/> euros <br/>
-    Moneda a la que desea cambiar: <form:input path="destino" size="30"  maxlength="30" cssClass="form-control"/> euros <br/>
+    Moneda actual: <form:input path="origen" size="30"  maxlength="30" cssClass="form-control"/> <br/>
+    Moneda a la que desea cambiar: <form:input path="destino" size="30"  maxlength="30" cssClass="form-control"/> <br/>
     <form:button>Realizar cambio de divisa</form:button>
 </form:form>
 
