@@ -78,8 +78,13 @@ public class OperacionController {
     }
 
     private OperacionEntity crearOperacion(HttpSession session) {
-        // TODO refactor for new method getCuentaAsociada() in Rolusuario
-        CuentaEntity cuenta = ((UsuarioEntity) session.getAttribute("usuario")).getClienteByCliente().getCuentasByIdCliente().get(0);
+        var ru = ((UsuarioEntity) session.getAttribute("usuario")).getRolusuariosById();
+        EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
+        ru = ru.stream().filter(
+                rolusuario -> rolusuario.getEmpresaByIdempresa().equals(empresa)
+        ).toList();
+        if (ru.isEmpty()) throw new RuntimeException();
+        CuentaEntity cuenta = ru.get(0).getCuentaAsociada();
 
         OperacionEntity operacion = new OperacionEntity();
         operacion.setCuentaByCuentaRealiza(cuenta);
@@ -162,23 +167,35 @@ public class OperacionController {
     }
 
     @PostMapping("/guardarDivisa")
-    public String doGuardarDivisa(HttpSession session, @ModelAttribute("cambioDivisa") CambDivisaEntity cambioDivisa) {
+    public String doGuardarDivisa(Model model, HttpSession session, @ModelAttribute("cambioDivisa") CambDivisaEntity cambioDivisa) {
         if (cambioDivisa == null || incumplePermisos(session)) return "redirect:/menu";
         OperacionEntity operacion = crearOperacion(session);
+
+        /*
+         * TODO Por hacer porque me tengo que estudiar los cambios de monedas a monedas
+         */
+
         // Éxito
         operacionEntityRepository.save(operacion);
         cambioDivisa.setOperacionByOperacion(operacion);
         cambDivisaEntityRepository.save(cambioDivisa);
 
-        /*
-         * TODO Por hacer porque me tengo que estudiar los cambios de monedas a monedas
-         */
-        return "menu";
+        String urlTo = "redirect:/menu";
+        if ("cajero".equalsIgnoreCase((String) session.getAttribute("menu"))) {
+            ExtraccionEntity extra = new ExtraccionEntity();
+            extra.setCantidad(cambioDivisa.getCantidad());
+            urlTo = guardarExtraccion(model, session, extra);
+            session.setAttribute("mensaje", "Sacando " + cambioDivisa.getCantidad() + " " +
+                    cambioDivisa.getOrigen() + " en " + cambioDivisa.getDestino() + "...");
+        } else session.setAttribute("mensaje", "¡Cambiados " + cambioDivisa.getCantidad() + " " +
+                cambioDivisa.getOrigen() + " a " + cambioDivisa.getDestino() + " !");
+        return "extraccion".equalsIgnoreCase(urlTo) ? "cambiodivisa" : urlTo;
     }
 
     @GetMapping("/extraccion")
-    public String doExtraccion(Model model, HttpSession session) {
-        if (incumplePermisos(session)) return "redirect:/menu";
+    public String doExtraccion(Model model, HttpSession session, @ModelAttribute("tipo") String tipo) {
+        if (incumplePermisos(session) || !("cajero".equalsIgnoreCase((String) session.getAttribute("menu"))))
+            return "redirect:/menu";
 
         ExtraccionEntity extraccion = new ExtraccionEntity();
         extraccion.setCantidad(0.0);
@@ -190,7 +207,12 @@ public class OperacionController {
 
     @PostMapping("/guardarExtraccion")
     public String doGuardarExtraccion(Model model, HttpSession session, @ModelAttribute("extraer") ExtraccionEntity extra) {
-        if (extra == null || incumplePermisos(session)) return "redirect:/menu";
+        return guardarExtraccion(model, session, extra);
+    }
+
+    private String guardarExtraccion(Model model, HttpSession session, ExtraccionEntity extra) {
+        if (extra == null || incumplePermisos(session) || !("cajero".equalsIgnoreCase((String) session.getAttribute("menu"))))
+            return "redirect:/menu";
 
         OperacionEntity operacion = crearOperacion(session);
         CuentaEntity mia = operacion.getCuentaByCuentaRealiza();
@@ -207,7 +229,9 @@ public class OperacionController {
             operacionEntityRepository.save(operacion);
             extra.setOperacionByOperacion(operacion);
             extraccionEntityRepository.save(extra);
-            return "menu";
+
+            session.setAttribute("mensaje", "Sacando " + cantidad + " EUR en efectivo...");
+            return "redirect:/menu";
         } else {
             // Estás pobre :(
             model.addAttribute("error", "¡No tienes suficiente saldo!\nTienes " + mia.getSaldo() + "€.");

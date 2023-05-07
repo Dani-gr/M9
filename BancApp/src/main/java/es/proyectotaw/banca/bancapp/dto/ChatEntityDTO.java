@@ -1,20 +1,23 @@
 package es.proyectotaw.banca.bancapp.dto;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.ChatEntity} entity
  */
+@SuppressWarnings("unused")
 public class ChatEntityDTO implements Serializable {
     private final Integer id;
+    private final Byte activo;
     private final UsuarioEntityDTO usuarioByAsistenteId;
     private final ClienteEntityDTO clienteByClienteIdCliente;
-    private final Collection<MensajeEntityDTO> mensajesById;
+    private final List<MensajeEntityDTO> mensajesById;
 
-    public ChatEntityDTO(Integer id, UsuarioEntityDTO usuarioByAsistenteId, ClienteEntityDTO clienteByClienteIdCliente, Collection<MensajeEntityDTO> mensajesById) {
+    public ChatEntityDTO(Integer id, Byte activo, UsuarioEntityDTO usuarioByAsistenteId, ClienteEntityDTO clienteByClienteIdCliente, List<MensajeEntityDTO> mensajesById) {
         this.id = id;
+        this.activo = activo;
         this.usuarioByAsistenteId = usuarioByAsistenteId;
         this.clienteByClienteIdCliente = clienteByClienteIdCliente;
         this.mensajesById = mensajesById;
@@ -22,6 +25,10 @@ public class ChatEntityDTO implements Serializable {
 
     public Integer getId() {
         return id;
+    }
+
+    public Byte getActivo() {
+        return activo;
     }
 
     public UsuarioEntityDTO getUsuarioByAsistenteId() {
@@ -32,7 +39,7 @@ public class ChatEntityDTO implements Serializable {
         return clienteByClienteIdCliente;
     }
 
-    public Collection<MensajeEntityDTO> getMensajesById() {
+    public List<MensajeEntityDTO> getMensajesById() {
         return mensajesById;
     }
 
@@ -42,6 +49,7 @@ public class ChatEntityDTO implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         ChatEntityDTO entity = (ChatEntityDTO) o;
         return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.activo, entity.activo) &&
                 Objects.equals(this.usuarioByAsistenteId, entity.usuarioByAsistenteId) &&
                 Objects.equals(this.clienteByClienteIdCliente, entity.clienteByClienteIdCliente) &&
                 Objects.equals(this.mensajesById, entity.mensajesById);
@@ -49,13 +57,14 @@ public class ChatEntityDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, usuarioByAsistenteId, clienteByClienteIdCliente, mensajesById);
+        return Objects.hash(id, activo, usuarioByAsistenteId, clienteByClienteIdCliente, mensajesById);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
+                "activo = " + activo + ", " +
                 "usuarioByAsistenteId = " + usuarioByAsistenteId + ", " +
                 "clienteByClienteIdCliente = " + clienteByClienteIdCliente + ", " +
                 "mensajesById = " + mensajesById + ")";

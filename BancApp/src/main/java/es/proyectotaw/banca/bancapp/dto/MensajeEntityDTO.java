@@ -1,22 +1,21 @@
 package es.proyectotaw.banca.bancapp.dto;
 
-import es.proyectotaw.banca.bancapp.entity.MensajeEntity;
-
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link MensajeEntity} entity
+ * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.MensajeEntity} entity
  */
+@SuppressWarnings("unused")
 public class MensajeEntityDTO implements Serializable {
     private final Integer idMensaje;
-    private final Date fechaHora;
+    private final Timestamp fechaHora;
     private final String contenido;
     private final ChatEntityDTO chatByChat;
     private final UsuarioEntityDTO usuarioByEmisor;
 
-    public MensajeEntityDTO(Integer idMensaje, Date fechaHora, String contenido, ChatEntityDTO chatByChat, UsuarioEntityDTO usuarioByEmisor) {
+    public MensajeEntityDTO(Integer idMensaje, Timestamp fechaHora, String contenido, ChatEntityDTO chatByChat, UsuarioEntityDTO usuarioByEmisor) {
         this.idMensaje = idMensaje;
         this.fechaHora = fechaHora;
         this.contenido = contenido;
@@ -28,7 +27,7 @@ public class MensajeEntityDTO implements Serializable {
         return idMensaje;
     }
 
-    public Date getFechaHora() {
+    public Timestamp getFechaHora() {
         return fechaHora;
     }
 

@@ -1,26 +1,30 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.CambDivisaEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
-
 /**
- * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.CambdivisaEntity} entity
+ * A DTO for the {@link CambDivisaEntity} entity
  */
-public class CambdivisaEntityDTO implements Serializable {
-    private final Integer operacion;
+@SuppressWarnings("unused")
+public class CambDivisaEntityDTO implements Serializable {
+    private final Integer idDivisa;
     private final String origen;
     private final String destino;
+    private final Double cantidad;
     private final OperacionEntityDTO operacionByOperacion;
 
-    public CambdivisaEntityDTO(Integer operacion, String origen, String destino, OperacionEntityDTO operacionByOperacion) {
-        this.operacion = operacion;
+    public CambDivisaEntityDTO(Integer idDivisa, String origen, String destino, Double cantidad, OperacionEntityDTO operacionByOperacion) {
+        this.idDivisa = idDivisa;
         this.origen = origen;
         this.destino = destino;
+        this.cantidad = cantidad;
         this.operacionByOperacion = operacionByOperacion;
     }
 
-    public Integer getOperacion() {
-        return operacion;
+    public Integer getIdDivisa() {
+        return idDivisa;
     }
 
     public String getOrigen() {
@@ -31,6 +35,10 @@ public class CambdivisaEntityDTO implements Serializable {
         return destino;
     }
 
+    public Double getCantidad() {
+        return cantidad;
+    }
+
     public OperacionEntityDTO getOperacionByOperacion() {
         return operacionByOperacion;
     }
@@ -39,24 +47,26 @@ public class CambdivisaEntityDTO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CambdivisaEntityDTO entity = (CambdivisaEntityDTO) o;
-        return Objects.equals(this.operacion, entity.operacion) &&
+        CambDivisaEntityDTO entity = (CambDivisaEntityDTO) o;
+        return Objects.equals(this.idDivisa, entity.idDivisa) &&
                 Objects.equals(this.origen, entity.origen) &&
                 Objects.equals(this.destino, entity.destino) &&
+                Objects.equals(this.cantidad, entity.cantidad) &&
                 Objects.equals(this.operacionByOperacion, entity.operacionByOperacion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(operacion, origen, destino, operacionByOperacion);
+        return Objects.hash(idDivisa, origen, destino, cantidad, operacionByOperacion);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "operacion = " + operacion + ", " +
+                "idDivisa = " + idDivisa + ", " +
                 "origen = " + origen + ", " +
                 "destino = " + destino + ", " +
+                "cantidad = " + cantidad + ", " +
                 "operacionByOperacion = " + operacionByOperacion + ")";
     }
 }

@@ -11,4 +11,7 @@ public interface TransferenciaEntityRepository extends JpaRepository<Transferenc
 
     @Query("select t from TransferenciaEntity t where t.cantidad >= :cantidad")
     List<TransferenciaEntity> filtrarPorCantidad(@RequestParam("cantidad") float cantidad);
+
+    @Query("select t from TransferenciaEntity t where t.ibanDestino in :sospechosas")
+    List<TransferenciaEntity> filtrarPorDestinoSospechoso(@RequestParam("sospechosas") List<String> sospechosas);
 }
