@@ -1,10 +1,13 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.TransferenciaEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.TransferenciaEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class TransferenciaEntityDTO implements Serializable {
     private final Integer idTransferencia;
@@ -66,5 +69,16 @@ public class TransferenciaEntityDTO implements Serializable {
                 "ibanDestino = " + ibanDestino + ", " +
                 "operacionByOperacion = " + operacionByOperacion + ", " +
                 "cuentaByCuentaDestino = " + cuentaByCuentaDestino + ")";
+    }
+
+    public TransferenciaEntity toEntity() {
+        TransferenciaEntity transferenciaEntity = new TransferenciaEntity();
+        transferenciaEntity.setIdTransferencia(idTransferencia);
+        transferenciaEntity.setCantidad(cantidad);
+        transferenciaEntity.setIbanDestino(ibanDestino);
+        transferenciaEntity.setOperacionByOperacion(operacionByOperacion.toEntity());
+        transferenciaEntity.setCuentaByCuentaDestino(cuentaByCuentaDestino.toEntity());
+
+        return transferenciaEntity;
     }
 }

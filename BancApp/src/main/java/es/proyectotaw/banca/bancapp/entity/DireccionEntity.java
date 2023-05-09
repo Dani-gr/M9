@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.DireccionEntityDTO;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -147,5 +149,12 @@ public class DireccionEntity {
         setRegion(region);
         setPais(pais);
         setCodpostal(codpostal);
+    }
+
+    public DireccionEntityDTO toDTO() {
+        return new DireccionEntityDTO(
+                id, calle, numero, plantaPuertaOficina, ciudad, region, pais, codpostal,
+                clientesById.stream().map(ClienteEntity::toDTO).toList()
+        );
     }
 }

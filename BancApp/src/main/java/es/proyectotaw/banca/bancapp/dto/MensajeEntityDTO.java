@@ -1,11 +1,14 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.MensajeEntity;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.MensajeEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 @SuppressWarnings("unused")
 public class MensajeEntityDTO implements Serializable {
@@ -68,5 +71,16 @@ public class MensajeEntityDTO implements Serializable {
                 "contenido = " + contenido + ", " +
                 "chatByChat = " + chatByChat + ", " +
                 "usuarioByEmisor = " + usuarioByEmisor + ")";
+    }
+
+    public MensajeEntity toEntity() {
+        MensajeEntity mensajeEntity = new MensajeEntity();
+        mensajeEntity.setIdMensaje(idMensaje);
+        mensajeEntity.setChatByChat(chatByChat.toEntity());
+        mensajeEntity.setContenido(contenido);
+        mensajeEntity.setFechaHora(fechaHora);
+        mensajeEntity.setUsuarioByEmisor(usuarioByEmisor.toEntity());
+
+        return mensajeEntity;
     }
 }

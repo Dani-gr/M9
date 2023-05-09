@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 /**
  * A DTO for the {@link CambDivisaEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 @SuppressWarnings("unused")
 public class CambDivisaEntityDTO implements Serializable {
@@ -68,5 +69,16 @@ public class CambDivisaEntityDTO implements Serializable {
                 "destino = " + destino + ", " +
                 "cantidad = " + cantidad + ", " +
                 "operacionByOperacion = " + operacionByOperacion + ")";
+    }
+
+    public CambDivisaEntity toEntity() {
+        CambDivisaEntity cambDivisaEntity = new CambDivisaEntity();
+        cambDivisaEntity.setIdDivisa(idDivisa);
+        cambDivisaEntity.setCantidad(cantidad);
+        cambDivisaEntity.setOrigen(origen);
+        cambDivisaEntity.setDestino(destino);
+        cambDivisaEntity.setOperacionByOperacion(operacionByOperacion.toEntity());
+
+        return cambDivisaEntity;
     }
 }

@@ -1,4 +1,9 @@
+/*
+Autor: Andres Perez Garcia
+ */
 package es.proyectotaw.banca.bancapp.entity;
+
+import es.proyectotaw.banca.bancapp.dto.ChatEntityDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -80,5 +85,12 @@ public class ChatEntity {
 
     public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
+    }
+
+    public ChatEntityDTO toDTO() {
+        return new ChatEntityDTO(
+                id, activo, usuarioByAsistenteId.toDTO(), clienteByClienteIdCliente.toDTO(),
+                mensajesById.stream().map(MensajeEntity::toDTO).toList()
+        );
     }
 }

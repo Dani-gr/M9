@@ -11,10 +11,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+// María (5%)
 import javax.servlet.http.HttpSession;
+
 import java.util.ArrayList;
+
 import java.util.List;
+
+/*
+* Nuria Rodríguez Tortosa 90%
+* */
 
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
@@ -48,41 +56,16 @@ public class ClienteController {
         return "redirect:/menu";
     }
 
-    @GetMapping("/perfil")
-    public String doVerPerfil(Model model, HttpSession session, @ModelAttribute("entidad") String entidad) {
-        //@RequestParam("idUsuario") Integer id
-        //UsuarioEntity usuario = usuarioRepository.buscarPorID(id);
-        /*model.addAttribute("entidad",
-                "empresa".equals(entidad) ? "empresa" : "persona"
-        );
-        if("empresa".equals(entidad)) {
-
-        } else {
-            UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-            ClienteEntity cliente = usuario.getClienteByCliente();
-            List<CuentaEntity> cuentas = cliente.getCuentasByIdCliente();
-            CuentaEntity cuenta = cuentas.get(0);
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("cliente", cliente);
-            List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
-            model.addAttribute("cuenta", cuenta);
-            model.addAttribute("operaciones", operaciones);
-        }*/
-        /*
-         * esto porque si no me da error pa probar VALE?
-         * TODO quitar
-         * */
-        CuentaEntity cuenta = cuentaEntityRepository.getById(5);
-        model.addAttribute("usuario", new UsuarioEntity());
-        model.addAttribute("cliente", new ClienteEntity());
-        model.addAttribute("Direccion", new DireccionEntity());
-        List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
-        model.addAttribute("cuenta", cuenta);
-        model.addAttribute("operaciones", operaciones);
+    @GetMapping("/verOperaciones")
+    public String doVerOperaciones(Model model, HttpSession session) {
+        if(session.getAttribute("usuario") == null) return "redirect:/";
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        CuentaEntity cuenta = usuario.getClienteByCliente().getCuentasByIdCliente().get(0);
+        model.addAttribute("operaciones", cuenta.getOperacionsByNumCuenta());
         model.addAttribute("filtro", new FiltroOperaciones());
         model.addAttribute("ordenar", new OrdenarOperaciones());
-
-        return "cliente";
+        model.addAttribute("usuario", new UsuarioEntity());
+        return "operacionesCliente";
     }
 
     @PostMapping("/filtrar")
@@ -181,9 +164,29 @@ public class ClienteController {
     }
 
     @PostMapping("/guardar")
-    public String doGuardarPerfil(HttpSession session, @ModelAttribute("usuario") UsuarioEntity usur) {
+    public String doGuardarPerfil(Model model,  HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute("usuario") UsuarioEntity usur) {
         //si es particular
-        usuarioEntityRepository.save(usur);
-        return "redirect:/customer/";
+        usuarioEntityRepository.saveAndFlush(usur);
+        redirectAttributes.addFlashAttribute("mensaje", "Los datos se han guardado correctamente");
+        session.setAttribute("usuario", usur);
+        return "redirect:/cliente/datosUsuario";
     }
+
+    @GetMapping("/datosUsuario")
+    public String doVerMisDatos(HttpSession session, Model model){;
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        model.addAttribute("usuario", usuario);
+
+        return "datosUsuario";
+    }
+
+    @GetMapping("/solicitarDesbloqueo")
+    public String doSolicitudDesbloqueo(Model model, HttpSession session){
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        usuario.getClienteByCliente().getCuentasByIdCliente().get(0).setActiva((byte)2);
+        usuarioEntityRepository.saveAndFlush(usuario);
+        model.addAttribute("usuario", usuario);
+        return "redirect:/menu";
+    }
+
 }

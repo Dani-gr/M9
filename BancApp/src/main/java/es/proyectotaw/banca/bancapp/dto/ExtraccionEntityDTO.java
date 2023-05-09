@@ -1,10 +1,13 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.ExtraccionEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.ExtraccionEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class ExtraccionEntityDTO implements Serializable {
     private final Integer idExtraccion;
@@ -50,5 +53,14 @@ public class ExtraccionEntityDTO implements Serializable {
                 "idExtraccion = " + idExtraccion + ", " +
                 "cantidad = " + cantidad + ", " +
                 "operacionByOperacion = " + operacionByOperacion + ")";
+    }
+
+    public ExtraccionEntity toEntity() {
+        ExtraccionEntity extraccionEntity = new ExtraccionEntity();
+        extraccionEntity.setIdExtraccion(idExtraccion);
+        extraccionEntity.setCantidad(cantidad);
+        extraccionEntity.setOperacionByOperacion(operacionByOperacion.toEntity());
+
+        return extraccionEntity;
     }
 }

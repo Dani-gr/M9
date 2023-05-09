@@ -1,11 +1,15 @@
+<!--
+Autor: Andres Perez Garcia  Porcentaje: 20%
+-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.RolusuarioEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <jsp:useBean id="nombresRoles" type="java.util.List<java.lang.String>" scope="session"/>
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-    boolean bloqueado = usuario.getRolusuariosById().stream().map(RolusuarioEntity::getBloqueado).toList().contains((byte) 1);
+    boolean bloqueado = !(usuario.getRolusuariosById().stream().map(RolusuarioEntity::getBloqueado).toList().contains((byte) 0));
 %>
 <html>
 <head>
@@ -69,15 +73,46 @@
                                         Cambio de divisa
                                     </div>
                                 </div>
-                                <c:if test="${nombresRoles.contains(\"socio\")}">
-                                    <div class="col" style="margin-top: 10px">
-                                        <div class="btn btn-lg btn-outline-secondary disabled">
-                                            Gestión de socios y autorizados
-                                            <!-- TODO link and enable -->
-                                        </div>
-                                    </div>
-                                </c:if>
                             </div>
+
+                            <% if(nombresRoles.contains("socio")){  %>
+                            <div class="row">
+                                <div class="col pt-3">
+                                    <div class="btn btn-lg btn-outline-secondary<%=bloqueado ? " disabled" : ""%> "
+                                         onclick="window.location.href='/empresa/'">
+                                        Gestión de socios y autorizados
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <% } %>
+
+                            <% if((nombresRoles.contains("socio") || nombresRoles.contains("autorizado")) && usuario.getRolusuariosById().get(0).getBloqueado() == 1){  %>
+                            <div class="row">
+                                <div class="col pt-3">
+                                    <div class="btn btn-lg btn-outline-secondary "
+                                         onclick="window.location.href='/empresa/solicitarDesbloqueo'">
+                                        Solicitar desbloqueo
+                                    </div>
+                                </div>
+                            </div>
+
+                            <% } %>
+
+
+                        <!--    <%// if(nombresRoles.contains("representante")){  %>
+                            <div class="row">
+                                <div class="col pt-3">
+                                    <div class="btn btn-lg btn-outline-secondary "
+                                         onclick="window.location.href='/empresa/addSocios'">
+                                        Añadir nuevos socios y autorizados
+                                    </div>
+                                </div>
+                            </div>
+                            <%// } %>
+                            -->
+
                         </c:otherwise>
                     </c:choose>
                 </c:otherwise>
@@ -92,9 +127,20 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col">
-                        <div class="btn btn-lg btn-outline-secondary disabled">Busca chat con un asistente</div>
-                    </div>
+                    <form:form action="/chats/solicitudAsistencia" method="post">
+                        <div class="col">
+                            <input type="hidden" id="usuario" name="usuario" value="<%=usuario.getId()%>">
+                            <input type="submit" href="/chats/solicitudAsistencia" class="btn btn-lg btn-outline-secondary" value="Busca chat con un asistente">
+                        </div>
+                    </form:form>
+                    <br/>
+                    <form:form action="/chats/" method="get">
+                        <div class="col">
+                            <input type="hidden" id="cliente" name="cliente" value="<%=usuario.getClienteByCliente().getIdCliente()%>">
+                            <input type="submit" class="btn btn-lg btn-outline-secondary" value="Acceder a los chats con asistentes">
+                        </div>
+                    </form:form>
+
                     <c:if test="${bloqueado}">
                         <div class="col">
                             <div class="btn btn-lg btn-outline-warning disabled">Solicitar desbloqueo</div>

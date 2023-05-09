@@ -1,11 +1,14 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.RolEntity;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.RolEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class RolEntityDTO implements Serializable {
     private final Integer idrol;
@@ -51,5 +54,14 @@ public class RolEntityDTO implements Serializable {
                 "idrol = " + idrol + ", " +
                 "nombre = " + nombre + ", " +
                 "rolusuariosByIdrol = " + rolusuariosByIdrol + ")";
+    }
+    
+    public RolEntity toEntity() {
+        RolEntity rolEntity = new RolEntity();
+        rolEntity.setIdrol(idrol);
+        rolEntity.setNombre(nombre);
+        rolEntity.setRolusuariosByIdrol(rolusuariosByIdrol.stream().map(RolusuarioEntityDTO::toEntity).toList());
+
+        return rolEntity;
     }
 }

@@ -1,10 +1,13 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.CuentasSospechosasEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.CuentasSospechosasEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class CuentasSospechosasEntityDTO implements Serializable {
     private final Integer idcuentasSospechosas;
@@ -42,5 +45,13 @@ public class CuentasSospechosasEntityDTO implements Serializable {
         return getClass().getSimpleName() + "(" +
                 "idcuentasSospechosas = " + idcuentasSospechosas + ", " +
                 "iban = " + iban + ")";
+    }
+
+    public CuentasSospechosasEntity toEntity() {
+        CuentasSospechosasEntity cuentasSospechosasEntity = new CuentasSospechosasEntity();
+        cuentasSospechosasEntity.setIdcuentasSospechosas(idcuentasSospechosas);
+        cuentasSospechosasEntity.setIban(iban);
+
+        return cuentasSospechosasEntity;
     }
 }

@@ -1,10 +1,13 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.RolusuarioEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class RolusuarioEntityDTO implements Serializable {
     private final Integer id;
@@ -66,5 +69,16 @@ public class RolusuarioEntityDTO implements Serializable {
                 "rolByIdrol = " + rolByIdrol + ", " +
                 "usuarioByIdusuario = " + usuarioByIdusuario + ", " +
                 "empresaByIdempresa = " + empresaByIdempresa + ")";
+    }
+
+    public RolusuarioEntity toEntity() {
+        RolusuarioEntity rolusuarioEntity = new RolusuarioEntity();
+        rolusuarioEntity.setId(id);
+        rolusuarioEntity.setBloqueado(bloqueado);
+        rolusuarioEntity.setEmpresaByIdempresa(empresaByIdempresa.toEntity());
+        rolusuarioEntity.setUsuarioByIdusuario(usuarioByIdusuario.toEntity());
+        rolusuarioEntity.setRolByIdrol(rolByIdrol.toEntity());
+
+        return rolusuarioEntity;
     }
 }

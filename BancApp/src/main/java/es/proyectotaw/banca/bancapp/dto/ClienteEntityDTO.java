@@ -1,11 +1,14 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.ClienteEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 @SuppressWarnings("unused")
 public class ClienteEntityDTO implements Serializable {
@@ -84,5 +87,18 @@ public class ClienteEntityDTO implements Serializable {
                 "cuentasByIdCliente = " + cuentasByIdCliente + ", " +
                 "empresasByIdCliente = " + empresasByIdCliente + ", " +
                 "usuariosByIdCliente = " + usuariosByIdCliente + ")";
+    }
+
+    public ClienteEntity toEntity() {
+        ClienteEntity clienteEntity = new ClienteEntity();
+        clienteEntity.setIdCliente(idCliente);
+        clienteEntity.setClientesEmpresasByIdCliente(clientesEmpresasByIdCliente.stream().map(ClientesEmpresaEntityDTO::toEntity).toList());
+        clienteEntity.setChatsByIdCliente(chatsByIdCliente.stream().map(ChatEntityDTO::toEntity).toList());
+        clienteEntity.setCuentasByIdCliente(cuentasByIdCliente.stream().map(CuentaEntityDTO::toEntity).toList());
+        clienteEntity.setEmpresasByIdCliente(empresasByIdCliente.stream().map(EmpresaEntityDTO::toEntity).toList());
+        clienteEntity.setDireccionByDireccion(direccionByDireccion.toEntity());
+        clienteEntity.setUsuariosByIdCliente(usuariosByIdCliente.stream().map(UsuarioEntityDTO::toEntity).toList());
+
+        return clienteEntity;
     }
 }

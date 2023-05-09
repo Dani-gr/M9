@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.RolusuarioEntityDTO;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -94,5 +96,11 @@ public class RolusuarioEntity {
             }
             default -> null;
         };
+    }
+
+    public RolusuarioEntityDTO toDTO() {
+        return new RolusuarioEntityDTO(
+                id, bloqueado, rolByIdrol.toDTO(), usuarioByIdusuario.toDTO(), empresaByIdempresa.toDTO()
+        );
     }
 }

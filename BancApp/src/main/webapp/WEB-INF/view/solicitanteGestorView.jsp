@@ -1,6 +1,7 @@
 <%@ page import="es.proyectotaw.banca.bancapp.entity.ClienteEntity" %>
 <%@ page import="es.proyectotaw.banca.bancapp.entity.DireccionEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!-- Carlos Castaño Moreno -->
 <html>
 <head>
     <title>Solicitante</title>

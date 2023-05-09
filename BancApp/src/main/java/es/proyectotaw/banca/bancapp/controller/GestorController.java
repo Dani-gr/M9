@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * @author Carlos Castaño Moreno
+ */
+
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/gestor")

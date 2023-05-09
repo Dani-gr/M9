@@ -14,6 +14,11 @@ import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.List;
 
+/**
+* @author Nuria Rodríguez Tortosa 40%
+* @author Daniel García Rodríguez 60%
+*/
+
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/operacion")
@@ -93,6 +98,7 @@ public class OperacionController {
         return operacion;
     }
 
+
     @PostMapping("/guardarTransferencia")
     public String doGuardarTransferencia(Model model, HttpSession session, @ModelAttribute("transferenciaARealizar") TransferenciaEntity transferencia) {
         if (transferencia == null || incumplePermisos(session)) return "redirect:/menu";
@@ -154,6 +160,8 @@ public class OperacionController {
             return "redirect:/menu";
         }
     }
+
+
 
     @GetMapping("/cambioDivisa")
     public String doDivisa(Model model, HttpSession session) {

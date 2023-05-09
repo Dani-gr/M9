@@ -1,10 +1,13 @@
 package es.proyectotaw.banca.bancapp.dto;
 
+import es.proyectotaw.banca.bancapp.entity.ClientesEmpresaEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.ClientesEmpresaEntity} entity
+ * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 @SuppressWarnings("unused")
 public class ClientesEmpresaEntityDTO implements Serializable {
@@ -51,5 +54,14 @@ public class ClientesEmpresaEntityDTO implements Serializable {
                 "id = " + id + ", " +
                 "empresaByIdEmpresa = " + empresaByIdEmpresa + ", " +
                 "clienteByIdCliente = " + clienteByIdCliente + ")";
+    }
+
+    public ClientesEmpresaEntity toEntity() {
+        ClientesEmpresaEntity clientesEmpresaEntity = new ClientesEmpresaEntity();
+        clientesEmpresaEntity.setId(id);
+        clientesEmpresaEntity.setClienteByIdCliente(clienteByIdCliente.toEntity());
+        clientesEmpresaEntity.setEmpresaByIdEmpresa(empresaByIdEmpresa.toEntity());
+
+        return clientesEmpresaEntity;
     }
 }

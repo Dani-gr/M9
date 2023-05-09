@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.controller;
 
+
+
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,11 @@ import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ *
+ * @author Daniel García Rodríguez 70%
+ * @author Nuria Rodríguez Tortosa 30%
+ */
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/")
@@ -87,7 +93,10 @@ public class LoginController {
                              @ModelAttribute("direccionCalleEmpresa") String calleEmpresa, @ModelAttribute("direccionNumeroEmpresa") String numeroEmpresa,
                              @ModelAttribute("direccionPlantaEmpresa") String plantaEmpresa, @ModelAttribute("direccionCiudadEmpresa") String ciudadEmpresa, @ModelAttribute("direccionRegionEmpresa") String regionEmpresa,
                              @ModelAttribute("direccoinPaisEmpresa") String paisEmpresa, @ModelAttribute("direccionPostalEmpresa") String postalEmpresa,
-                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado, @RequestParam("btnRegistro") String boton) {
+                             @ModelAttribute("cifEmpresa") String cif, @ModelAttribute("rol") String rolSeleccionado,
+                             @RequestParam("btnRegistro") String boton) {
+
+        Date sqlFechaNacimiento = new Date(fechaNacimiento.getTime());
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
         //TODO añadir control de errores para los parámetros que no deberían ser nulos
@@ -114,9 +123,10 @@ public class LoginController {
                 model.addAttribute("entidad", "empresa");
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
+
             // Creo al socio/autorizado
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
-            usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
+            usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
             // TODO check for existing users
             ClienteEntity cliente = new ClienteEntity();
@@ -140,7 +150,7 @@ public class LoginController {
             session.setAttribute("empresa", empresa);
         } else {
             UsuarioEntity usuario = new UsuarioEntity();
-            usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password);
+            usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
             // TODO check for existing users
 
@@ -177,7 +187,9 @@ public class LoginController {
         /* TODO:
             - Testear algún gestor / socio
          */
+
         if (session.getAttribute("usuario") != null) return "redirect:/menu";
+
 
         model.addAttribute("error", "Credenciales incorrectas");
         model.addAttribute("entidad", entidad);
@@ -195,6 +207,7 @@ public class LoginController {
             List<RolEntity> rolesConPermiso = new ArrayList<>(2);
             rolesConPermiso.add(rolEntityRepository.findByNombre("autorizado").orElseThrow(RuntimeException::new));
             rolesConPermiso.add(rolEntityRepository.findByNombre("socio").orElseThrow(RuntimeException::new));
+            rolesConPermiso.add(rolEntityRepository.findByNombre("representante").orElseThrow(RuntimeException::new));
 
             var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, Integer.valueOf(cif));
 
@@ -224,6 +237,7 @@ public class LoginController {
         session.setAttribute("nombresRoles", user.getRolusuariosById().stream()
                 .map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList());
 
+
         return "redirect:/menu";
     }
 
@@ -240,8 +254,9 @@ public class LoginController {
         if (session.getAttribute("menu") == null)
             session.setAttribute("menu", "normal");
         var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
+
         if (nombresRoles.contains("asistente"))
-            return "chats";
+            return "redirect:/chats/asistente";
         String mensaje = (String) session.getAttribute("mensaje");
         if (mensaje != null && !mensaje.isBlank()) {
             model.addAttribute("mensaje", mensaje);
@@ -250,7 +265,9 @@ public class LoginController {
         if (nombresRoles.contains("gestor"))
             return "redirect:/gestor/";
 
+
         return ru.get(0).getCuentaAsociada() == null ? "enespera" : "menu";
+
     }
 
     @PostMapping("/menu")
@@ -419,6 +436,9 @@ public class LoginController {
         cd1.setCantidad(7.25);
         cd2.setCantidad(20.00);
 
+
+
+
         cambDivisaEntityRepository.save(cd1);
         cambDivisaEntityRepository.save(cd2);*/
 
@@ -428,6 +448,7 @@ public class LoginController {
         t1.setCuentaByCuentaDestino(cu2);
         t1.setOperacionByOperacion(o3);
         t1.setCantidad(150.00);
+
 
         transferenciaEntityRepository.save(t1);
 

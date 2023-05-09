@@ -1,6 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+
+<%
+    // Nuria Rodríguez Tortosa
+%>
 <html>
 <head>
     <title>Banco M9</title>
@@ -38,13 +42,13 @@
             <jsp:useBean id="cifEmpresa" scope="request" type="java.lang.String"/>
             <c:choose>
                 <c:when test="${\"empresa\".equals(entidad)}">
-                    Datos de la empresa: <br>
+                    <h4>Datos de la empresa:</h4> <br>
                     <label for="cif" class="form-label">CIF</label>
                     <input type="text" id="cif" name="cifEmpresa" class="form-control"
                             value="<%=cifEmpresa == null ? "" : cifEmpresa%>" maxlength="9" minlength="9" size="9"/>
                     <br/>
 
-                    Dirección de la empresa: <br>
+                    <h5>Dirección de la empresa:</h5> <br>
                     <label for="direccionCalleEmpresa" class="form-label">Calle</label>
                     <input type="text" id="direccionCalleEmpresa" name="direccionCalleEmpresa" class="form-control"
                            value="" maxlength="30" minlength="1" size="30"/>

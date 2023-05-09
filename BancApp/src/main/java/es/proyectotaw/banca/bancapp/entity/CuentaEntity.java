@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.CuentaEntityDTO;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +23,7 @@ public class CuentaEntity {
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id_cliente", nullable = false)
     private ClienteEntity clienteByCliente;
-    @OneToMany(mappedBy = "cuentaByCuentaRealiza")
+    @OneToMany(mappedBy = "cuentaByCuentaRealiza", fetch = FetchType.EAGER)
     private List<OperacionEntity> operacionsByNumCuenta;
     @OneToMany(mappedBy = "cuentaByCuentaDestino")
     private List<TransferenciaEntity> transferenciasRecibidasByNumCuenta;
@@ -92,5 +94,13 @@ public class CuentaEntity {
 
     public void setTransferenciasRecibidasByNumCuenta(List<TransferenciaEntity> transferenciasRecibidasByNumCuenta) {
         this.transferenciasRecibidasByNumCuenta = transferenciasRecibidasByNumCuenta;
+    }
+
+    public CuentaEntityDTO toDTO() {
+        return new CuentaEntityDTO(
+                numCuenta, saldo, activa, clienteByCliente.toDTO(),
+                operacionsByNumCuenta.stream().map(OperacionEntity::toDTO).toList(),
+                transferenciasRecibidasByNumCuenta.stream().map(TransferenciaEntity::toDTO).toList()
+        );
     }
 }

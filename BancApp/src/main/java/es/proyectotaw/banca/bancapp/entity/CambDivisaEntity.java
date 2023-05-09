@@ -1,5 +1,7 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import es.proyectotaw.banca.bancapp.dto.CambDivisaEntityDTO;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -86,7 +88,13 @@ public class CambDivisaEntity {
         this.operacionByOperacion = operacionByOperacion;
     }
 
-    public String nombre(){
+    public String nombre() {
         return "Cambio de divisa";
+    }
+
+    public CambDivisaEntityDTO toDTO() {
+        return new CambDivisaEntityDTO(
+                idDivisa, origen, destino, cantidad, operacionByOperacion.toDTO()
+        );
     }
 }
