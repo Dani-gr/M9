@@ -52,11 +52,11 @@
                                 <table>
                                     <tr>
                                         <td>CIUDAD:</td>
-                                        <td><form:input class="form-control" path="ciudad"></form:input></td>
+                                        <td><form:input class="form-control" path="ciudad" /></td>
                                     </tr>
                                     <tr>
                                         <td>SALDO MÍNIMO:</td>
-                                        <td><form:input class="form-control" path="limInfSaldo" type="number"></form:input></td>
+                                        <td><form:input class="form-control" path="limInfSaldo" type="number" /></td>
                                     </tr>
                                 </table>
                                 <form:button class="btn btn-primary">FILTRAR</form:button>

@@ -51,12 +51,12 @@ public class GestorController {
 
         if(session.getAttribute("usuario") == null) return "redirect:/";
 
-        List<ClienteEntity> clientes = null;
+        List<ClienteEntity> clientes;
 
-        if(filtroClientes == null || (filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad() == null) ){
+        if(filtroClientes == null || (filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad().isEmpty()) ){
             filtroClientes = new FiltroClientes();
-            clientes = this.clienteEntityRepository.findAll();
-        } else if (filtroClientes.getCiudad() == null) {
+            clientes = this.clienteEntityRepository.obtenerClientesDadosDeAlta();
+        } else if (filtroClientes.getCiudad().isEmpty()) {
             clientes = this.clienteEntityRepository.obtenerCLientesPorSaldoMinimo(filtroClientes.getLimInfSaldo());
         } else if (filtroClientes.getLimInfSaldo() == null) {
             clientes = this.clienteEntityRepository.obtenerClientesPorCiudad(filtroClientes.getCiudad());
