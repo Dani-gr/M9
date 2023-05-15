@@ -1,5 +1,4 @@
-<%@ page import="es.proyectotaw.banca.bancapp.entity.RolEntity" %>
-<%@ page import="java.util.List" %>
+<%@ page import="es.proyectotaw.banca.bancapp.entity.EmpresaEntity" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <jsp:useBean id="usuario" scope="session" type="es.proyectotaw.banca.bancapp.entity.UsuarioEntity"/>
@@ -32,16 +31,20 @@
             Mis datos
         </button>
     </div>
-    <div class="col-1">
-        <button style="width: 100px;" class="btn btn-info"
-                onclick="window.location.href = '/empresa/datosEmpresa';">
-            Datos de mi empresa
-        </button>
-    </div>
+    <% EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa"); %>
+    <c:if test="${empresa != null}">
+        <div class="col-1">
+            <button style="width: 100px;" class="btn btn-info"
+                    onclick="window.location.href = '/empresa/datosEmpresa';">
+                Datos de mi empresa
+            </button>
+        </div>
+    </c:if>
 
     <div class="col-1">
         <button style="width: 100px;" class="btn btn-info"
-                onclick="window.location.href = '/empresa/operaciones';">
+                onclick="window.location.href =
+                        '<%=empresa == null ? "/cliente/verOperaciones" : "/empresa/operaciones"%>';">
             Ver operaciones
         </button>
     </div>

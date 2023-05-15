@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.RolEntity} entity
+ *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class RolEntityDTO implements Serializable {
@@ -55,7 +56,7 @@ public class RolEntityDTO implements Serializable {
                 "nombre = " + nombre + ", " +
                 "rolusuariosByIdrol = " + rolusuariosByIdrol + ")";
     }
-    
+
     public RolEntity toEntity() {
         RolEntity rolEntity = new RolEntity();
         rolEntity.setIdrol(idrol);

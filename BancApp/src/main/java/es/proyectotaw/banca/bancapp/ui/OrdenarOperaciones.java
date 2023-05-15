@@ -6,7 +6,7 @@ public class OrdenarOperaciones {
 
     Date fecha;
 
-    public OrdenarOperaciones(){
+    public OrdenarOperaciones() {
         fecha = null;
     }
 

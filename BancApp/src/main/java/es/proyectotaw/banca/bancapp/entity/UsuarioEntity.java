@@ -203,7 +203,7 @@ public class UsuarioEntity {
 
     public UsuarioEntityDTO toDTO() {
         return new UsuarioEntityDTO(
-            id, nif, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password,
+                id, nif, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, email, password,
                 chatsById.stream().map(ChatEntity::toDTO).toList(), mensajesById.stream().map(MensajeEntity::toDTO).toList(),
                 rolusuariosById.stream().map(RolusuarioEntity::toDTO).toList(), clienteByCliente.toDTO()
         );

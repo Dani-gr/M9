@@ -21,11 +21,11 @@ public interface ClienteEntityRepository extends JpaRepository<ClienteEntity, In
 
 
     @Query("select c from ClienteEntity c where SIZE(c.cuentasByIdCliente) > 0 and " +
-                                            "UPPER(c.direccionByDireccion.ciudad) like CONCAT('%', UPPER(:ciudad), '%')  ")
+            "UPPER(c.direccionByDireccion.ciudad) like CONCAT('%', UPPER(:ciudad), '%')  ")
     List<ClienteEntity> obtenerClientesPorCiudad(@Param("ciudad") String ciudad);
 
 
-    default List<ClienteEntity> obtenerCLientesPorSaldoMinimoYCiudad(@Param("lim") Double lim, @Param("ciudad") String ciudad){
+    default List<ClienteEntity> obtenerCLientesPorSaldoMinimoYCiudad(@Param("lim") Double lim, @Param("ciudad") String ciudad) {
         List<ClienteEntity> res = obtenerCLientesPorSaldoMinimo(lim);
         res.retainAll(obtenerClientesPorCiudad(ciudad));
 

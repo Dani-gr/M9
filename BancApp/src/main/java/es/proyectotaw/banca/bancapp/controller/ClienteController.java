@@ -13,16 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-// María (5%)
 import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
-
 import java.util.List;
 
 /*
-* Nuria Rodríguez Tortosa 90%
-* */
+ * Nuria Rodríguez Tortosa 90%
+ * */
 
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
@@ -58,7 +55,7 @@ public class ClienteController {
 
     @GetMapping("/verOperaciones")
     public String doVerOperaciones(Model model, HttpSession session) {
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+        if (session.getAttribute("usuario") == null) return "redirect:/";
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
         CuentaEntity cuenta = usuario.getClienteByCliente().getCuentasByIdCliente().get(0);
         model.addAttribute("operaciones", cuenta.getOperacionsByNumCuenta());
@@ -164,7 +161,7 @@ public class ClienteController {
     }
 
     @PostMapping("/guardar")
-    public String doGuardarPerfil(Model model,  HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute("usuario") UsuarioEntity usur) {
+    public String doGuardarPerfil(Model model, HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute("usuario") UsuarioEntity usur) {
         //si es particular
         usuarioEntityRepository.saveAndFlush(usur);
         redirectAttributes.addFlashAttribute("mensaje", "Los datos se han guardado correctamente");
@@ -173,7 +170,7 @@ public class ClienteController {
     }
 
     @GetMapping("/datosUsuario")
-    public String doVerMisDatos(HttpSession session, Model model){;
+    public String doVerMisDatos(HttpSession session, Model model) {
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
         model.addAttribute("usuario", usuario);
 
@@ -181,9 +178,9 @@ public class ClienteController {
     }
 
     @GetMapping("/solicitarDesbloqueo")
-    public String doSolicitudDesbloqueo(Model model, HttpSession session){
+    public String doSolicitudDesbloqueo(Model model, HttpSession session) {
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        usuario.getClienteByCliente().getCuentasByIdCliente().get(0).setActiva((byte)2);
+        usuario.getClienteByCliente().getCuentasByIdCliente().get(0).setActiva((byte) 2);
         usuarioEntityRepository.saveAndFlush(usuario);
         model.addAttribute("usuario", usuario);
         return "redirect:/menu";

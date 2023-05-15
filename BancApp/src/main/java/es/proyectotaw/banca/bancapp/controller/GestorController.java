@@ -7,7 +7,6 @@ import es.proyectotaw.banca.bancapp.entity.CuentasSospechosasEntity;
 import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
 import es.proyectotaw.banca.bancapp.ui.FiltroClientes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,30 +40,30 @@ public class GestorController {
 
     /*Zona destinada a controlar la pantalla de gestor*/
     @GetMapping("/")
-    public String doInicializarPantallaPrincipal(Model model, HttpSession session){
-        return  procesarFiltradoClientes(model, null, session);
+    public String doInicializarPantallaPrincipal(Model model, HttpSession session) {
+        return procesarFiltradoClientes(model, null, session);
     }
 
     @PostMapping("/filtrar")
     public String doFiltrar(@ModelAttribute("filtroClientes") FiltroClientes filtroClientes,
-                            Model model, HttpSession session){
+                            Model model, HttpSession session) {
         return procesarFiltradoClientes(model, filtroClientes, session);
     }
 
-    private String procesarFiltradoClientes(Model model, FiltroClientes filtroClientes,  HttpSession session){
+    private String procesarFiltradoClientes(Model model, FiltroClientes filtroClientes, HttpSession session) {
 
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         List<ClienteEntity> clientes = null;
 
-        if(filtroClientes == null || (filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad() == null) ){
+        if (filtroClientes == null || (filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad() == null)) {
             filtroClientes = new FiltroClientes();
             clientes = this.clienteEntityRepository.findAll();
         } else if (filtroClientes.getCiudad() == null) {
             clientes = this.clienteEntityRepository.obtenerCLientesPorSaldoMinimo(filtroClientes.getLimInfSaldo());
         } else if (filtroClientes.getLimInfSaldo() == null) {
             clientes = this.clienteEntityRepository.obtenerClientesPorCiudad(filtroClientes.getCiudad());
-        }else{
+        } else {
             clientes = this.clienteEntityRepository
                     .obtenerCLientesPorSaldoMinimoYCiudad(filtroClientes.getLimInfSaldo(), filtroClientes.getCiudad());
         }
@@ -76,16 +75,16 @@ public class GestorController {
 
     /*Zona destinada a los botones de acciones*/
     @GetMapping("/solicitudesAlta")
-    public String doMostrarSolicitudesAlta(Model model, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doMostrarSolicitudesAlta(Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         model.addAttribute("solicitantes", this.clienteEntityRepository.obtenerAspirantesCliente());
         return "solicitudesAltaGestorView";
     }
 
     @GetMapping("/verSolicitante")
-    public String doMostrarSolicitanteACliente(@RequestParam("id") Integer id, Model model, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doMostrarSolicitanteACliente(@RequestParam("id") Integer id, Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         ClienteEntity solicitante = this.clienteEntityRepository.findById(id).orElse(null);
 
@@ -95,8 +94,8 @@ public class GestorController {
     }
 
     @GetMapping("/asignarCuenta")
-    public String doAsignarCuenta(@RequestParam("id") Integer id, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doAsignarCuenta(@RequestParam("id") Integer id, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
 
@@ -110,8 +109,8 @@ public class GestorController {
     }
 
     @GetMapping("/borrarCliente")
-    public String doBorrarCliente(@RequestParam("id") Integer id, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doBorrarCliente(@RequestParam("id") Integer id, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
         this.clienteEntityRepository.delete(c);
@@ -120,24 +119,24 @@ public class GestorController {
     }
 
     @GetMapping("/cuentasInactivas")
-    public String doMostrarCuentasInactivas(HttpSession session, Model model){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doMostrarCuentasInactivas(HttpSession session, Model model) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         model.addAttribute("inactivas", this.cuentaEntityRepository.getCuentasConUltimaOperacionHace30Dias());
         return "cuentasInactivasGestorView";
     }
 
     @GetMapping("/bloquearInactiva")
-    public String doBloquearInactiva(HttpSession session, @RequestParam("id") Integer id){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doBloquearInactiva(HttpSession session, @RequestParam("id") Integer id) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         this.setEstadoCuenta(id, (byte) 0);
         return "redirect:/gestor/cuentasInactivas";
     }
 
     @GetMapping("/seguridadTransferencias")
-    public String doMostrarSeguridadCuentas(Model model, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doMostrarSeguridadCuentas(Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         List<String> sospechosas = this.cuentasSospechosasRepository.obtenerIbans();
         model.addAttribute("sospechosas", this.cuentasSospechosasRepository.findAll());
@@ -147,8 +146,8 @@ public class GestorController {
     }
 
     @PostMapping("/addSospechosa")
-    public String addSospechosa(@RequestParam("ibanSospechoso") String ibanSospechoso, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String addSospechosa(@RequestParam("ibanSospechoso") String ibanSospechoso, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         CuentasSospechosasEntity sospechosa = new CuentasSospechosasEntity();
         sospechosa.setIban(ibanSospechoso);
@@ -157,8 +156,8 @@ public class GestorController {
     }
 
     @GetMapping("/borrarSospechosa")
-    public String removeSospechosa(@RequestParam("id") Integer id, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String removeSospechosa(@RequestParam("id") Integer id, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         CuentasSospechosasEntity sospechosa = this.cuentasSospechosasRepository.findById(id).orElse(null);
         this.cuentasSospechosasRepository.delete(sospechosa);
@@ -166,48 +165,48 @@ public class GestorController {
     }
 
     @GetMapping("/bloquearPorTransferencia")
-    public String bloquearSospechosa(@RequestParam("cuenta") Integer cuenta, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String bloquearSospechosa(@RequestParam("cuenta") Integer cuenta, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
-        setEstadoCuenta(cuenta,  (byte)0);
+        setEstadoCuenta(cuenta, (byte) 0);
         return "redirect:/gestor/seguridadTransferencias";
     }
 
     /*Bloqueo/desbloqueo según la vista a la que se quiera retornar*/
 
-    private void setEstadoCuenta(Integer id, byte estado){
+    private void setEstadoCuenta(Integer id, byte estado) {
         CuentaEntity cuenta = this.cuentaEntityRepository.findById(id).orElse(null);
         cuenta.setActiva(estado);
         this.cuentaEntityRepository.save(cuenta);
     }
 
     @GetMapping("/solicitudesActivacion")
-    public String doMostrarSolicitudesActivacion(Model model, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doMostrarSolicitudesActivacion(Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         model.addAttribute("cuentas", this.cuentaEntityRepository.getCuentasPendientesDeActivar());
         return "solicitudesActivacionGestorView";
     }
 
     @GetMapping("/activar")
-    public String doActivarCuenta(@RequestParam("cuenta") Integer cuenta, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doActivarCuenta(@RequestParam("cuenta") Integer cuenta, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         setEstadoCuenta(cuenta, (byte) 1);
         return "redirect:/gestor/solicitudesActivacion";
     }
 
     @GetMapping("/solicitudesDesbloqueoEmpresa")
-    public String doMostrarSolicitudesDesbloqueoEmpresa(Model model, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doMostrarSolicitudesDesbloqueoEmpresa(Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         model.addAttribute("rolesSolicitantes", this.rolusuarioEntityRepository.findRolesSolicitantesDeActivar());
         return "solicitudesDesbloqueoEmpresaGestorView";
     }
 
     @GetMapping("/desbloquearEnEmpresa")
-    public String doDesbloquearUsuarioEmpresa(@RequestParam("rolUsuario") Integer rolUsuario, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doDesbloquearUsuarioEmpresa(@RequestParam("rolUsuario") Integer rolUsuario, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         RolusuarioEntity r = this.rolusuarioEntityRepository.findById(rolUsuario).orElse(null);
         r.setBloqueado((byte) 0);
@@ -218,8 +217,8 @@ public class GestorController {
 
     /*Zona destinada a la información de los clientes en tabla*/
     @GetMapping("/particular")
-    public String doMostrarParticular(@RequestParam("id") Integer id, Model model, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doMostrarParticular(@RequestParam("id") Integer id, Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
 
@@ -228,8 +227,8 @@ public class GestorController {
     }
 
     @GetMapping("/empresa")
-    public String doMostrarEmpresa(@RequestParam("id") Integer id, Model model, HttpSession session){
-        if(session.getAttribute("usuario") == null) return "redirect:/";
+    public String doMostrarEmpresa(@RequestParam("id") Integer id, Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
 
         ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
 

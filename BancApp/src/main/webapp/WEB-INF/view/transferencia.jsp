@@ -1,9 +1,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%
-    //Nuria Rodríguez Tortosa 80%
-%>
+<!--
+    Nuria Rodríguez Tortosa 80%
+    Daniel García Rodríguez 20%
+-->
 <html>
 <head>
     <title>Transferencia</title>

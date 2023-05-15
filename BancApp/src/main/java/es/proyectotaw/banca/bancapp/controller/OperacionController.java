@@ -15,9 +15,9 @@ import java.sql.Date;
 import java.util.List;
 
 /**
-* @author Nuria Rodríguez Tortosa 40%
-* @author Daniel García Rodríguez 60%
-*/
+ * @author Nuria Rodríguez Tortosa 40%
+ * @author Daniel García Rodríguez 60%
+ */
 
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
@@ -63,9 +63,8 @@ public class OperacionController {
             if (bloqueos.contains((byte) 1) || bloqueos.contains((byte) 2)) return true;
         }
 
-        // TODO test
         return usuario.getClienteByCliente().getCuentasByIdCliente().stream().anyMatch(
-                cuenta -> cuenta.getActiva().equals((byte) 1) || cuenta.getActiva().equals((byte) 2)
+                cuenta -> cuenta.getActiva().equals((byte) 0) || cuenta.getActiva().equals((byte) 2)
         );
     }
 
@@ -83,12 +82,15 @@ public class OperacionController {
     }
 
     private OperacionEntity crearOperacion(HttpSession session) {
-        var ru = ((UsuarioEntity) session.getAttribute("usuario")).getRolusuariosById();
+        var user = (UsuarioEntity) session.getAttribute("usuario");
+        var ru = user.getRolusuariosById();
         EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
         ru = ru.stream().filter(
-                rolusuario -> rolusuario.getEmpresaByIdempresa().equals(empresa)
+                rolusuario -> empresa == null ?
+                        rolusuario.getEmpresaByIdempresa() == null :
+                        rolusuario.getEmpresaByIdempresa().equals(empresa)
         ).toList();
-        if (ru.isEmpty()) throw new RuntimeException();
+        if (ru.isEmpty()) throw new RuntimeException("Permisos no válidos para usuario " + user.getId());
         CuentaEntity cuenta = ru.get(0).getCuentaAsociada();
 
         OperacionEntity operacion = new OperacionEntity();
@@ -160,7 +162,6 @@ public class OperacionController {
             return "redirect:/menu";
         }
     }
-
 
 
     @GetMapping("/cambioDivisa")

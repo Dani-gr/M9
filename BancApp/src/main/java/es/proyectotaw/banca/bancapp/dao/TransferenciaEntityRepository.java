@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-public interface TransferenciaEntityRepository extends JpaRepository<TransferenciaEntity,Integer> {
+public interface TransferenciaEntityRepository extends JpaRepository<TransferenciaEntity, Integer> {
 
     @Query("select t from TransferenciaEntity t where t.cantidad >= :cantidad")
     List<TransferenciaEntity> filtrarPorCantidad(@RequestParam("cantidad") float cantidad);

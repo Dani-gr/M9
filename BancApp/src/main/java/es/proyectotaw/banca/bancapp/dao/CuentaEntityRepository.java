@@ -4,11 +4,8 @@ import es.proyectotaw.banca.bancapp.entity.CuentaEntity;
 import es.proyectotaw.banca.bancapp.entity.OperacionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 

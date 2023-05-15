@@ -6,7 +6,7 @@ public class FiltroOperaciones {
 
     String nombreOperacion;
 
-    public FiltroOperaciones(){
+    public FiltroOperaciones() {
         cantidadFiltro = 0;
         nombreOperacion = "ninguno";
     }
