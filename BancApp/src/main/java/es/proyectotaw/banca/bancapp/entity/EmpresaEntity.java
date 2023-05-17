@@ -85,7 +85,7 @@ public class EmpresaEntity {
 
     public EmpresaEntityDTO toDTO() {
         return new EmpresaEntityDTO(
-                idEmpresa,cif,clientesEmpresasByIdEmpresa.stream().map(ClientesEmpresaEntity::toDTO).toList(),
+                idEmpresa, cif, clientesEmpresasByIdEmpresa.stream().map(ClientesEmpresaEntity::toDTO).toList(),
                 clienteByCliente.toDTO(), rolusuariosByIdEmpresa.stream().map(RolusuarioEntity::toDTO).toList()
         );
     }

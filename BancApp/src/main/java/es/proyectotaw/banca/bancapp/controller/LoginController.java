@@ -1,7 +1,6 @@
 package es.proyectotaw.banca.bancapp.controller;
 
 
-
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,8 @@ import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- *
  * @author Daniel García Rodríguez 70%
  * @author Nuria Rodríguez Tortosa 30%
  */

@@ -14,10 +14,12 @@ import java.util.Optional;
 
 public interface ChatEntityRepository extends JpaRepository<ChatEntity, Integer> {
     List<ChatEntity> findAllByActivo(Byte activo);
+
     @Transactional
     @Modifying
     @Query("update ChatEntity c set c.activo = ?1 where c.id = ?2")
     void updateActivoById(Byte activo, Integer id);
+
     List<ChatEntity> findByClienteByClienteIdCliente_IdCliente(Integer idCliente);
 
     List<ChatEntity> findByClienteByClienteIdCliente_UsuariosByIdCliente_PrimerNombre(String primerNombre);

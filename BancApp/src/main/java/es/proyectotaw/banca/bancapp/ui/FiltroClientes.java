@@ -8,7 +8,7 @@ public class FiltroClientes {
     private Double limInfSaldo;
     private String ciudad;
 
-    public FiltroClientes(){
+    public FiltroClientes() {
         this.limInfSaldo = null;
         this.ciudad = null;
     }

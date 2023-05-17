@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * A DTO for the {@link es.proyectotaw.banca.bancapp.entity.CuentaEntity} entity
+ *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
 public class CuentaEntityDTO implements Serializable {
