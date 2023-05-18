@@ -30,11 +30,4 @@ public interface ClienteEntityRepository extends JpaRepository<ClienteEntity, In
     List<ClienteEntity> obtenerCLientesPorSaldoMinimoYCiudad(@Param("limiteInferior") Double limiteInferior,
                                                              @Param("ciudad") String ciudad);
 
-    default List<ClienteEntity> obtenerCLientesPorSaldoMinimoYCiudad(@Param("lim") Double lim, @Param("ciudad") String ciudad) {
-        List<ClienteEntity> res = obtenerCLientesPorSaldoMinimo(lim);
-        res.retainAll(obtenerClientesPorCiudad(ciudad));
-
-        return res;
-    }
-
 }
