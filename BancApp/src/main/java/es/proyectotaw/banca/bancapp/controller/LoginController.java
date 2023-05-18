@@ -206,7 +206,6 @@ public class LoginController {
             List<RolEntity> rolesConPermiso = new ArrayList<>(2);
             rolesConPermiso.add(rolEntityRepository.findByNombre("autorizado").orElseThrow(RuntimeException::new));
             rolesConPermiso.add(rolEntityRepository.findByNombre("socio").orElseThrow(RuntimeException::new));
-            rolesConPermiso.add(rolEntityRepository.findByNombre("representante").orElseThrow(RuntimeException::new));
 
             var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, Integer.valueOf(cif));
 
