@@ -55,15 +55,18 @@ public class OperacionController {
         var nombresRoles = (List<String>) session.getAttribute("nombresRoles");
         if (nombresRoles.contains("gestor") || nombresRoles.contains("asistente")) return true;
         var empresa = (EmpresaEntity) session.getAttribute("empresa");
+        var rolusuarios = usuario.getRolusuariosById().stream();
+
         if (empresa != null) {
-            var bloqueos = usuario.getRolusuariosById().stream().filter(
+            var bloqueos = rolusuarios.filter(
                     ru -> empresa.equals(ru.getEmpresaByIdempresa())
             ).map(RolusuarioEntity::getBloqueado).toList();
-            // TODO test
+            // TODO test socio bloqueado
             if (bloqueos.contains((byte) 1) || bloqueos.contains((byte) 2)) return true;
         }
 
-        return usuario.getClienteByCliente().getCuentasByIdCliente().stream().anyMatch(
+        // TODO test cuentaAsociada
+        return rolusuarios.map(RolusuarioEntity::getCuentaAsociada).anyMatch(
                 cuenta -> cuenta.getActiva().equals((byte) 0) || cuenta.getActiva().equals((byte) 2)
         );
     }
@@ -82,7 +85,7 @@ public class OperacionController {
     }
 
     private OperacionEntity crearOperacion(HttpSession session) {
-        var user = (UsuarioEntity) session.getAttribute("usuario");
+        UsuarioEntity user = (UsuarioEntity) session.getAttribute("usuario");
         var ru = user.getRolusuariosById();
         EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
         ru = ru.stream().filter(
@@ -180,25 +183,40 @@ public class OperacionController {
         if (cambioDivisa == null || incumplePermisos(session)) return "redirect:/menu";
         OperacionEntity operacion = crearOperacion(session);
 
-        /*
-         * TODO Por hacer porque me tengo que estudiar los cambios de monedas a monedas
-         */
+        Double cantidad = cambioDivisa.getCantidad();
+        CuentaEntity mia = operacion.getCuentaByCuentaRealiza();
+
+        if (cantidad <= 0) {
+            model.addAttribute("error", "¡La cantidad debe ser positiva!");
+            model.addAttribute("cambioDivisa", cambioDivisa);
+            return "cambiodivisa";
+        } else if (mia.getSaldo() - cantidad < 0) {
+            // Estás pobre :(
+            model.addAttribute("error", "¡No tienes suficiente saldo!\nTienes " + mia.getSaldo() + "€.");
+            model.addAttribute("cambioDivisa", cambioDivisa);
+            return "cambiodivisa";
+        }
 
         // Éxito
-        operacionEntityRepository.save(operacion);
-        cambioDivisa.setOperacionByOperacion(operacion);
-        cambDivisaEntityRepository.save(cambioDivisa);
 
         String urlTo = "redirect:/menu";
         if ("cajero".equalsIgnoreCase((String) session.getAttribute("menu"))) {
             ExtraccionEntity extra = new ExtraccionEntity();
             extra.setCantidad(cambioDivisa.getCantidad());
             urlTo = guardarExtraccion(model, session, extra);
+
+            if ("extraccion".equalsIgnoreCase(urlTo)) return "cambiodivisa";
+
             session.setAttribute("mensaje", "Sacando " + cambioDivisa.getCantidad() + " " +
                     cambioDivisa.getOrigen() + " en " + cambioDivisa.getDestino() + "...");
         } else session.setAttribute("mensaje", "¡Cambiados " + cambioDivisa.getCantidad() + " " +
-                cambioDivisa.getOrigen() + " a " + cambioDivisa.getDestino() + " !");
-        return "extraccion".equalsIgnoreCase(urlTo) ? "cambiodivisa" : urlTo;
+                cambioDivisa.getOrigen() + " a " + cambioDivisa.getDestino() + "!");
+
+        operacionEntityRepository.save(operacion);
+        cambioDivisa.setOperacionByOperacion(operacion);
+        cambDivisaEntityRepository.save(cambioDivisa);
+
+        return urlTo;
     }
 
     @GetMapping("/extraccion")
