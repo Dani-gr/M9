@@ -198,20 +198,25 @@ public class OperacionController {
         }
 
         // Éxito
-        operacionEntityRepository.save(operacion);
-        cambioDivisa.setOperacionByOperacion(operacion);
-        cambDivisaEntityRepository.save(cambioDivisa);
 
         String urlTo = "redirect:/menu";
         if ("cajero".equalsIgnoreCase((String) session.getAttribute("menu"))) {
             ExtraccionEntity extra = new ExtraccionEntity();
             extra.setCantidad(cambioDivisa.getCantidad());
             urlTo = guardarExtraccion(model, session, extra);
+
+            if ("extraccion".equalsIgnoreCase(urlTo)) return "cambiodivisa";
+
             session.setAttribute("mensaje", "Sacando " + cambioDivisa.getCantidad() + " " +
                     cambioDivisa.getOrigen() + " en " + cambioDivisa.getDestino() + "...");
         } else session.setAttribute("mensaje", "¡Cambiados " + cambioDivisa.getCantidad() + " " +
-                cambioDivisa.getOrigen() + " a " + cambioDivisa.getDestino() + " !");
-        return "extraccion".equalsIgnoreCase(urlTo) ? "cambiodivisa" : urlTo;
+                cambioDivisa.getOrigen() + " a " + cambioDivisa.getDestino() + "!");
+
+        operacionEntityRepository.save(operacion);
+        cambioDivisa.setOperacionByOperacion(operacion);
+        cambDivisaEntityRepository.save(cambioDivisa);
+
+        return urlTo;
     }
 
     @GetMapping("/extraccion")
