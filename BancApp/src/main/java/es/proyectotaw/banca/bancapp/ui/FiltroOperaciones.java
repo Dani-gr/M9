@@ -2,20 +2,20 @@ package es.proyectotaw.banca.bancapp.ui;
 
 public class FiltroOperaciones {
 
-    float cantidadFiltro;
+    Double cantidadFiltro;
 
     String nombreOperacion;
 
     public FiltroOperaciones() {
-        cantidadFiltro = 0;
+        cantidadFiltro = (double) 0;
         nombreOperacion = "ninguno";
     }
 
-    public float getCantidadFiltro() {
+    public Double getCantidadFiltro() {
         return cantidadFiltro;
     }
 
-    public void setCantidadFiltro(float cantidadFiltro) {
+    public void setCantidadFiltro(Double cantidadFiltro) {
         this.cantidadFiltro = cantidadFiltro;
     }
 
