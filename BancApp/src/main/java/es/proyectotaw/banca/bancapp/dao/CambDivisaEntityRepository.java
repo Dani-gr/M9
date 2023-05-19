@@ -11,4 +11,7 @@ public interface CambDivisaEntityRepository extends JpaRepository<CambDivisaEnti
 
     @Query("select c from CambDivisaEntity c where c.cantidad >= :cantidad")
     List<CambDivisaEntity> filtrarPorCantidad(@RequestParam("cantidad") float cantidad);
+
+    @Query("select c from CambDivisaEntity c where c.operacionByOperacion.idOperacion = :id")
+    CambDivisaEntity findByOperation(@RequestParam("id") int id);
 }

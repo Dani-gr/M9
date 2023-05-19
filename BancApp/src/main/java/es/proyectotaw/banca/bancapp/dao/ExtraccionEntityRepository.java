@@ -1,5 +1,6 @@
 package es.proyectotaw.banca.bancapp.dao;
 
+import es.proyectotaw.banca.bancapp.entity.CambDivisaEntity;
 import es.proyectotaw.banca.bancapp.entity.ExtraccionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,4 +12,7 @@ public interface ExtraccionEntityRepository extends JpaRepository<ExtraccionEnti
 
     @Query("select e from ExtraccionEntity e where e.cantidad >= :cantidad")
     List<ExtraccionEntity> filtrarPorCantidad(@RequestParam("cantidad") float cantidad);
+
+    @Query("select e from ExtraccionEntity e where e.operacionByOperacion.idOperacion = :id")
+    ExtraccionEntity findByOperation(@RequestParam("id") int id);
 }

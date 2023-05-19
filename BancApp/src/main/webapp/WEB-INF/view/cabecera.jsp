@@ -14,9 +14,10 @@
     <div class="col">
         <h3 id="saludo">Bienvenido, ${usuario.getPrimerNombre()} ${usuario.getSegundoNombre()}</h3>
     </div>
+
     <div class="col-1">
-        <button style="width: 60px" class="btn btn-danger"
-                onclick="window.location.href = '/logout/datosUsuario';">
+        <button style="width: 60px;" class="btn btn-danger"
+                onclick="window.location.href = '/logout';">
             Salir
         </button>
     </div>

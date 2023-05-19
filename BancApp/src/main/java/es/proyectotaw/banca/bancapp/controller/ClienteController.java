@@ -57,11 +57,35 @@ public class ClienteController {
     public String doVerOperaciones(Model model, HttpSession session) {
         if (session.getAttribute("usuario") == null) return "redirect:/";
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        CuentaEntity cuenta = usuario.getClienteByCliente().getCuentasByIdCliente().get(0);
-        model.addAttribute("operaciones", cuenta.getOperacionsByNumCuenta());
+        ClienteEntity cliente = usuario.getClienteByCliente();
+        CuentaEntity cuenta = cliente.getCuentasByIdCliente().get(0);
+        List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
+
+        List<CambDivisaEntity> cambios = new ArrayList<>();
+        List<TransferenciaEntity> transs = new ArrayList<>();
+        List<ExtraccionEntity> extras = new ArrayList<>();
+
+        for(OperacionEntity ope: operaciones) {
+            CambDivisaEntity cambio = cambDivisaEntityRepository.findByOperation(ope.getIdOperacion());
+            TransferenciaEntity trans = transferenciaEntityRepository.findByOperation(ope.getIdOperacion());
+            ExtraccionEntity extra = extraccionEntityRepository.findByOperation(ope.getIdOperacion());
+            if(cambio != null) {
+                cambios.add(cambio);
+            } else {
+                if(trans != null) {
+                    transs.add(trans);
+                } else {
+                    if(extra != null) extras.add(extra);
+                }
+            }
+        }
+
         model.addAttribute("filtro", new FiltroOperaciones());
         model.addAttribute("ordenar", new OrdenarOperaciones());
-        model.addAttribute("usuario", new UsuarioEntity());
+        model.addAttribute("cambios", cambios);
+        model.addAttribute("transs", transs);
+        model.addAttribute("extras", extras);
+
         return "operacionesCliente";
     }
 
@@ -75,7 +99,7 @@ public class ClienteController {
     protected String procesarFiltrado(FiltroOperaciones filtro,
                                       Model model, HttpSession session) {
         List<OperacionEntity> operaciones = new ArrayList<>();
-        String urlTo = "cliente";
+        String urlTo = "operacionesCliente";
         //lo de la session
         if (filtro == null || (filtro.getCantidadFiltro() == 0 && filtro.getNombreOperacion().equals("ninguno"))) {
             filtro = new FiltroOperaciones();
@@ -157,7 +181,7 @@ public class ClienteController {
 
         model.addAttribute("ordenar", orden);
 
-        return "cliente";
+        return "operacionesCliente";
     }
 
     @PostMapping("/guardar")

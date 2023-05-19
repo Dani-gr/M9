@@ -1,5 +1,6 @@
 package es.proyectotaw.banca.bancapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import es.proyectotaw.banca.bancapp.dto.OperacionEntityDTO;
 
 import javax.persistence.*;
