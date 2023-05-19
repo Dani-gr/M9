@@ -53,7 +53,7 @@
         </form:form>
 </div>
 
-        <% if(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getActiva() == 0){  %>
+        <% if(!usuario.getClienteByCliente().getCuentasByIdCliente().isEmpty() && usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getActiva() == 0){  %>
     <div class="row">
         <div class="col pt-3">
             <div class="btn btn-lg btn-outline-secondary "
