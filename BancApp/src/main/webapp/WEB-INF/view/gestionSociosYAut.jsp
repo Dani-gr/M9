@@ -42,7 +42,7 @@
             <td><%= usuario.getPrimerApellido() %> <%= usuario.getSegundoApellido() %></td>
             <td><a href="/empresa/cambiarRol?id=<%=usuario.getId()%>&rol=<%=usuario.getRolusuariosById().get(0).getRolByIdrol().getIdrol()%>"/> <%= usuario.getRolusuariosById().get(0).getRolByIdrol().getNombre() %></td>
             <td><a href="/empresa/bloquearUsuario?id=<%=usuario.getId()%>"/><button class="btn btn-danger
-                <%= usuario.getRolusuariosById().get(0).getBloqueado() == (byte) 1 ? " disabled" : "" %>
+                <%= usuario.getRolusuariosById().get(0).getBloqueado() == (byte) 1 ? " disabled\" disabled=\"true\"" : "" %>
                 "> X </button></td>
         </tr>
         <% } %>
