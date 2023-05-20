@@ -22,9 +22,43 @@ public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, In
     @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :id")
     List<UsuarioEntity> findUsuariosByEmpresa(@Param("id") Integer id);
 
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :id " +
+            "ORDER BY u.primerApellido ASC")
+    List<UsuarioEntity> findUsuariosByEmpresaOrderByApellido(@Param("id") Integer id);
+
+
     @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :id and ru.bloqueado = 1")
     List<UsuarioEntity> findUsuariosBloqueadosByEmpresa(@Param("id") Integer id);
 
     @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa and ru.rolByIdrol = :rol")
     List<UsuarioEntity> findUsuariosByEmpresaAndRol(@Param("idEmpresa") Integer idEmpresa, @Param("rol") RolEntity rol);
+
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa " +
+            "AND ru.rolByIdrol = :rol ORDER BY u.primerApellido ASC")
+    List<UsuarioEntity> findUsuariosByEmpresaAndRolOrderByApellido(@Param("idEmpresa") Integer idEmpresa, @Param("rol") RolEntity rol);
+
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa " +
+            "AND ru.rolByIdrol = :rol " +
+            "AND (u.primerNombre LIKE %:cadena% OR u.segundoNombre LIKE %:cadena% OR u.primerApellido LIKE %:cadena% OR u.segundoApellido LIKE %:cadena%)")
+    List<UsuarioEntity> findUsuariosByEmpresaAndRolAndCadena(@Param("idEmpresa") Integer idEmpresa, @Param("rol") RolEntity rol, @Param("cadena") String cadena);
+
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa " +
+            "AND (u.primerNombre LIKE %:cadena% OR u.segundoNombre LIKE %:cadena% OR u.primerApellido LIKE %:cadena% OR u.segundoApellido LIKE %:cadena%)")
+    List<UsuarioEntity> findUsuariosByEmpresaAndCadena(@Param("idEmpresa") Integer idEmpresa, @Param("cadena") String cadena);
+
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa " +
+            "AND (u.primerNombre LIKE %:cadena% OR u.segundoNombre LIKE %:cadena% OR u.primerApellido LIKE %:cadena% OR u.segundoApellido LIKE %:cadena%) " +
+            "ORDER BY u.primerApellido ASC")
+    List<UsuarioEntity> findUsuariosByEmpresaAndCadenaOrderByApellido(@Param("idEmpresa") Integer idEmpresa, @Param("cadena") String cadena);
+
+
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa " +
+            "AND ru.rolByIdrol = :rol " +
+            "AND (u.primerNombre LIKE %:cadena% OR u.segundoNombre LIKE %:cadena% OR u.primerApellido LIKE %:cadena% OR u.segundoApellido LIKE %:cadena%) " +
+            "ORDER BY u.primerApellido ASC")
+    List<UsuarioEntity> findUsuariosByEmpresaAndRolAndCadenaOrderByApellido(@Param("idEmpresa") Integer idEmpresa, @Param("rol") RolEntity rol, @Param("cadena") String cadena);
+
+
+
+
 }

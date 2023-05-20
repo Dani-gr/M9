@@ -79,15 +79,61 @@ public class EmpresaController {
         List<UsuarioEntity> usuariosBloqueados = usuarioEntityRepository.findUsuariosBloqueadosByEmpresa(empresa.getIdEmpresa());
         model.addAttribute("filtroAsociadosEmpresa", filtro);
 
-        if (filtro == null || filtro.getNombreRol().equals("ninguno")){
+        if (filtro == null || filtro.getNombreRol().equals("ninguno") && filtro.getContieneCadena().equals("") && filtro.getOrdenAsociados().equals("ninguno"))
             return "redirect:/empresa/";
-        } else if (filtro.getNombreRol().equals("socio")){
-            RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
-            usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRol(empresa.getIdEmpresa(), rolSocio);
-        } else if (filtro.getNombreRol().equals("autorizado")){
-            RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
-            usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRol(empresa.getIdEmpresa(), rolAutorizado);
+
+        if (!filtro.getNombreRol().equals("ninguno")){
+            if(filtro.getContieneCadena().equals("")){
+                if(filtro.getOrdenAsociados().equals("ninguno")){
+                    if (filtro.getNombreRol().equals("socio")){
+                        RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
+                        usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRol(empresa.getIdEmpresa(), rolSocio);
+                    } else if (filtro.getNombreRol().equals("autorizado")){
+                        RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
+                        usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRol(empresa.getIdEmpresa(), rolAutorizado);
+                    }
+                } else {
+                    if (filtro.getNombreRol().equals("socio")){
+                        RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
+                        usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolOrderByApellido(empresa.getIdEmpresa(), rolSocio);
+                    } else if (filtro.getNombreRol().equals("autorizado")){
+                        RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
+                        usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolOrderByApellido(empresa.getIdEmpresa(), rolAutorizado);
+                    }
+                }
+
+            } else {
+                if (filtro.getOrdenAsociados().equals("ninguno")){
+                    if (filtro.getNombreRol().equals("socio")){
+                        RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
+                        usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolAndCadena(empresa.getIdEmpresa(), rolSocio, filtro.getContieneCadena());
+                    } else if (filtro.getNombreRol().equals("autorizado")){
+                        RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
+                        usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolAndCadena(empresa.getIdEmpresa(), rolAutorizado, filtro.getContieneCadena());
+                    }
+                } else {
+                    if (filtro.getNombreRol().equals("socio")){
+                        RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
+                        usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolAndCadenaOrderByApellido(empresa.getIdEmpresa(), rolSocio, filtro.getContieneCadena());
+                    } else if (filtro.getNombreRol().equals("autorizado")){
+                        RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
+                        usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolAndCadenaOrderByApellido(empresa.getIdEmpresa(), rolAutorizado, filtro.getContieneCadena());
+                    }
+                }
+
+            }
+        } else {
+            if (filtro.getContieneCadena().equals("")){
+                usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaOrderByApellido(empresa.getIdEmpresa());
+            } else {
+                if (filtro.getOrdenAsociados().equals("ninguno")){
+                    usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndCadena(empresa.getIdEmpresa(), filtro.getContieneCadena());
+                } else {
+                    usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndCadenaOrderByApellido(empresa.getIdEmpresa(), filtro.getContieneCadena());
+                }
+            }
         }
+
 
         model.addAttribute("usuariosAsociados", usuariosAsociados);
 

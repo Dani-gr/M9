@@ -28,14 +28,21 @@
         <form:option value="socio" label="Socios"/>
         <form:option value="autorizado" label="Autorizados"/>
     </form:select>
-    <button>Filtrar</button>
+            Contiene la cadena: <form:input type="text" path="contieneCadena"/>
+        <br/> <br/>
+        Ordenar por:
+        <form:select multiple="false" path="ordenAsociados">
+            <form:option value="ninguno" label="------"/>
+            <form:option value="apellidos" label="Apellidos"/>
+        </form:select>
+        <br/> <br/>
+    <button class="btn btn-primary">Filtrar</button>
     </form:form>
 
     <h3>Lista de socios y autorizados</h3>
     <table class="table p-3">
         <thead>
         <tr>
-            <th scope="col" class="col col-1">#</th>
             <th scope="col" class="col col-3">Nombre</th>
             <th scope="col" class="col col-3">Apellidos</th>
             <th scope="col" class="col col-2">Rol</th>
@@ -46,8 +53,7 @@
 
         <% for (UsuarioEntity usuario : listaUsuariosAsociados) { %>
         <tr>
-            <th scope="row">1</th>
-            <td><%= usuario.getPrimerNombre() %> <%= usuario.getSegundoNombre() %> </td>
+            <td><%= usuario.getPrimerNombre() %> <%= usuario.getSegundoNombre() == null ? "" : usuario.getSegundoNombre() %> </td>
             <td><%= usuario.getPrimerApellido() %> <%= usuario.getSegundoApellido() %></td>
             <td><a href="/empresa/cambiarRol?id=<%=usuario.getId()%>&rol=<%=usuario.getRolusuariosById().get(0).getRolByIdrol().getIdrol()%>"/> <%= usuario.getRolusuariosById().get(0).getRolByIdrol().getNombre() %></td>
             <td><a href="/empresa/bloquearUsuario?id=<%=usuario.getId()%>"/><button class="btn btn-danger
