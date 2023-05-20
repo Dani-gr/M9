@@ -65,17 +65,17 @@ public class ClienteController {
         List<TransferenciaEntity> transs = new ArrayList<>();
         List<ExtraccionEntity> extras = new ArrayList<>();
 
-        for(OperacionEntity ope: operaciones) {
+        for (OperacionEntity ope : operaciones) {
             CambDivisaEntity cambio = cambDivisaEntityRepository.findByOperation(ope.getIdOperacion());
             TransferenciaEntity trans = transferenciaEntityRepository.findByOperation(ope.getIdOperacion());
             ExtraccionEntity extra = extraccionEntityRepository.findByOperation(ope.getIdOperacion());
-            if(cambio != null) {
+            if (cambio != null) {
                 cambios.add(cambio);
             } else {
-                if(trans != null) {
+                if (trans != null) {
                     transs.add(trans);
                 } else {
-                    if(extra != null) extras.add(extra);
+                    if (extra != null) extras.add(extra);
                 }
             }
         }
@@ -98,50 +98,70 @@ public class ClienteController {
     @GetMapping("/filtrar")
     protected String procesarFiltrado(FiltroOperaciones filtro,
                                       Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
         List<OperacionEntity> operaciones = new ArrayList<>();
+        List<CambDivisaEntity> cambios = new ArrayList<>();
+        List<TransferenciaEntity> transs = new ArrayList<>();
+        List<ExtraccionEntity> extras = new ArrayList<>();
         String urlTo = "operacionesCliente";
         //lo de la session
         if (filtro == null || (filtro.getCantidadFiltro() == 0 && filtro.getNombreOperacion().equals("ninguno"))) {
             filtro = new FiltroOperaciones();
-            operaciones = operacionEntityRepository.findAll();
+            urlTo = "redirect:/cliente/verOperaciones";
         } else {
             if (!filtro.getNombreOperacion().equals("ninguno")) {
                 String nombre = filtro.getNombreOperacion();
                 if (filtro.getCantidadFiltro() == 0) {
                     if (nombre.equals("Transferencia")) {
-                        List<TransferenciaEntity> transferencias = transferenciaEntityRepository.findAll();
-                        for (TransferenciaEntity trans : transferencias) {
-                            operaciones.add(trans.getOperacionByOperacion());
+                        for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                            if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null) {
+                                transs.add(transferenciaEntityRepository.findByOperation(ope.getIdOperacion()));
+                            }
                         }
                     } else {
                         if (nombre.equals("Cambio de divisa")) {
-                            List<CambDivisaEntity> cambios = cambDivisaEntityRepository.findAll();
-                            for (CambDivisaEntity cambio : cambios) {
-                                operaciones.add(cambio.getOperacionByOperacion());
+                            for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                                if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null) {
+                                    cambios.add(cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()));
+                                }
                             }
                         } else {
-                            List<ExtraccionEntity> extracciones = extraccionEntityRepository.findAll();
-                            for (ExtraccionEntity extraccion : extracciones) {
-                                operaciones.add(extraccion.getOperacionByOperacion());
+                            for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                                if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null) {
+                                    extras.add(extraccionEntityRepository.findByOperation(ope.getIdOperacion()));
+                                }
                             }
                         }
                     }
                 } else {
                     if (nombre.equals("Transferencia")) {
                         List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                        for (TransferenciaEntity trans : transferencias) {
-                            operaciones.add(trans.getOperacionByOperacion());
+                        for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                            for (TransferenciaEntity trans : transferencias) {
+                                if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == trans.getOperacionByOperacion().getIdOperacion()) {
+                                    transs.add(transferenciaEntityRepository.findByOperation(ope.getIdOperacion()));
+                                }
+                            }
                         }
                     } else {
                         if (nombre.equals("Cambio de divisa")) {
-                            List<CambDivisaEntity> cambios = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                            for (CambDivisaEntity cambio : cambios) {
-                                operaciones.add(cambio.getOperacionByOperacion());
+                            List<CambDivisaEntity> cambiose = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
+                            for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                                for (CambDivisaEntity cambio : cambiose) {
+                                    if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == cambio.getOperacionByOperacion().getIdOperacion()) {
+                                        cambios.add(cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()));
+                                    }
+                                }
                             }
                         } else {
                             List<ExtraccionEntity> extracciones = extraccionEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                            for (ExtraccionEntity extraccion : extracciones) {
-                                operaciones.add(extraccion.getOperacionByOperacion());
+                            for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                                for (ExtraccionEntity extraccion : extracciones) {
+                                    if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == extraccion.getOperacionByOperacion().getIdOperacion()) {
+                                        extras.add(extraccionEntityRepository.findByOperation(ope.getIdOperacion()));
+                                    }
+                                }
                             }
                         }
                     }
@@ -149,23 +169,40 @@ public class ClienteController {
             } else {
                 if (filtro.getCantidadFiltro() != 0) {
                     List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                    for (TransferenciaEntity trans : transferencias) {
-                        operaciones.add(trans.getOperacionByOperacion());
+                    for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                        for (TransferenciaEntity trans : transferencias) {
+                            if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == trans.getOperacionByOperacion().getIdOperacion()) {
+                                transs.add(transferenciaEntityRepository.findByOperation(ope.getIdOperacion()));
+                            }
+                        }
                     }
-                    List<CambDivisaEntity> cambios = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                    for (CambDivisaEntity cambio : cambios) {
-                        operaciones.add(cambio.getOperacionByOperacion());
+
+                    List<CambDivisaEntity> cambiose = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
+                    for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                        for (CambDivisaEntity cambio : cambiose) {
+                            if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == cambio.getOperacionByOperacion().getIdOperacion()) {
+                                cambios.add(cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()));
+                            }
+                        }
                     }
+
                     List<ExtraccionEntity> extracciones = extraccionEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                    for (ExtraccionEntity extraccion : extracciones) {
-                        operaciones.add(extraccion.getOperacionByOperacion());
+                    for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                        for (ExtraccionEntity extraccion : extracciones) {
+                            if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == extraccion.getOperacionByOperacion().getIdOperacion()) {
+                                extras.add(extraccionEntityRepository.findByOperation(ope.getIdOperacion()));
+                            }
+                        }
                     }
                 }
             }
         }
 
         model.addAttribute("filtro", filtro);
-        model.addAttribute("operaciones", operaciones);
+        model.addAttribute("ordenar", new OrdenarOperaciones());
+        model.addAttribute("cambios", cambios);
+        model.addAttribute("transs", transs);
+        model.addAttribute("extras", extras);
 
         return urlTo;
     }
@@ -178,10 +215,42 @@ public class ClienteController {
 
     protected String procesarOrdenado(OrdenarOperaciones orden,
                                       Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) return "redirect:/";
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        List<CambDivisaEntity> cambios = new ArrayList<>();
+        List<TransferenciaEntity> transs = new ArrayList<>();
+        List<ExtraccionEntity> extras = new ArrayList<>();
+        String urlTo = "operacionesCliente";
 
+        if(orden == null || !orden.getCantidad()) {
+            orden = new OrdenarOperaciones();
+            urlTo = "redirect:/cliente/verOperaciones";
+        } else {
+            List<OperacionEntity> operaciones = operacionEntityRepository.getOperacionesOrdenadasPorCantidad(usuario.getClienteByCliente().getCuentasByIdCliente().get(0));
+
+            for (OperacionEntity ope : operaciones) {
+                CambDivisaEntity cambio = cambDivisaEntityRepository.findByOperation(ope.getIdOperacion());
+                TransferenciaEntity trans = transferenciaEntityRepository.findByOperation(ope.getIdOperacion());
+                ExtraccionEntity extra = extraccionEntityRepository.findByOperation(ope.getIdOperacion());
+                if (cambio != null) {
+                    cambios.add(cambio);
+                } else {
+                    if (trans != null) {
+                        transs.add(trans);
+                    } else {
+                        if (extra != null) extras.add(extra);
+                    }
+                }
+            }
+        }
+
+        model.addAttribute("filtro", new FiltroOperaciones());
         model.addAttribute("ordenar", orden);
+        model.addAttribute("cambios", cambios);
+        model.addAttribute("transs", transs);
+        model.addAttribute("extras", extras);
 
-        return "operacionesCliente";
+        return urlTo;
     }
 
     @PostMapping("/guardar")
@@ -206,6 +275,9 @@ public class ClienteController {
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
         usuario.getClienteByCliente().getCuentasByIdCliente().get(0).setActiva((byte) 2);
         usuarioEntityRepository.saveAndFlush(usuario);
+        CuentaEntity cuenta = usuario.getClienteByCliente().getCuentasByIdCliente().get(0);
+        cuenta.setActiva((byte) 2);
+        cuentaEntityRepository.saveAndFlush(cuenta);
         model.addAttribute("usuario", usuario);
         return "redirect:/menu";
     }

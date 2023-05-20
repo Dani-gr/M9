@@ -4,17 +4,17 @@ import java.sql.Date;
 
 public class OrdenarOperaciones {
 
-    Date fecha;
+    boolean cantidad;
 
     public OrdenarOperaciones() {
-        fecha = null;
+        cantidad = false;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public boolean getCantidad() {
+        return cantidad;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setCantidad(boolean cantidad) {
+        this.cantidad = cantidad;
     }
 }

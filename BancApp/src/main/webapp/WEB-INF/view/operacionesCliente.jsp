@@ -17,7 +17,7 @@
 %>
 <html>
 <head>
-    <title>Oepraciones cliente</title>
+    <title>Operaciones cliente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
@@ -39,13 +39,15 @@
         <form:input path="cantidadFiltro"/>
     <button>Filtrar</button>
     </form:form>
+
     <%--@elvariable id="ordenar" type="es.proyectotaw.banca.bancapp.ui.OrdenarOperaciones"--%>
     <form:form action="/cliente/ordenar" method="post" modelAttribute="ordenar">
     Ordenar por: <br/>
-    Fecha
-        <form:input path="fecha"/>
+    Cantidad
+        <form:checkbox path="cantidad"/>
     <button>Ordenar</button>
     </form:form>
+
     <h3>Lista de operaciones</h3>
 
     <table class="table p-3" border="1">
@@ -97,9 +99,12 @@
         %>
         <tr>
             <td><%=i%>
-            <td><%=extra.nombre()%></td>
-            <td><%=extra.getCantidad()%></td>
-            <td><%=extra.getOperacionByOperacion().getFecha()%></td>
+            <td><%=extra.nombre()%>
+            </td>
+            <td><%=extra.getCantidad()%>
+            </td>
+            <td><%=extra.getOperacionByOperacion().getFecha()%>
+            </td>
         </tr>
         <%
                     i++;
