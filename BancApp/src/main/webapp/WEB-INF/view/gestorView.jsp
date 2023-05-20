@@ -90,7 +90,7 @@
 
                         <td>
                             <%
-                                boolean esEmpresa = !c.getEmpresasByIdCliente().isEmpty()  &&  c.getEmpresasByIdCliente().get(0) != null;
+                                boolean esEmpresa = c.getEmpresasByIdCliente() != null && !c.getEmpresasByIdCliente().isEmpty()  &&  c.getEmpresasByIdCliente().get(0) != null;
                             %>
                             <%= (esEmpresa) ?
                                     "<a class=\"btn btn-dark\" href='/gestor/empresa?id=" + c.getIdCliente() + "'>VER EMPRESA</a>" :

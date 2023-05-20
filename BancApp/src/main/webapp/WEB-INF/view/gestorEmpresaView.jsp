@@ -50,6 +50,8 @@
                         <% for(RolusuarioEntity r : roles){ %>
                         <li>
                             <%= r.getUsuarioByIdusuario().getEmail() + "->" + r.getRolByIdrol().getNombre() %>
+                                 <%= (r.getBloqueado() != 0)? "<strong>BLOQUEADO</strong>" : " " %>
+
                         </li>
                         <% }%>
                     </ul>
@@ -64,37 +66,27 @@
                 CuentaEntity cuenta = empresa.getCuentasByIdCliente().get(0);
             %>
             <tr>
-                <th>NÚMERO</th><th>SALDO ACTUAL</th><th>ESTADO</th>
+                <th>NÚMERO</th><th>SALDO ACTUAL</th><th>ESTADO</th><th></th>
             </tr>
             <tr>
                 <td><%=cuenta.getNumCuenta()%></td><td><%=cuenta.getSaldo()%></td>
                 <td>
                     <%= (cuenta.getActiva() == 1)? "Activa" : "Bloqueada" %>
                 </td>
+                <td>
+                    <%
+                        List<OperacionEntity> operaciones = empresa.getCuentasByIdCliente().get(0).getOperacionsByNumCuenta();
 
+                        if(operaciones != null && !operaciones.isEmpty()){
+                    %>
+                        <a class="btn btn-secondary" href="/gestor/operaciones?id=<%=empresa.getIdCliente()%>">OPERACIONES</a>
+                    <%  }else{  %>
+                            <strong>No hay operaciones</strong>
+                    <% } %>
+                </td>
             </tr>
         </table>
 
-        <h3>HISTORIAL DE OPERACIONES</h3>
-        <%
-            List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
-        %>
-        <table class="table table-striped">
-            <tr>
-                <th>NÚMERO DE OPERACIÓN</th><th>FECHA</th><th>TIPO</th>
-            </tr>
-            <% for(OperacionEntity op : operaciones){ %>
-            <tr>
-                <td> <%=op.getIdOperacion()%> </td>
-                <td> <%=op.getFecha()%> </td>
-                <td> <%=
-                (!op.getTransferenciasByIdOperacion().isEmpty())? "Transferencia" :
-                        (!op.getCambDivisasByIdOperacion().isEmpty())? "Cambio de divisa" :
-                                (!op.getExtraccionsByIdOperacion().isEmpty())? "Extracción" : ""
-                %> </td>
-            </tr>
-            <% } %>
-        </table>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
