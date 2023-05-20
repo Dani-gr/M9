@@ -22,7 +22,7 @@
         <% if(roles.isEmpty()){ %>
         <h1>NO HAY SOLICITUDES</h1>
         <% }else{ %>
-        <h1>PERSONAL DE EMPRESAS QUE SOLICITAN SU ACTIVACIÓN</h1>
+        <h1>PERSONAL DE EMPRESAS QUE SOLICITAN SU DESBLOQUEO</h1>
 
         <table class="table table-striped">
             <tr>
@@ -35,6 +35,7 @@
             <tr>
                 <td> <%=r.getUsuarioByIdusuario().getNif()%> </td>
                 <td> <%=r.getEmpresaByIdempresa().getCif()%> </td>
+                <td> <%=r.getRolByIdrol().getNombre()%> </td>
                 <td> <a class="btn btn-success" href="/gestor/desbloquearEnEmpresa?rolUsuario= <%=r.getId()%> ">ACTIVAR</a> </td>
             </tr>
             <%    } %>
