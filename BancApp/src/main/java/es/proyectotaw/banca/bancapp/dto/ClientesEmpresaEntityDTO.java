@@ -12,9 +12,12 @@ import java.util.Objects;
  */
 @SuppressWarnings("unused")
 public class ClientesEmpresaEntityDTO implements Serializable {
-    private final Integer id;
-    private final EmpresaEntityDTO empresaByIdEmpresa;
-    private final ClienteEntityDTO clienteByIdCliente;
+    private Integer id;
+    private EmpresaEntityDTO empresaByIdEmpresa;
+    private ClienteEntityDTO clienteByIdCliente;
+
+    public ClientesEmpresaEntityDTO() {
+    }
 
     public ClientesEmpresaEntityDTO(Integer id, EmpresaEntityDTO empresaByIdEmpresa, ClienteEntityDTO clienteByIdCliente) {
         this.id = id;
@@ -26,12 +29,24 @@ public class ClientesEmpresaEntityDTO implements Serializable {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public EmpresaEntityDTO getEmpresaByIdEmpresa() {
         return empresaByIdEmpresa;
     }
 
+    public void setEmpresaByIdEmpresa(EmpresaEntityDTO empresaByIdEmpresa) {
+        this.empresaByIdEmpresa = empresaByIdEmpresa;
+    }
+
     public ClienteEntityDTO getClienteByIdCliente() {
         return clienteByIdCliente;
+    }
+
+    public void setClienteByIdCliente(ClienteEntityDTO clienteByIdCliente) {
+        this.clienteByIdCliente = clienteByIdCliente;
     }
 
     @Override

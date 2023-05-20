@@ -11,10 +11,14 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class RolEntityDTO implements Serializable {
-    private final Integer idrol;
-    private final String nombre;
-    private final List<RolusuarioEntityDTO> rolusuariosByIdrol;
+    private Integer idrol;
+    private String nombre;
+    private List<RolusuarioEntityDTO> rolusuariosByIdrol;
+
+    public RolEntityDTO() {
+    }
 
     public RolEntityDTO(Integer idrol, String nombre, List<RolusuarioEntityDTO> rolusuariosByIdrol) {
         this.idrol = idrol;
@@ -26,12 +30,24 @@ public class RolEntityDTO implements Serializable {
         return idrol;
     }
 
+    public void setIdrol(Integer idrol) {
+        this.idrol = idrol;
+    }
+
     public String getNombre() {
         return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public List<RolusuarioEntityDTO> getRolusuariosByIdrol() {
         return rolusuariosByIdrol;
+    }
+
+    public void setRolusuariosByIdrol(List<RolusuarioEntityDTO> rolusuariosByIdrol) {
+        this.rolusuariosByIdrol = rolusuariosByIdrol;
     }
 
     @Override

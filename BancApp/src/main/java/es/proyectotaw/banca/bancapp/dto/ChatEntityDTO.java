@@ -13,11 +13,14 @@ import java.util.Objects;
  */
 @SuppressWarnings("unused")
 public class ChatEntityDTO implements Serializable {
-    private final Integer id;
-    private final Byte activo;
-    private final UsuarioEntityDTO usuarioByAsistenteId;
-    private final ClienteEntityDTO clienteByClienteIdCliente;
-    private final List<MensajeEntityDTO> mensajesById;
+    private Integer id;
+    private Byte activo;
+    private UsuarioEntityDTO usuarioByAsistenteId;
+    private ClienteEntityDTO clienteByClienteIdCliente;
+    private List<MensajeEntityDTO> mensajesById;
+
+    public ChatEntityDTO() {
+    }
 
     public ChatEntityDTO(Integer id, Byte activo, UsuarioEntityDTO usuarioByAsistenteId, ClienteEntityDTO clienteByClienteIdCliente, List<MensajeEntityDTO> mensajesById) {
         this.id = id;
@@ -31,20 +34,40 @@ public class ChatEntityDTO implements Serializable {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Byte getActivo() {
         return activo;
+    }
+
+    public void setActivo(Byte activo) {
+        this.activo = activo;
     }
 
     public UsuarioEntityDTO getUsuarioByAsistenteId() {
         return usuarioByAsistenteId;
     }
 
+    public void setUsuarioByAsistenteId(UsuarioEntityDTO usuarioByAsistenteId) {
+        this.usuarioByAsistenteId = usuarioByAsistenteId;
+    }
+
     public ClienteEntityDTO getClienteByClienteIdCliente() {
         return clienteByClienteIdCliente;
     }
 
+    public void setClienteByClienteIdCliente(ClienteEntityDTO clienteByClienteIdCliente) {
+        this.clienteByClienteIdCliente = clienteByClienteIdCliente;
+    }
+
     public List<MensajeEntityDTO> getMensajesById() {
         return mensajesById;
+    }
+
+    public void setMensajesById(List<MensajeEntityDTO> mensajesById) {
+        this.mensajesById = mensajesById;
     }
 
     @Override

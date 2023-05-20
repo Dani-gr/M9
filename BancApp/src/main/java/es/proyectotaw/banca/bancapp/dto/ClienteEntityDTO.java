@@ -13,13 +13,16 @@ import java.util.Objects;
  */
 @SuppressWarnings("unused")
 public class ClienteEntityDTO implements Serializable {
-    private final Integer idCliente;
-    private final List<ChatEntityDTO> chatsByIdCliente;
-    private final DireccionEntityDTO direccionByDireccion;
-    private final List<ClientesEmpresaEntityDTO> clientesEmpresasByIdCliente;
-    private final List<CuentaEntityDTO> cuentasByIdCliente;
-    private final List<EmpresaEntityDTO> empresasByIdCliente;
-    private final List<UsuarioEntityDTO> usuariosByIdCliente;
+    private Integer idCliente;
+    private List<ChatEntityDTO> chatsByIdCliente;
+    private DireccionEntityDTO direccionByDireccion;
+    private List<ClientesEmpresaEntityDTO> clientesEmpresasByIdCliente;
+    private List<CuentaEntityDTO> cuentasByIdCliente;
+    private List<EmpresaEntityDTO> empresasByIdCliente;
+    private List<UsuarioEntityDTO> usuariosByIdCliente;
+
+    public ClienteEntityDTO() {
+    }
 
     public ClienteEntityDTO(Integer idCliente, List<ChatEntityDTO> chatsByIdCliente, DireccionEntityDTO direccionByDireccion, List<ClientesEmpresaEntityDTO> clientesEmpresasByIdCliente, List<CuentaEntityDTO> cuentasByIdCliente, List<EmpresaEntityDTO> empresasByIdCliente, List<UsuarioEntityDTO> usuariosByIdCliente) {
         this.idCliente = idCliente;
@@ -35,28 +38,56 @@ public class ClienteEntityDTO implements Serializable {
         return idCliente;
     }
 
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
     public List<ChatEntityDTO> getChatsByIdCliente() {
         return chatsByIdCliente;
+    }
+
+    public void setChatsByIdCliente(List<ChatEntityDTO> chatsByIdCliente) {
+        this.chatsByIdCliente = chatsByIdCliente;
     }
 
     public DireccionEntityDTO getDireccionByDireccion() {
         return direccionByDireccion;
     }
 
+    public void setDireccionByDireccion(DireccionEntityDTO direccionByDireccion) {
+        this.direccionByDireccion = direccionByDireccion;
+    }
+
     public List<ClientesEmpresaEntityDTO> getClientesEmpresasByIdCliente() {
         return clientesEmpresasByIdCliente;
+    }
+
+    public void setClientesEmpresasByIdCliente(List<ClientesEmpresaEntityDTO> clientesEmpresasByIdCliente) {
+        this.clientesEmpresasByIdCliente = clientesEmpresasByIdCliente;
     }
 
     public List<CuentaEntityDTO> getCuentasByIdCliente() {
         return cuentasByIdCliente;
     }
 
+    public void setCuentasByIdCliente(List<CuentaEntityDTO> cuentasByIdCliente) {
+        this.cuentasByIdCliente = cuentasByIdCliente;
+    }
+
     public List<EmpresaEntityDTO> getEmpresasByIdCliente() {
         return empresasByIdCliente;
     }
 
+    public void setEmpresasByIdCliente(List<EmpresaEntityDTO> empresasByIdCliente) {
+        this.empresasByIdCliente = empresasByIdCliente;
+    }
+
     public List<UsuarioEntityDTO> getUsuariosByIdCliente() {
         return usuariosByIdCliente;
+    }
+
+    public void setUsuariosByIdCliente(List<UsuarioEntityDTO> usuariosByIdCliente) {
+        this.usuariosByIdCliente = usuariosByIdCliente;
     }
 
     @Override

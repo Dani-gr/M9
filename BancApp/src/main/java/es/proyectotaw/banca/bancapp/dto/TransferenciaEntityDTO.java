@@ -10,12 +10,16 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class TransferenciaEntityDTO implements Serializable {
-    private final Integer idTransferencia;
-    private final Double cantidad;
-    private final String ibanDestino;
-    private final OperacionEntityDTO operacionByOperacion;
-    private final CuentaEntityDTO cuentaByCuentaDestino;
+    private Integer idTransferencia;
+    private Double cantidad;
+    private String ibanDestino;
+    private OperacionEntityDTO operacionByOperacion;
+    private CuentaEntityDTO cuentaByCuentaDestino;
+
+    public TransferenciaEntityDTO() {
+    }
 
     public TransferenciaEntityDTO(Integer idTransferencia, Double cantidad, String ibanDestino, OperacionEntityDTO operacionByOperacion, CuentaEntityDTO cuentaByCuentaDestino) {
         this.idTransferencia = idTransferencia;
@@ -29,20 +33,40 @@ public class TransferenciaEntityDTO implements Serializable {
         return idTransferencia;
     }
 
+    public void setIdTransferencia(Integer idTransferencia) {
+        this.idTransferencia = idTransferencia;
+    }
+
     public Double getCantidad() {
         return cantidad;
+    }
+
+    public void setCantidad(Double cantidad) {
+        this.cantidad = cantidad;
     }
 
     public String getIbanDestino() {
         return ibanDestino;
     }
 
+    public void setIbanDestino(String ibanDestino) {
+        this.ibanDestino = ibanDestino;
+    }
+
     public OperacionEntityDTO getOperacionByOperacion() {
         return operacionByOperacion;
     }
 
+    public void setOperacionByOperacion(OperacionEntityDTO operacionByOperacion) {
+        this.operacionByOperacion = operacionByOperacion;
+    }
+
     public CuentaEntityDTO getCuentaByCuentaDestino() {
         return cuentaByCuentaDestino;
+    }
+
+    public void setCuentaByCuentaDestino(CuentaEntityDTO cuentaByCuentaDestino) {
+        this.cuentaByCuentaDestino = cuentaByCuentaDestino;
     }
 
     @Override

@@ -12,11 +12,14 @@ import java.util.Objects;
  */
 @SuppressWarnings("unused")
 public class CambDivisaEntityDTO implements Serializable {
-    private final Integer idDivisa;
-    private final String origen;
-    private final String destino;
-    private final Double cantidad;
-    private final OperacionEntityDTO operacionByOperacion;
+    private Integer idDivisa;
+    private String origen;
+    private String destino;
+    private Double cantidad;
+    private OperacionEntityDTO operacionByOperacion;
+
+    public CambDivisaEntityDTO() {
+    }
 
     public CambDivisaEntityDTO(Integer idDivisa, String origen, String destino, Double cantidad, OperacionEntityDTO operacionByOperacion) {
         this.idDivisa = idDivisa;
@@ -30,20 +33,40 @@ public class CambDivisaEntityDTO implements Serializable {
         return idDivisa;
     }
 
+    public void setIdDivisa(Integer idDivisa) {
+        this.idDivisa = idDivisa;
+    }
+
     public String getOrigen() {
         return origen;
+    }
+
+    public void setOrigen(String origen) {
+        this.origen = origen;
     }
 
     public String getDestino() {
         return destino;
     }
 
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
     public Double getCantidad() {
         return cantidad;
     }
 
+    public void setCantidad(Double cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public OperacionEntityDTO getOperacionByOperacion() {
         return operacionByOperacion;
+    }
+
+    public void setOperacionByOperacion(OperacionEntityDTO operacionByOperacion) {
+        this.operacionByOperacion = operacionByOperacion;
     }
 
     @Override

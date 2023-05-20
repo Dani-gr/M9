@@ -12,13 +12,17 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class OperacionEntityDTO implements Serializable {
-    private final Integer idOperacion;
-    private final Date fecha;
-    private final List<CambDivisaEntityDTO> cambDivisasByIdOperacion;
-    private final List<ExtraccionEntityDTO> extraccionsByIdOperacion;
-    private final CuentaEntityDTO cuentaByCuentaRealiza;
-    private final List<TransferenciaEntityDTO> transferenciasByIdOperacion;
+    private Integer idOperacion;
+    private Date fecha;
+    private List<CambDivisaEntityDTO> cambDivisasByIdOperacion;
+    private List<ExtraccionEntityDTO> extraccionsByIdOperacion;
+    private CuentaEntityDTO cuentaByCuentaRealiza;
+    private List<TransferenciaEntityDTO> transferenciasByIdOperacion;
+
+    public OperacionEntityDTO() {
+    }
 
     public OperacionEntityDTO(Integer idOperacion, Date fecha, List<CambDivisaEntityDTO> cambDivisasByIdOperacion, List<ExtraccionEntityDTO> extraccionsByIdOperacion, CuentaEntityDTO cuentaByCuentaRealiza, List<TransferenciaEntityDTO> transferenciasByIdOperacion) {
         this.idOperacion = idOperacion;
@@ -33,24 +37,48 @@ public class OperacionEntityDTO implements Serializable {
         return idOperacion;
     }
 
+    public void setIdOperacion(Integer idOperacion) {
+        this.idOperacion = idOperacion;
+    }
+
     public Date getFecha() {
         return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public List<CambDivisaEntityDTO> getCambDivisasByIdOperacion() {
         return cambDivisasByIdOperacion;
     }
 
+    public void setCambDivisasByIdOperacion(List<CambDivisaEntityDTO> cambDivisasByIdOperacion) {
+        this.cambDivisasByIdOperacion = cambDivisasByIdOperacion;
+    }
+
     public List<ExtraccionEntityDTO> getExtraccionsByIdOperacion() {
         return extraccionsByIdOperacion;
+    }
+
+    public void setExtraccionsByIdOperacion(List<ExtraccionEntityDTO> extraccionsByIdOperacion) {
+        this.extraccionsByIdOperacion = extraccionsByIdOperacion;
     }
 
     public CuentaEntityDTO getCuentaByCuentaRealiza() {
         return cuentaByCuentaRealiza;
     }
 
+    public void setCuentaByCuentaRealiza(CuentaEntityDTO cuentaByCuentaRealiza) {
+        this.cuentaByCuentaRealiza = cuentaByCuentaRealiza;
+    }
+
     public List<TransferenciaEntityDTO> getTransferenciasByIdOperacion() {
         return transferenciasByIdOperacion;
+    }
+
+    public void setTransferenciasByIdOperacion(List<TransferenciaEntityDTO> transferenciasByIdOperacion) {
+        this.transferenciasByIdOperacion = transferenciasByIdOperacion;
     }
 
     @Override

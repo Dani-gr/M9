@@ -12,20 +12,24 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class UsuarioEntityDTO implements Serializable {
-    private final Integer id;
-    private final String nif;
-    private final String primerNombre;
-    private final String segundoNombre;
-    private final String primerApellido;
-    private final String segundoApellido;
-    private final Date fechaNacimiento;
-    private final String email;
-    private final String password;
-    private final List<ChatEntityDTO> chatsById;
-    private final List<MensajeEntityDTO> mensajesById;
-    private final List<RolusuarioEntityDTO> rolusuariosById;
-    private final ClienteEntityDTO clienteByCliente;
+    private Integer id;
+    private String nif;
+    private String primerNombre;
+    private String segundoNombre;
+    private String primerApellido;
+    private String segundoApellido;
+    private Date fechaNacimiento;
+    private String email;
+    private String password;
+    private List<ChatEntityDTO> chatsById;
+    private List<MensajeEntityDTO> mensajesById;
+    private List<RolusuarioEntityDTO> rolusuariosById;
+    private ClienteEntityDTO clienteByCliente;
+
+    public UsuarioEntityDTO() {
+    }
 
     public UsuarioEntityDTO(Integer id, String nif, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, Date fechaNacimiento, String email, String password, List<ChatEntityDTO> chatsById, List<MensajeEntityDTO> mensajesById, List<RolusuarioEntityDTO> rolusuariosById, ClienteEntityDTO clienteByCliente) {
         this.id = id;
@@ -47,52 +51,104 @@ public class UsuarioEntityDTO implements Serializable {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getNif() {
         return nif;
+    }
+
+    public void setNif(String nif) {
+        this.nif = nif;
     }
 
     public String getPrimerNombre() {
         return primerNombre;
     }
 
+    public void setPrimerNombre(String primerNombre) {
+        this.primerNombre = primerNombre;
+    }
+
     public String getSegundoNombre() {
         return segundoNombre;
+    }
+
+    public void setSegundoNombre(String segundoNombre) {
+        this.segundoNombre = segundoNombre;
     }
 
     public String getPrimerApellido() {
         return primerApellido;
     }
 
+    public void setPrimerApellido(String primerApellido) {
+        this.primerApellido = primerApellido;
+    }
+
     public String getSegundoApellido() {
         return segundoApellido;
+    }
+
+    public void setSegundoApellido(String segundoApellido) {
+        this.segundoApellido = segundoApellido;
     }
 
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public List<ChatEntityDTO> getChatsById() {
         return chatsById;
+    }
+
+    public void setChatsById(List<ChatEntityDTO> chatsById) {
+        this.chatsById = chatsById;
     }
 
     public List<MensajeEntityDTO> getMensajesById() {
         return mensajesById;
     }
 
+    public void setMensajesById(List<MensajeEntityDTO> mensajesById) {
+        this.mensajesById = mensajesById;
+    }
+
     public List<RolusuarioEntityDTO> getRolusuariosById() {
         return rolusuariosById;
     }
 
+    public void setRolusuariosById(List<RolusuarioEntityDTO> rolusuariosById) {
+        this.rolusuariosById = rolusuariosById;
+    }
+
     public ClienteEntityDTO getClienteByCliente() {
         return clienteByCliente;
+    }
+
+    public void setClienteByCliente(ClienteEntityDTO clienteByCliente) {
+        this.clienteByCliente = clienteByCliente;
     }
 
     @Override

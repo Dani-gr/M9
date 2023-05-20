@@ -10,9 +10,13 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class CuentasSospechosasEntityDTO implements Serializable {
-    private final Integer idcuentasSospechosas;
-    private final String iban;
+    private Integer idcuentasSospechosas;
+    private String iban;
+
+    public CuentasSospechosasEntityDTO() {
+    }
 
     public CuentasSospechosasEntityDTO(Integer idcuentasSospechosas, String iban) {
         this.idcuentasSospechosas = idcuentasSospechosas;
@@ -23,8 +27,16 @@ public class CuentasSospechosasEntityDTO implements Serializable {
         return idcuentasSospechosas;
     }
 
+    public void setIdcuentasSospechosas(Integer idcuentasSospechosas) {
+        this.idcuentasSospechosas = idcuentasSospechosas;
+    }
+
     public String getIban() {
         return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
     }
 
     @Override
