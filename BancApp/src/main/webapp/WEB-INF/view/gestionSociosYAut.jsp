@@ -18,8 +18,17 @@
 <jsp:include page="cabeceraMenu.jsp"/>
 <div class="m-3">&nbsp;</div>
 <div class="card text-center w-75" style="margin: 5% auto auto;">
-    <form:form modelAttribute="filtro" method="post" action="/empresa/filtrar">
 
+    <%--@elvariable id="filtroAsociadosEmpresa" type="es.proyectotaw.banca.bancapp.ui.FiltroAsociadosEmpresa"--%>
+    <form:form action="/empresa/filtrarAsociados" method="post" modelAttribute="filtroAsociadosEmpresa">
+    Buscar por: <br/>
+    Nombre rol:
+    <form:select multiple="false" path="nombreRol">
+        <form:option value="ninguno" label="------"/>
+        <form:option value="socio" label="Socios"/>
+        <form:option value="autorizado" label="Autorizados"/>
+    </form:select>
+    <button>Filtrar</button>
     </form:form>
 
     <h3>Lista de socios y autorizados</h3>

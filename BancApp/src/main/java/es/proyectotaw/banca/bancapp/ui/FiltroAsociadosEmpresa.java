@@ -4,14 +4,19 @@ import java.util.List;
 
 public class FiltroAsociadosEmpresa {
 
-    private String texto;
-    private List<String> roles;
 
-    public String getTexto() {
-        return texto;
+    private String nombreRol;
+
+    public FiltroAsociadosEmpresa(){
+        this.nombreRol = null;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getNombreRol() {
+        return nombreRol;
     }
+
+    public void setNombreRol(String nombreRol) {
+        this.nombreRol = nombreRol;
+    }
+
 }

@@ -3,11 +3,9 @@ package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.*;
-import es.proyectotaw.banca.bancapp.ui.FiltroOperaciones;
-import es.proyectotaw.banca.bancapp.ui.FiltroOperacionesEmpresa;
-import es.proyectotaw.banca.bancapp.ui.OrdenarOperaciones;
-import es.proyectotaw.banca.bancapp.ui.OrdenarOperacionesEmpresa;
+import es.proyectotaw.banca.bancapp.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +61,27 @@ public class EmpresaController {
         model.addAttribute("usuariosAsociados", usuariosAsociados);
         model.addAttribute("usuariosBloqueados", usuariosBloqueados);
 
+
+        return "gestionSociosYAut";
+    }
+
+    @PostMapping("/filtrarAsociados")
+    public String doFiltrarAsociados(@ModelAttribute("filtroAsociadosEmpresa")FiltroAsociadosEmpresa filtro,
+                                     Model model, HttpSession session){
+        return procesarFiltradoAsociados(filtro, model, session);
+    }
+
+    @GetMapping("/filtrarAsociados")
+    public String procesarFiltradoAsociados(FiltroAsociadosEmpresa filtro, Model model, HttpSession session){
+        EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
+        List<UsuarioEntity> usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresa(empresa.getIdEmpresa());
+        List<UsuarioEntity> usuariosBloqueados = usuarioEntityRepository.findUsuariosBloqueadosByEmpresa(empresa.getIdEmpresa());
+
+        if (filtro == null || filtro.getNombreRol().equals("ninguno")){
+            return "redirect:/empresa/";
+        } else if (filtro.getNombreRol().equals("socio")){
+            //Integer idRol = rolEntityRepository.findByNombre("socio");
+        }
 
         return "gestionSociosYAut";
     }

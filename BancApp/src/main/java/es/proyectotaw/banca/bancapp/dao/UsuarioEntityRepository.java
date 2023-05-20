@@ -23,4 +23,7 @@ public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, In
 
     @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :id and ru.bloqueado = 1")
     List<UsuarioEntity> findUsuariosBloqueadosByEmpresa(@Param("id") Integer id);
+
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa and ru.rolByIdrol = :idRol")
+    List<UsuarioEntity> findUsuariosByEmpresaAndRol(@Param("idEmpresa") Integer idEmpresa, @Param("idRol") Integer idRol);
 }

@@ -34,8 +34,6 @@ public interface OperacionEntityRepository extends JpaRepository<OperacionEntity
     List<OperacionEntity> getOperacionesByNumeroCuentaAndFecha(@Param("numCuenta") Integer numCuenta, @Param("fechaOperacion") Date fechaOperacion);
 
 
-public interface OperacionEntityRepository extends JpaRepository<OperacionEntity, Integer> {
-
     @Query("SELECT o FROM OperacionEntity o LEFT JOIN o.cambDivisasByIdOperacion cd LEFT JOIN o.transferenciasByIdOperacion t LEFT JOIN o.extraccionsByIdOperacion e WHERE o.cuentaByCuentaRealiza = :cuenta " +
             "ORDER BY CASE " +
             "WHEN cd IS NOT NULL THEN cd.cantidad " +
