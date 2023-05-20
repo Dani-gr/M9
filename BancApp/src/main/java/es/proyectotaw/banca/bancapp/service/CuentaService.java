@@ -15,7 +15,11 @@ public class CuentaService {
         return cuenta == null ? null : cuenta.toDTO();
     }
 
-    public void guardar(CuentaEntityDTO cuenta) {
-        cuentaEntityRepository.save(cuenta.toEntity());
+    public void guardar(CuentaEntityDTO... cuentas) {
+        for (CuentaEntityDTO cuenta : cuentas) cuentaEntityRepository.save(cuenta.toEntity());
+    }
+
+    public void vaciarBBDD() {
+        cuentaEntityRepository.deleteAll();
     }
 }

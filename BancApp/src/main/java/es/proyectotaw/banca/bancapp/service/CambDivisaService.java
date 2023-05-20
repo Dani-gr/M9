@@ -10,7 +10,11 @@ public class CambDivisaService {
     @Autowired
     CambDivisaEntityRepository cambDivisaEntityRepository;
 
-    public void guardar(CambDivisaEntityDTO cambioDivisa) {
-        cambDivisaEntityRepository.save(cambioDivisa.toEntity());
+    public void guardar(CambDivisaEntityDTO... cambiosDivisas) {
+        for (CambDivisaEntityDTO cd : cambiosDivisas) cambDivisaEntityRepository.save(cd.toEntity());
+    }
+
+    public void vaciarBBDD() {
+        cambDivisaEntityRepository.deleteAll();
     }
 }

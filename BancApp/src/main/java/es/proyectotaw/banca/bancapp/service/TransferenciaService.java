@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service;
 public class TransferenciaService {
     @Autowired
     TransferenciaEntityRepository transferenciaEntityRepository;
+
     public void guardar(TransferenciaEntityDTO transferencia) {
         transferenciaEntityRepository.save(transferencia.toEntity());
+    }
+
+    public void vaciarBBDD() {
+        transferenciaEntityRepository.deleteAll();
     }
 }

@@ -10,8 +10,11 @@ public class OperacionService {
     @Autowired
     OperacionEntityRepository operacionEntityRepository;
 
-    public void guardar(OperacionEntityDTO operacion) {
-        operacionEntityRepository.save(operacion.toEntity());
+    public void guardar(OperacionEntityDTO... operaciones) {
+        for (OperacionEntityDTO operacion : operaciones) operacionEntityRepository.save(operacion.toEntity());
     }
 
+    public void vaciarBBDD() {
+        operacionEntityRepository.deleteAll();
+    }
 }

@@ -13,4 +13,8 @@ public class ExtraccionService {
     public void guardar(ExtraccionEntityDTO extra) {
         extraccionEntityRepository.save(extra.toEntity());
     }
+
+    public void vaciarBBDD() {
+        extraccionEntityRepository.deleteAll();
+    }
 }

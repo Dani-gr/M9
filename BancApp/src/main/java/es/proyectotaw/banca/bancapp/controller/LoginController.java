@@ -1,8 +1,8 @@
 package es.proyectotaw.banca.bancapp.controller;
 
 
-import es.proyectotaw.banca.bancapp.dao.*;
-import es.proyectotaw.banca.bancapp.entity.*;
+import es.proyectotaw.banca.bancapp.dto.*;
+import es.proyectotaw.banca.bancapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,62 +21,55 @@ import java.util.List;
 @RequestMapping("/")
 public class LoginController {
     @Autowired
-    UsuarioEntityRepository usuarioEntityRepository;
+    UsuarioService usuarioService;
     @Autowired
-    ClienteEntityRepository clienteEntityRepository;
+    ClienteService clienteService;
     @Autowired
-    RolEntityRepository rolEntityRepository;
+    RolService rolService;
     @Autowired
-    RolusuarioEntityRepository rolusuarioEntityRepository;
+    RolusuarioService rolusuarioService;
     @Autowired
-    DireccionEntityRepository direccionEntityRepository;
+    DireccionService direccionService;
     @Autowired
-    EmpresaEntityRepository empresaEntityRepository;
+    EmpresaService empresaService;
     @Autowired
-    CuentaEntityRepository cuentaEntityRepository;
+    CuentaService cuentaService;
     @Autowired
-    OperacionEntityRepository operacionEntityRepository;
+    OperacionService operacionService;
     @Autowired
-    CambDivisaEntityRepository cambDivisaEntityRepository;
+    CambDivisaService cambDivisaService;
     @Autowired
-    TransferenciaEntityRepository transferenciaEntityRepository;
+    TransferenciaService transferenciaService;
     @Autowired
-    ExtraccionEntityRepository extraccionEntityRepository;
+    ExtraccionService extraccionService;
 
     @GetMapping("/")
     String doLogin(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif,
                    @ModelAttribute("user") String email) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        if (usuario != null) {
-            List<RolusuarioEntity> ru = usuario.getRolusuariosById();
-            // Si pasa, se ha hecho mal alguna inserción
-            if (ru == null || ru.isEmpty()) model.addAttribute("error", "Error de BBDD: El usuario no tiene roles");
-            else return "redirect:/menu";
-        } else model.addAttribute("error", "");
-        model.addAttribute("entidad",
-                "empresa".equals(entidad) ? "empresa" : "persona"
-        );
-        model.addAttribute("cifEmpresa", cif);
+        if (comprobarRoles(model, session, entidad, cif)) return "redirect:/menu";
         model.addAttribute("user", email);
 
         return "login";
     }
 
-    @GetMapping("/registro")
-    String doRegistrar(Model model, HttpSession session, @RequestParam("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif) {
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    private boolean comprobarRoles(Model model, HttpSession session, @ModelAttribute("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif) {
+        UsuarioEntityDTO usuario = (UsuarioEntityDTO) session.getAttribute("usuario");
         if (usuario != null) {
-            List<RolusuarioEntity> ru = usuario.getRolusuariosById();
+            List<RolusuarioEntityDTO> ru = usuario.getRolusuariosById();
             // Si pasa, se ha hecho mal alguna inserción
             if (ru == null || ru.isEmpty()) model.addAttribute("error", "Error de BBDD: El usuario no tiene roles");
-            else return "redirect:/menu";
+            else return true;
         } else model.addAttribute("error", "");
-
         model.addAttribute("entidad",
                 "empresa".equals(entidad) ? "empresa" : "persona"
         );
-
         model.addAttribute("cifEmpresa", cif);
+        return false;
+    }
+
+    @GetMapping("/registro")
+    String doRegistrar(Model model, HttpSession session, @RequestParam("entidad") String entidad, @ModelAttribute("cifEmpresa") String cif) {
+        if (comprobarRoles(model, session, entidad, cif)) return "redirect:/menu";
 
         return "registro";
     }
@@ -102,21 +94,20 @@ public class LoginController {
         String urlTo = "enespera";
         if ("empresa".equals(entidad)) {
             if (cif == null || cif.isBlank()) return "registro";
-            EmpresaEntity empresa = empresaEntityRepository.findByCif(Integer.valueOf(cif)).orElse(null);
+            EmpresaEntityDTO empresa = empresaService.buscaCif(Integer.valueOf(cif));
             if (empresa == null) {
-                empresa = new EmpresaEntity();
+                empresa = new EmpresaEntityDTO();
                 empresa.setCif(Integer.valueOf(cif));
 
-                ClienteEntity clienteEmpresa = new ClienteEntity();
-                DireccionEntity direccion = new DireccionEntity();
-                direccion.construct(calleEmpresa, Integer.valueOf(numeroEmpresa), plantaEmpresa, ciudadEmpresa, regionEmpresa, paisEmpresa, postalEmpresa);
+                ClienteEntityDTO clienteEmpresa = new ClienteEntityDTO();
+                DireccionEntityDTO direccion = direccionService.creaDireccion(calleEmpresa, Integer.valueOf(numeroEmpresa), plantaEmpresa, ciudadEmpresa, regionEmpresa, paisEmpresa, postalEmpresa);
                 clienteEmpresa.setDireccionByDireccion(direccion);
-                direccionEntityRepository.save(direccion);
+                direccionService.guardar(direccion);
                 clienteEmpresa.setDireccionByDireccion(direccion);
-                clienteEntityRepository.save(clienteEmpresa);
+                clienteService.guardar(clienteEmpresa);
 
                 empresa.setClienteByCliente(clienteEmpresa);
-                empresaEntityRepository.save(empresa);
+                empresaService.guardar(empresa);
             }
             if (boton.equals("registrarSocio")) {
                 model.addAttribute("entidad", "empresa");
@@ -124,51 +115,47 @@ public class LoginController {
             }
 
             // Creo al socio/autorizado
-            UsuarioEntity usuarioEmpresa = new UsuarioEntity();
-            usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
+            UsuarioEntityDTO usuarioEmpresa = usuarioService.creaUsuario(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
             // TODO check for existing users
-            ClienteEntity cliente = new ClienteEntity();
-            DireccionEntity direccion = new DireccionEntity();
-            direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
-            direccionEntityRepository.save(direccion);
+            ClienteEntityDTO cliente = new ClienteEntityDTO();
+            DireccionEntityDTO direccion = direccionService.creaDireccion(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
+            direccionService.guardar(direccion);
             cliente.setDireccionByDireccion(direccion);
-            clienteEntityRepository.save(cliente);
+            clienteService.guardar(cliente);
 
             usuarioEmpresa.setClienteByCliente(cliente);
-            usuarioEntityRepository.save(usuarioEmpresa);
+            usuarioService.guardar(usuarioEmpresa);
 
-            RolusuarioEntity rolusuario = new RolusuarioEntity();
-            RolEntity rol = rolEntityRepository.findByNombre(rolSeleccionado).orElseThrow(RuntimeException::new);
+            RolusuarioEntityDTO rolusuario = new RolusuarioEntityDTO();
+            RolEntityDTO rol = rolService.buscaNombre(rolSeleccionado);
             rolusuario.setRolByIdrol(rol);
             rolusuario.setUsuarioByIdusuario(usuarioEmpresa);
             rolusuario.setEmpresaByIdempresa(empresa);
             rolusuario.setBloqueado((byte) 0);
-            rolusuarioEntityRepository.save(rolusuario);
+            rolusuarioService.guardar(rolusuario);
 
             session.setAttribute("empresa", empresa);
         } else {
-            UsuarioEntity usuario = new UsuarioEntity();
-            usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
+            UsuarioEntityDTO usuario = usuarioService.creaUsuario(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
             // TODO check for existing users
 
-            ClienteEntity cliente = new ClienteEntity();
-            DireccionEntity direccion = new DireccionEntity();
-            direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
-            direccionEntityRepository.save(direccion);
+            ClienteEntityDTO cliente = new ClienteEntityDTO();
+            DireccionEntityDTO direccion = direccionService.creaDireccion(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
+            direccionService.guardar(direccion);
             cliente.setDireccionByDireccion(direccion);
-            clienteEntityRepository.save(cliente);
+            clienteService.guardar(cliente);
 
             usuario.setClienteByCliente(cliente);
-            usuarioEntityRepository.save(usuario);
+            usuarioService.guardar(usuario);
 
-            RolusuarioEntity rolusuario = new RolusuarioEntity();
-            RolEntity rol = rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new);
+            RolusuarioEntityDTO rolusuario = new RolusuarioEntityDTO();
+            RolEntityDTO rol = rolService.buscaNombre("cliente");
             rolusuario.setRolByIdrol(rol);
             rolusuario.setUsuarioByIdusuario(usuario);
             rolusuario.setBloqueado((byte) 0);
-            rolusuarioEntityRepository.save(rolusuario);
+            rolusuarioService.guardar(rolusuario);
 
             session.setAttribute("empresa", null);
         }
@@ -197,17 +184,15 @@ public class LoginController {
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "login";
 
-        UsuarioEntity user = usuarioEntityRepository.findByEmailIgnoreCase(email).orElse(null);
+        UsuarioEntityDTO user = usuarioService.buscaEmail(email);
         if (user == null) return "login";
         if (!user.getPassword().equals(password)) return "login";
 
         if ("empresa".equals(entidad)) {
             if (cif == null || cif.isBlank()) return "login";
-            List<RolEntity> rolesConPermiso = new ArrayList<>(2);
-            rolesConPermiso.add(rolEntityRepository.findByNombre("autorizado").orElseThrow(RuntimeException::new));
-            rolesConPermiso.add(rolEntityRepository.findByNombre("socio").orElseThrow(RuntimeException::new));
+            List<RolEntityDTO> rolesConPermiso = rolService.buscaNombres("socio", "autorizado");
 
-            var roles = rolusuarioEntityRepository.findRolesByUsuarioAndEmpresaByCif(user, Integer.valueOf(cif));
+            var roles = rolService.buscaNombresPorUsuarioYCif(user, Integer.valueOf(cif));
 
             roles.retainAll(rolesConPermiso);
             if (roles.isEmpty()) {
@@ -215,14 +200,11 @@ public class LoginController {
                 return "login";
             }
 
-            session.setAttribute("empresa", empresaEntityRepository.findByCif(Integer.valueOf(cif)).orElseThrow());
+            session.setAttribute("empresa", empresaService.buscaCif(Integer.valueOf(cif)));
         } else {
-            List<RolEntity> rolesConPermiso = new ArrayList<>(3);
-            rolesConPermiso.add(rolEntityRepository.findByNombre("cliente").orElseThrow(RuntimeException::new));
-            rolesConPermiso.add(rolEntityRepository.findByNombre("asistente").orElseThrow(RuntimeException::new));
-            rolesConPermiso.add(rolEntityRepository.findByNombre("gestor").orElseThrow(RuntimeException::new));
+            List<RolEntityDTO> rolesConPermiso = rolService.buscaNombres("cliente", "asistente", "gestor");
 
-            var roles = rolusuarioEntityRepository.findRolesByUsuarioNoEmpresa(user);
+            var roles = rolService.buscaNombresPorUsuarioSinEmpresa(user);
             roles.retainAll(rolesConPermiso);
             if (roles.isEmpty()) {
                 model.addAttribute("error", "Credenciales incorrectas. Si eres socio o autorizado, usa el login de empresa.");
@@ -232,8 +214,7 @@ public class LoginController {
         }
         session.setAttribute("usuario", user);
 
-        session.setAttribute("nombresRoles", user.getRolusuariosById().stream()
-                .map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList());
+        session.setAttribute("nombresRoles", rolService.getNombresRoles(user));
 
 
         return "redirect:/menu";
@@ -242,16 +223,16 @@ public class LoginController {
 
     @GetMapping("/menu")
     String doMenu(HttpSession session, Model model) {
-        UsuarioEntity user = (UsuarioEntity) session.getAttribute("usuario");
+        UsuarioEntityDTO user = (UsuarioEntityDTO) session.getAttribute("usuario");
         if (user == null) return "redirect:/logout";
-        List<RolusuarioEntity> ru = user.getRolusuariosById();
+        List<RolusuarioEntityDTO> ru = user.getRolusuariosById();
 
         // Si pasa, se ha hecho mal alguna inserción
         if (ru == null || ru.isEmpty()) return "redirect:/logout";
 
         if (session.getAttribute("menu") == null)
             session.setAttribute("menu", "normal");
-        var nombresRoles = ru.stream().map(RolusuarioEntity::getRolByIdrol).map(RolEntity::getNombre).toList();
+        var nombresRoles = rolService.getNombresRoles(user);
 
         if (nombresRoles.contains("asistente"))
             return "redirect:/chats/asistente";
@@ -260,12 +241,9 @@ public class LoginController {
             model.addAttribute("mensaje", mensaje);
             session.removeAttribute("mensaje");
         } else model.addAttribute("mensaje", "");
-        if (nombresRoles.contains("gestor"))
-            return "redirect:/gestor/";
-
+        if (nombresRoles.contains("gestor")) return "redirect:/gestor/";
 
         return ru.get(0).getCuentaAsociada() == null ? "enespera" : "menu";
-
     }
 
     @PostMapping("/menu")
@@ -322,72 +300,59 @@ public class LoginController {
     @GetMapping("/reset")
     String doInitBBDD() {
         // Direcciones
-        direccionEntityRepository.deleteAll(direccionEntityRepository.findAll());
-        DireccionEntity d1 = new DireccionEntity(), d2 = new DireccionEntity(), d3 = new DireccionEntity(), d4 = new DireccionEntity();
-        d1.construct("Calle Falsa", 123, "1ºA", "Madrid", "Madrid", "España", "28001");
-        d2.construct("Calle Imaginaria", 456, "5ºC", "Barcelona", "Barcelona", "España", "08001");
-        d3.construct("Calle Inventada", 789, "4ºB", "Sevilla", "Sevilla", "España", "41001");
-        d4.construct("Calle A", 0, "A-A", "A", "Almería", "España", "12345");
-        direccionEntityRepository.save(d1);
-        direccionEntityRepository.save(d2);
-        direccionEntityRepository.save(d3);
-        direccionEntityRepository.save(d4);
+        direccionService.vaciarBBDD();
+        DireccionEntityDTO d1, d2, d3, d4;
+        d1 = direccionService.creaDireccion("Calle Falsa", 123, "1ºA", "Madrid", "Madrid", "España", "28001");
+        d2 = direccionService.creaDireccion("Calle Imaginaria", 456, "5ºC", "Barcelona", "Barcelona", "España", "08001");
+        d3 = direccionService.creaDireccion("Calle Inventada", 789, "4ºB", "Sevilla", "Sevilla", "España", "41001");
+        d4 = direccionService.creaDireccion("Calle A", 0, "A-A", "A", "Almería", "España", "12345");
+        direccionService.guardar(d1, d2, d3, d4);
 
 
         // Clientes
-        clienteEntityRepository.deleteAll(clienteEntityRepository.findAll());
-        ClienteEntity c1 = new ClienteEntity(), c2 = new ClienteEntity(), c3 = new ClienteEntity(), c4 = new ClienteEntity(), ce1 = new ClienteEntity();
+        clienteService.vaciarBBDD();
+        ClienteEntityDTO c1 = new ClienteEntityDTO(), c2 = new ClienteEntityDTO(), c3 = new ClienteEntityDTO(), c4 = new ClienteEntityDTO(), ce1 = new ClienteEntityDTO();
         c1.setDireccionByDireccion(d1);
         c2.setDireccionByDireccion(d2);
         c3.setDireccionByDireccion(d3);
         c4.setDireccionByDireccion(d3); //c3 y c4 viven juntos
         ce1.setDireccionByDireccion(d4);
-        clienteEntityRepository.save(c1);
-        clienteEntityRepository.save(c2);
-        clienteEntityRepository.save(c3);
-        clienteEntityRepository.save(c4);
-        clienteEntityRepository.save(ce1);
+        clienteService.guardar(c1, c2, c3, c4, ce1);
 
 
         // Usuarios
-        usuarioEntityRepository.deleteAll(usuarioEntityRepository.findAll());
-        UsuarioEntity u1 = new UsuarioEntity(), u2 = new UsuarioEntity(), u3 = new UsuarioEntity(),
-                u4 = new UsuarioEntity(), u5 = new UsuarioEntity(), u6 = new UsuarioEntity();
-        u1.construct("12345678A", "Juan", "Antonio", "García", "Pérez",
+        usuarioService.vaciarBBDD();
+        UsuarioEntityDTO u1, u2, u3, u4, u5, u6;
+        u1 = usuarioService.creaUsuario("12345678A", "Juan", "Antonio", "García", "Pérez",
                 Date.valueOf("1980-01-01"), "juan.garcia@bancapp.es", "contraseña");
-        u2.construct("23456789B", "María", null, "Rodríguez", "Fernández",
+        u2 = usuarioService.creaUsuario("23456789B", "María", null, "Rodríguez", "Fernández",
                 Date.valueOf("1990-05-12"), "maria.rodriguez@bancapp.es", "contraseña");
-        u3.construct("34567890C", "Juan", null, "Sánchez", "García",
+        u3 = usuarioService.creaUsuario("34567890C", "Juan", null, "Sánchez", "García",
                 Date.valueOf("1985-11-21"), "juan.sanchez@bancapp.es", "contraseña");
-        u4.construct("99999999A", "Alberto", null, "Álvarez", "Alarcón",
+        u4 = usuarioService.creaUsuario("99999999A", "Alberto", null, "Álvarez", "Alarcón",
                 Date.valueOf("2000-11-22"), "a@bancapp.es", "a");
-        u5.construct("98765432R", "Kevin", null, "Fernández", "Carrión",
+        u5 = usuarioService.creaUsuario("98765432R", "Kevin", null, "Fernández", "Carrión",
                 Date.valueOf("1952-10-24"), "kfc@bancapp.es", "pollopollo");
-        u6.construct("34567890C", "Marta", null, "Sánchez", "García",
+        u6 = usuarioService.creaUsuario("34567890C", "Marta", null, "Sánchez", "García",
                 Date.valueOf("1987-04-04"), "marta.sanchez@bancapp.es", "contraseña");
         u1.setClienteByCliente(c1);
         u2.setClienteByCliente(c2);
         u3.setClienteByCliente(c3);
         u6.setClienteByCliente(c4);
-        usuarioEntityRepository.save(u1);
-        usuarioEntityRepository.save(u2);
-        usuarioEntityRepository.save(u3);
-        usuarioEntityRepository.save(u4);
-        usuarioEntityRepository.save(u5);
-        usuarioEntityRepository.save(u6);
+        usuarioService.guardar(u1, u2, u3, u4, u5, u6);
 
 
         // Empresas
-        empresaEntityRepository.deleteAll();
-        EmpresaEntity e1 = new EmpresaEntity();
+        empresaService.vaciarBBDD();
+        EmpresaEntityDTO e1 = new EmpresaEntityDTO();
         e1.setClienteByCliente(ce1);
         e1.setCif(1472583690);
-        empresaEntityRepository.save(e1);
+        empresaService.guardar(e1);
 
 
         // Cuentas
-        cuentaEntityRepository.deleteAll(cuentaEntityRepository.findAll());
-        CuentaEntity cu1 = new CuentaEntity(), cu2 = new CuentaEntity(), cu3 = new CuentaEntity();
+        cuentaService.vaciarBBDD();
+        CuentaEntityDTO cu1 = new CuentaEntityDTO(), cu2 = new CuentaEntityDTO(), cu3 = new CuentaEntityDTO();
         cu1.setClienteByCliente(c1);
         cu2.setClienteByCliente(c2);
         cu3.setClienteByCliente(ce1);
@@ -397,15 +362,13 @@ public class LoginController {
         cu1.setActiva((byte) 0);
         cu2.setActiva((byte) 1);
         cu3.setActiva((byte) 1);
-        cuentaEntityRepository.save(cu1);
-        cuentaEntityRepository.save(cu2);
-        cuentaEntityRepository.save(cu3);
+        cuentaService.guardar(cu1, cu2, cu3);
 
 
         // Operaciones
-        operacionEntityRepository.deleteAll(operacionEntityRepository.findAll());
-        OperacionEntity o1 = new OperacionEntity(), o2 = new OperacionEntity(),
-                o3 = new OperacionEntity(), o4 = new OperacionEntity();
+        operacionService.vaciarBBDD();
+        OperacionEntityDTO o1 = new OperacionEntityDTO(), o2 = new OperacionEntityDTO(),
+                o3 = new OperacionEntityDTO(), o4 = new OperacionEntityDTO();
 
         o1.setCuentaByCuentaRealiza(cu1);
         o2.setCuentaByCuentaRealiza(cu2);
@@ -416,15 +379,12 @@ public class LoginController {
         o3.setFecha(Date.valueOf("2022-06-30"));
         o4.setFecha(Date.valueOf("2021-05-04"));
 
-        operacionEntityRepository.save(o1);
-        operacionEntityRepository.save(o2);
-        operacionEntityRepository.save(o3);
-        operacionEntityRepository.save(o4);
+        operacionService.guardar(o1, o2, o3, o4);
 
-        /*
-        // Cambios de divisa
-        cambDivisaEntityRepository.deleteAll(cambDivisaEntityRepository.findAll());
-        CambDivisaEntity cd1 = new CambDivisaEntity(), cd2 = new CambDivisaEntity();
+
+        // Cambios de divisa todo test
+        cambDivisaService.vaciarBBDD();
+        CambDivisaEntityDTO cd1 = new CambDivisaEntityDTO(), cd2 = new CambDivisaEntityDTO();
         cd1.setOperacionByOperacion(o1);
         cd2.setOperacionByOperacion(o2);
         cd1.setOrigen("EUR");
@@ -434,36 +394,31 @@ public class LoginController {
         cd1.setCantidad(7.25);
         cd2.setCantidad(20.00);
 
-
-
-
-        cambDivisaEntityRepository.save(cd1);
-        cambDivisaEntityRepository.save(cd2);*/
+        cambDivisaService.guardar(cd1, cd2);
 
         // Transferencias
-        transferenciaEntityRepository.deleteAll();
-        TransferenciaEntity t1 = new TransferenciaEntity();
+        transferenciaService.vaciarBBDD();
+        TransferenciaEntityDTO t1 = new TransferenciaEntityDTO();
         t1.setCuentaByCuentaDestino(cu2);
         t1.setOperacionByOperacion(o3);
         t1.setCantidad(150.00);
 
-
-        transferenciaEntityRepository.save(t1);
+        transferenciaService.guardar(t1);
 
 
         // Extracciones
-        extraccionEntityRepository.deleteAll();
-        ExtraccionEntity extra1 = new ExtraccionEntity();
+        extraccionService.vaciarBBDD();
+        ExtraccionEntityDTO extra1 = new ExtraccionEntityDTO();
         extra1.setCantidad(15.00);
         extra1.setOperacionByOperacion(o4);
 
-        extraccionEntityRepository.save(extra1);
+        extraccionService.guardar(extra1);
 
 
         // Rolusuarios
-        rolusuarioEntityRepository.deleteAll();
-        RolusuarioEntity ru1 = new RolusuarioEntity(), ru2 = new RolusuarioEntity(), ru3 = new RolusuarioEntity(),
-                ru4 = new RolusuarioEntity(), ru5 = new RolusuarioEntity(), ru6 = new RolusuarioEntity();
+        rolusuarioService.vaciarBBDD();
+        RolusuarioEntityDTO ru1 = new RolusuarioEntityDTO(), ru2 = new RolusuarioEntityDTO(), ru3 = new RolusuarioEntityDTO(),
+                ru4 = new RolusuarioEntityDTO(), ru5 = new RolusuarioEntityDTO(), ru6 = new RolusuarioEntityDTO();
         ru1.setUsuarioByIdusuario(u1);
         ru2.setUsuarioByIdusuario(u2);
         ru3.setUsuarioByIdusuario(u3);
@@ -471,11 +426,12 @@ public class LoginController {
         ru5.setUsuarioByIdusuario(u5);
         ru6.setUsuarioByIdusuario(u6);
 
-        RolEntity rolCliente = rolEntityRepository.findByNombre("cliente").orElseThrow();
-        RolEntity rolAsistente = rolEntityRepository.findByNombre("asistente").orElseThrow();
-        RolEntity rolGestor = rolEntityRepository.findByNombre("gestor").orElseThrow();
-        RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
-        RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
+        List<RolEntityDTO> roles = rolService.buscaNombres("cliente", "asistente", "gestor", "socio", "autorizado");
+        RolEntityDTO rolCliente = roles.get(0);
+        RolEntityDTO rolAsistente = roles.get(1);
+        RolEntityDTO rolGestor = roles.get(2);
+        RolEntityDTO rolSocio = roles.get(3);
+        RolEntityDTO rolAutorizado = roles.get(4);
 
         ru1.setRolByIdrol(rolCliente);
         ru2.setRolByIdrol(rolCliente);
@@ -493,12 +449,7 @@ public class LoginController {
         ru5.setBloqueado((byte) 0);
         ru6.setBloqueado((byte) 1);
 
-        rolusuarioEntityRepository.save(ru1);
-        rolusuarioEntityRepository.save(ru2);
-        rolusuarioEntityRepository.save(ru3);
-        rolusuarioEntityRepository.save(ru4);
-        rolusuarioEntityRepository.save(ru5);
-        rolusuarioEntityRepository.save(ru6);
+        rolusuarioService.guardar(ru1, ru2, ru3, ru4, ru5, ru6);
 
         return "redirect:/";
     }
