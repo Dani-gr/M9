@@ -60,6 +60,7 @@ public class EmpresaController {
         List<UsuarioEntity> usuariosBloqueados = usuarioEntityRepository.findUsuariosBloqueadosByEmpresa(empresa.getIdEmpresa());
         model.addAttribute("usuariosAsociados", usuariosAsociados);
         model.addAttribute("usuariosBloqueados", usuariosBloqueados);
+        model.addAttribute("filtroAsociadosEmpresa", new FiltroAsociadosEmpresa());
 
 
         return "gestionSociosYAut";
@@ -76,12 +77,20 @@ public class EmpresaController {
         EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
         List<UsuarioEntity> usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresa(empresa.getIdEmpresa());
         List<UsuarioEntity> usuariosBloqueados = usuarioEntityRepository.findUsuariosBloqueadosByEmpresa(empresa.getIdEmpresa());
+        model.addAttribute("filtroAsociadosEmpresa", filtro);
 
         if (filtro == null || filtro.getNombreRol().equals("ninguno")){
             return "redirect:/empresa/";
         } else if (filtro.getNombreRol().equals("socio")){
-            //Integer idRol = rolEntityRepository.findByNombre("socio");
+            RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
+            usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRol(empresa.getIdEmpresa(), rolSocio);
+        } else if (filtro.getNombreRol().equals("autorizado")){
+            RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
+            usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRol(empresa.getIdEmpresa(), rolAutorizado);
         }
+
+        model.addAttribute("usuariosAsociados", usuariosAsociados);
+
 
         return "gestionSociosYAut";
     }

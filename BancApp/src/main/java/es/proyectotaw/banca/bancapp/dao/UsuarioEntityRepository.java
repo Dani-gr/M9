@@ -1,5 +1,6 @@
 package es.proyectotaw.banca.bancapp.dao;
 
+import es.proyectotaw.banca.bancapp.entity.RolEntity;
 import es.proyectotaw.banca.bancapp.entity.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,6 @@ public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, In
     @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :id and ru.bloqueado = 1")
     List<UsuarioEntity> findUsuariosBloqueadosByEmpresa(@Param("id") Integer id);
 
-    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa and ru.rolByIdrol = :idRol")
-    List<UsuarioEntity> findUsuariosByEmpresaAndRol(@Param("idEmpresa") Integer idEmpresa, @Param("idRol") Integer idRol);
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.rolusuariosById ru WHERE ru.empresaByIdempresa.idEmpresa = :idEmpresa and ru.rolByIdrol = :rol")
+    List<UsuarioEntity> findUsuariosByEmpresaAndRol(@Param("idEmpresa") Integer idEmpresa, @Param("rol") RolEntity rol);
 }
