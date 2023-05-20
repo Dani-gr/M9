@@ -11,7 +11,7 @@
 </head>
     <body>
 
-        <jsp:include page="cabeceraMenu.jsp"></jsp:include>
+        <jsp:include page="cabeceraMenuGestor.jsp"></jsp:include>
 
         <div class="container">
 
@@ -57,7 +57,7 @@
                                     </tr>
                                     <tr>
                                         <td>SALDO MÍNIMO:</td>
-                                        <td><form:input class="form-control" path="limInfSaldo" type="number" /></td>
+                                        <td><form:input class="form-control" path="limInfSaldo" step="any" type="number"/></td>
                                     </tr>
                                 </table>
                                 <form:button class="btn btn-primary">FILTRAR</form:button>

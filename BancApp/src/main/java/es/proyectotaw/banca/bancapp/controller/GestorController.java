@@ -47,6 +47,9 @@ public class GestorController {
     @PostMapping("/filtrar")
     public String doFiltrar(@ModelAttribute("filtroClientes") FiltroClientes filtroClientes,
                             Model model, HttpSession session) {
+        if(filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad().isEmpty()){
+            return "redirect:/gestor/";
+        }
         return procesarFiltradoClientes(model, filtroClientes, session);
     }
 
