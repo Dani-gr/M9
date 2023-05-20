@@ -21,7 +21,7 @@
 
     <%--@elvariable id="filtroAsociadosEmpresa" type="es.proyectotaw.banca.bancapp.ui.FiltroAsociadosEmpresa"--%>
     <form:form action="/empresa/filtrarAsociados" method="post" modelAttribute="filtroAsociadosEmpresa">
-    Buscar por: <br/>
+    <h4 class="pt-1">Buscar por:</h4>
     Nombre rol:
     <form:select multiple="false" path="nombreRol">
         <form:option value="ninguno" label="------"/>
