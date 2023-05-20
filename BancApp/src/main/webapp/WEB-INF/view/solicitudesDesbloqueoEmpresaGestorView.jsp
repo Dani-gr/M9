@@ -36,7 +36,7 @@
                 <td> <%=r.getUsuarioByIdusuario().getNif()%> </td>
                 <td> <%=r.getEmpresaByIdempresa().getCif()%> </td>
                 <td> <%=r.getRolByIdrol().getNombre()%> </td>
-                <td> <a class="btn btn-success" href="/gestor/desbloquearEnEmpresa?rolUsuario= <%=r.getId()%> ">ACTIVAR</a> </td>
+                <td> <a class="btn btn-success" href="/gestor/desbloquearEnEmpresa?rolUsuario= <%=r.getId()%> ">DESBLOQUEAR</a> </td>
             </tr>
             <%    } %>
         </table>

@@ -270,7 +270,7 @@ public class GestorController {
 
         ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
         List<OperacionEntity> ops = c.getCuentasByIdCliente().get(0).getOperacionsByNumCuenta();
-        List<OperacionEntity> filtrada = ops;
+        List<OperacionEntity> filtrada;
 
         switch (tipo){
             case "t" : filtrada = ops.stream().filter(op -> op.getTransferenciasByIdOperacion() != null &&
@@ -281,6 +281,8 @@ public class GestorController {
                     break;
             case "e" : filtrada = ops.stream().filter(op -> op.getExtraccionsByIdOperacion() != null &&
                     !op.getExtraccionsByIdOperacion().isEmpty() && op.getExtraccionsByIdOperacion().get(0) != null).toList();
+                    break;
+            default: filtrada = ops;
                     break;
         }
 
