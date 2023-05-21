@@ -345,6 +345,7 @@ public class EmpresaController {
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
         usuario.getRolusuariosById().get(0).setBloqueado((byte) 2);
         usuarioEntityRepository.saveAndFlush(usuario);
+        rolusuarioEntityRepository.saveAndFlush(usuario.getRolusuariosById().get(0));
         return "redirect:/menu";
     }
 
