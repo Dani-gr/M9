@@ -56,9 +56,12 @@
             <td><%= usuario.getPrimerNombre() %> <%= usuario.getSegundoNombre() == null ? "" : usuario.getSegundoNombre() %> </td>
             <td><%= usuario.getPrimerApellido() %> <%= usuario.getSegundoApellido() %></td>
             <td><a href="/empresa/cambiarRol?id=<%=usuario.getId()%>&rol=<%=usuario.getRolusuariosById().get(0).getRolByIdrol().getIdrol()%>"/> <%= usuario.getRolusuariosById().get(0).getRolByIdrol().getNombre() %></td>
-            <td><a href="/empresa/bloquearUsuario?id=<%=usuario.getId()%>"/><button class="btn btn-danger
-                <%= usuario.getRolusuariosById().get(0).getBloqueado() == (byte) 1 ? " disabled\" disabled=\"true\"" : "" %>
-                "> X </button></td>
+            <td><%if (usuario.getRolusuariosById().get(0).getBloqueado() == (byte) 1) { %>
+                <p style="color: #892e3c; font-weight: bold">Bloqueado</p>
+            <%} else { %>
+                <a href="/empresa/bloquearUsuario?id=<%=usuario.getId()%>"/><button class="btn btn-danger"> X </button></td>
+            <%}%>
+            </td>
         </tr>
         <% } %>
         </tbody>
