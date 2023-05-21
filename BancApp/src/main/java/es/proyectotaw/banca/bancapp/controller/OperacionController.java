@@ -57,10 +57,10 @@ public class OperacionController {
         var nombresRoles = (List<String>) session.getAttribute("nombresRoles");
         if (nombresRoles.contains("gestor") || nombresRoles.contains("asistente")) return true;
         var empresa = (EmpresaEntityDTO) session.getAttribute("empresa");
-        var rolusuarios = usuario.getRolusuariosById().stream();
+        var rolusuarios = usuario.getRolusuariosById();
 
         if (empresa != null) {
-            var bloqueos = rolusuarios.filter(
+            var bloqueos = rolusuarios.stream().filter(
                     ru -> empresa.equals(ru.getEmpresaByIdempresa())
             ).map(RolusuarioEntityDTO::getBloqueado).toList();
             // TODO test socio bloqueado
@@ -68,7 +68,7 @@ public class OperacionController {
         }
 
         // TODO test cuentaAsociada
-        return rolusuarios.map(RolusuarioEntityDTO::getCuentaAsociada).anyMatch(
+        return rolusuarios.stream().map(RolusuarioEntityDTO::getCuentaAsociada).anyMatch(
                 cuenta -> cuenta.getActiva().equals((byte) 0) || cuenta.getActiva().equals((byte) 2)
         );
     }
