@@ -91,7 +91,11 @@ public class GestorController {
 
         ClienteEntity solicitante = this.clienteEntityRepository.findById(id).orElse(null);
 
-        model.addAttribute("isEmpresa", !solicitante.getEmpresasByIdCliente().isEmpty());
+        boolean isEmpresa = false;
+        if(solicitante != null){
+            isEmpresa = !solicitante.getEmpresasByIdCliente().isEmpty();
+        }
+        model.addAttribute("isEmpresa", isEmpresa);
         model.addAttribute("solicitante", solicitante);
         return "solicitanteGestorView";
     }
@@ -117,13 +121,16 @@ public class GestorController {
 
         ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
 
-        List<UsuarioEntity> usuariosAsociados =  c.getUsuariosByIdCliente();
-        for(UsuarioEntity u : usuariosAsociados){
-            u.setClienteByCliente(null);
-        }
-        usuarioEntityRepository.saveAll(usuariosAsociados);
+        if(c != null){
+            List<UsuarioEntity> usuariosAsociados =  c.getUsuariosByIdCliente();
+            for(UsuarioEntity u : usuariosAsociados){
+                u.setClienteByCliente(null);
+            }
+            usuarioEntityRepository.saveAll(usuariosAsociados);
 
-        this.clienteEntityRepository.delete(c);
+            this.clienteEntityRepository.delete(c);
+        }
+
         return "redirect:/gestor/solicitudesAlta";
     }
 
@@ -168,8 +175,7 @@ public class GestorController {
     public String removeSospechosa(@RequestParam("id") Integer id, HttpSession session) {
         if (session.getAttribute("usuario") == null) return "redirect:/logout";
 
-        CuentasSospechosasEntity sospechosa = this.cuentasSospechosasRepository.findById(id).orElse(null);
-        this.cuentasSospechosasRepository.delete(sospechosa);
+        this.cuentasSospechosasRepository.findById(id).ifPresent(sospechosa -> this.cuentasSospechosasRepository.delete(sospechosa));
         return "redirect:/gestor/seguridadTransferencias";
     }
 
@@ -185,8 +191,10 @@ public class GestorController {
 
     private void setEstadoCuenta(Integer id, byte estado) {
         CuentaEntity cuenta = this.cuentaEntityRepository.findById(id).orElse(null);
-        cuenta.setActiva(estado);
-        this.cuentaEntityRepository.save(cuenta);
+        if(cuenta != null){
+            cuenta.setActiva(estado);
+            this.cuentaEntityRepository.save(cuenta);
+        }
     }
 
     @GetMapping("/solicitudesActivacion")
@@ -218,9 +226,10 @@ public class GestorController {
         if (session.getAttribute("usuario") == null) return "redirect:/logout";
 
         RolusuarioEntity r = this.rolusuarioEntityRepository.findById(rolUsuario).orElse(null);
-        r.setBloqueado((byte) 0);
-        this.rolusuarioEntityRepository.save(r);
-
+        if(r != null){
+            r.setBloqueado((byte) 0);
+            this.rolusuarioEntityRepository.save(r);
+        }
         return "redirect:/gestor/solicitudesDesbloqueoEmpresa";
     }
 
@@ -276,22 +285,17 @@ public class GestorController {
         if (session.getAttribute("usuario") == null) return "redirect:/logout";
 
         ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
-        List<OperacionEntity> ops = c.getCuentasByIdCliente().get(0).getOperacionsByNumCuenta();
-        List<OperacionEntity> filtrada;
 
-        switch (tipo){
-            case "t" : filtrada = ops.stream().filter(op -> op.getTransferenciasByIdOperacion() != null &&
+        List<OperacionEntity> ops = c.getCuentasByIdCliente().get(0).getOperacionsByNumCuenta();
+        List<OperacionEntity> filtrada = switch (tipo) {
+            case "t" -> ops.stream().filter(op -> op.getTransferenciasByIdOperacion() != null &&
                     !op.getTransferenciasByIdOperacion().isEmpty() && op.getTransferenciasByIdOperacion().get(0) != null).toList();
-                    break;
-            case "cd" : filtrada = ops.stream().filter(op -> op.getCambDivisasByIdOperacion() != null &&
+            case "cd" -> ops.stream().filter(op -> op.getCambDivisasByIdOperacion() != null &&
                     !op.getCambDivisasByIdOperacion().isEmpty() && op.getCambDivisasByIdOperacion().get(0) != null).toList();
-                    break;
-            case "e" : filtrada = ops.stream().filter(op -> op.getExtraccionsByIdOperacion() != null &&
+            case "e" -> ops.stream().filter(op -> op.getExtraccionsByIdOperacion() != null &&
                     !op.getExtraccionsByIdOperacion().isEmpty() && op.getExtraccionsByIdOperacion().get(0) != null).toList();
-                    break;
-            default: filtrada = ops;
-                    break;
-        }
+            default -> ops;
+        };
 
         model.addAttribute("cliente", c);
         model.addAttribute("operaciones", filtrada);
