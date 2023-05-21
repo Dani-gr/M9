@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!--
-    Nuria Rodríguez Tortosa 80%
-    Daniel García Rodríguez 20%
+Nuria Rodríguez Tortosa 80%
+Daniel García Rodríguez 20%
 -->
 <html>
 <head>
@@ -19,7 +19,8 @@
         <div class="card-footer">
             <jsp:useBean id="error" scope="request" type="java.lang.String"/>
             <c:if test="${not null and not empty error}">
-                <h4 style="color:red"><%=error%></h4>
+                <h4 style="color:red"><%=error%>
+                </h4>
             </c:if>
             <%--@elvariable id="transferenciaARealizar" type="es.proyectotaw.banca.bancapp.entity.TransferenciaEntity"--%>
             <form:form action="/operacion/guardarTransferencia" modelAttribute="transferenciaARealizar" method="post">

@@ -51,7 +51,7 @@
                     <h4>Datos de la empresa:</h4> <br>
                     <label for="cif" class="form-label">CIF</label>
                     <input type="text" id="cif" name="cifEmpresa" class="form-control"
-                            value="<%=cifEmpresa == null ? "" : cifEmpresa%>" maxlength="9" minlength="9" size="9"/>
+                           value="<%=cifEmpresa == null ? "" : cifEmpresa%>" maxlength="9" minlength="9" size="9"/>
                     <br/>
 
                     <h5>Dirección de la empresa:</h5> <br>
@@ -92,7 +92,7 @@
 
                     Datos del
                     <label for="socio" class="form-label">socio</label>
-                        <input id="socio" type="radio" name="rol" value="socio" checked>
+                    <input id="socio" type="radio" name="rol" value="socio" checked>
 
                     <label for="autorizado" class="form-label">autorizado</label>
                     <input id="autorizado" type="radio" name="rol" value="autorizado">

@@ -16,15 +16,16 @@
 <h1>Datos del cambio de divisa<%="cajero".equalsIgnoreCase(menu) ? " a extraer" : ""%>:</h1>
 <jsp:useBean id="error" scope="request" type="java.lang.String"/>
 <c:if test="${not null and not empty error}">
-    <h4 style="color:red"><%=error%></h4>
+    <h4 style="color:red"><%=error%>
+    </h4>
 </c:if>
 <%--@elvariable id="cambioDivisa" type="es.proyectotaw.banca.bancapp.entity.CambDivisaEntity"--%>
 <form:form action="/operacion/guardarDivisa" modelAttribute="cambioDivisa" method="post">
     <form:hidden path="idDivisa"/>
     <form:hidden path="operacionByOperacion"/>
     Cantidad: <form:input path="cantidad" cssClass="form-control"/>
-    Moneda actual: <form:input path="origen" size="30"  maxlength="30" cssClass="form-control"/> <br/>
-    Moneda a la que desea cambiar: <form:input path="destino" size="30"  maxlength="30" cssClass="form-control"/> <br/>
+    Moneda actual: <form:input path="origen" size="30" maxlength="30" cssClass="form-control"/> <br/>
+    Moneda a la que desea cambiar: <form:input path="destino" size="30" maxlength="30" cssClass="form-control"/> <br/>
     <form:button>Realizar cambio de divisa</form:button>
 </form:form>
 

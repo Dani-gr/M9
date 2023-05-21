@@ -33,8 +33,6 @@ public class OperacionController {
     protected CambDivisaEntityRepository cambDivisaEntityRepository;
     @Autowired
     protected ExtraccionEntityRepository extraccionEntityRepository;
-    @Autowired
-    protected RolusuarioEntityRepository rolusuarioEntityRepository;
 
     @GetMapping("/")
     public String doAlmacenarOperacion(Model model) {
@@ -61,15 +59,12 @@ public class OperacionController {
             var bloqueos = rolusuarios.stream().filter(
                     ru -> empresa.equals(ru.getEmpresaByIdempresa())
             ).map(RolusuarioEntity::getBloqueado).toList();
-            // TODO test socio bloqueado
             if (bloqueos.contains((byte) 1) || bloqueos.contains((byte) 2)) return true;
         }
 
-        // TODO test cuentaAsociada
         return rolusuarios.stream().map(RolusuarioEntity::getCuentaAsociada).anyMatch(
                 cuenta -> cuenta.getActiva().equals((byte) 0) || cuenta.getActiva().equals((byte) 2)
         );
-
     }
 
     @GetMapping("/transferencia")

@@ -28,14 +28,15 @@
         <form:option value="socio" label="Socios"/>
         <form:option value="autorizado" label="Autorizados"/>
     </form:select>
-            Contiene la cadena: <form:input type="text" path="contieneCadena"/>
-        <br/> <br/>
-        Ordenar por:
-        <form:select multiple="false" path="ordenAsociados">
-            <form:option value="ninguno" label="------"/>
-            <form:option value="apellidos" label="Apellidos"/>
-        </form:select>
-        <br/> <br/>
+    Contiene la cadena:
+        <form:input type="text" path="contieneCadena"/>
+    <br/> <br/>
+    Ordenar por:
+    <form:select multiple="false" path="ordenAsociados">
+        <form:option value="ninguno" label="------"/>
+        <form:option value="apellidos" label="Apellidos"/>
+    </form:select>
+    <br/> <br/>
     <button class="btn btn-primary">Filtrar</button>
     </form:form>
 
@@ -53,13 +54,19 @@
 
         <% for (UsuarioEntity usuario : listaUsuariosAsociados) { %>
         <tr>
-            <td><%= usuario.getPrimerNombre() %> <%= usuario.getSegundoNombre() == null ? "" : usuario.getSegundoNombre() %> </td>
-            <td><%= usuario.getPrimerApellido() %> <%= usuario.getSegundoApellido() %></td>
-            <td><a href="/empresa/cambiarRol?id=<%=usuario.getId()%>&rol=<%=usuario.getRolusuariosById().get(0).getRolByIdrol().getIdrol()%>"/> <%= usuario.getRolusuariosById().get(0).getRolByIdrol().getNombre() %></td>
+            <td><%= usuario.getPrimerNombre() %> <%= usuario.getSegundoNombre() == null ? "" : usuario.getSegundoNombre() %>
+            </td>
+            <td><%= usuario.getPrimerApellido() %> <%= usuario.getSegundoApellido() %>
+            </td>
+            <td>
+                <a href="/empresa/cambiarRol?id=<%=usuario.getId()%>&rol=<%=usuario.getRolusuariosById().get(0).getRolByIdrol().getIdrol()%>"/> <%= usuario.getRolusuariosById().get(0).getRolByIdrol().getNombre() %>
+            </td>
             <td><%if (usuario.getRolusuariosById().get(0).getBloqueado() == (byte) 1) { %>
                 <p style="color: #892e3c; font-weight: bold">Bloqueado</p>
-            <%} else { %>
-                <a href="/empresa/bloquearUsuario?id=<%=usuario.getId()%>"/><button class="btn btn-danger"> X </button></td>
+                <%} else { %>
+                <a href="/empresa/bloquearUsuario?id=<%=usuario.getId()%>"/>
+                <button class="btn btn-danger"> X</button>
+            </td>
             <%}%>
             </td>
         </tr>

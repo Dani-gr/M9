@@ -11,7 +11,7 @@
     UsuarioEntity usuario = (UsuarioEntity) request.getAttribute("usuario");
 %>
 
-        <html>
+<html>
 <% // María %>
 <head>
     <title>Datos del usuario</title>
@@ -30,13 +30,13 @@
         <%--@elvariable id="usuario" type="es.proyectotaw.banca.bancapp.entity.UsuarioEntity"--%>
         <form:form action="/cliente/guardar" modelAttribute="usuario" method="post">
             <form:hidden path="id"/>
-            NIF: <form:input readonly="true" path="nif" size="9" maxlength="9"  /><br/><br/>
-            Primer nombre: <form:input path="primerNombre" size="9" maxlength="9"  /><br/><br/>
-            Segundo nombre: <form:input path="segundoNombre" size="30" maxlength="30"  /><br/><br/>
-            Primer Apellido: <form:input path="primerApellido" size="30" maxlength="30"  /><br/><br/>
-            Segundo Apellido: <form:input path="segundoApellido" size="30" maxlength="30"  /><br/><br/>
+            NIF: <form:input readonly="true" path="nif" size="9" maxlength="9"/><br/><br/>
+            Primer nombre: <form:input path="primerNombre" size="9" maxlength="9"/><br/><br/>
+            Segundo nombre: <form:input path="segundoNombre" size="30" maxlength="30"/><br/><br/>
+            Primer Apellido: <form:input path="primerApellido" size="30" maxlength="30"/><br/><br/>
+            Segundo Apellido: <form:input path="segundoApellido" size="30" maxlength="30"/><br/><br/>
             Fecha de nacimiento: <form:input type="date" path="fechaNacimiento"/><br/><br/>
-            Correo electrónico: <form:input path="email" size="30" maxlength="30"  /><br/><br/>
+            Correo electrónico: <form:input path="email" size="30" maxlength="30"/><br/><br/>
             Contraseña: <form:input path="password" type="password" size="30" maxlength="30"/><br/><br/>
             <h5>Dirección</h5>
             <form:hidden path="clienteByCliente.idCliente"/>
@@ -44,14 +44,15 @@
             <form:hidden path="rolusuariosById"/>
             Calle: <form:input path="clienteByCliente.direccionByDireccion.calle" size="50" maxlength="50"/><br/><br/>
             Número: <form:input path="clienteByCliente.direccionByDireccion.numero" size="2" maxlength="2"/><br/><br/>
-            Planta/Puerta/Oficina: <form:input path="clienteByCliente.direccionByDireccion.plantaPuertaOficina" size="2" maxlength="2"/><br/><br/>
+            Planta/Puerta/Oficina: <form:input path="clienteByCliente.direccionByDireccion.plantaPuertaOficina" size="2"
+                                               maxlength="2"/><br/><br/>
             Ciudad: <form:input path="clienteByCliente.direccionByDireccion.ciudad" size="30" maxlength="30"/><br/><br/>
             Región: <form:input path="clienteByCliente.direccionByDireccion.region" size="30" maxlength="30"/><br/><br/>
             País: <form:input path="clienteByCliente.direccionByDireccion.pais" size="30" maxlength="30"/><br/><br/>
             Código Postal: <form:input path="clienteByCliente.direccionByDireccion.codpostal" size="30" maxlength="30"/><br/><br/>
             <form:button class="btn btn-primary" id="liveAlertBtn">Guardar</form:button>
         </form:form>
-</div>
+    </div>
 
         <% if(!usuario.getClienteByCliente().getCuentasByIdCliente().isEmpty() && usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getActiva() == 0){  %>
     <div class="row">
@@ -61,17 +62,17 @@
                 Solicitar desbloqueo
             </div>
         </div>
-    <%
-        }
-    %>
+        <%
+            }
+        %>
     </div>
 
 
     <!--form:form action="/datosUsuario/guardar" modelAttribute="usuario" method="post"-->
-        <!--form:hidden path="customerId"/-->
+    <!--form:hidden path="customerId"/-->
     <!--/form:form-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"></script>
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
 </body>
 </html>

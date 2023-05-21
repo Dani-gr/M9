@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@SuppressWarnings("SpringMVCViewInspection")
 @Controller
 @RequestMapping("/chats")
 public class ChatController {
@@ -84,7 +85,7 @@ public class ChatController {
     }
 
     @GetMapping("/cerrarChat/{id}")
-    String doCerrarChat(@PathVariable(value = "id") int id, Model model) {
+    String doCerrarChat(@PathVariable(value = "id") int id) {
         chatEntityRepository.updateActivoById((byte) 0, id);
         return "redirect:/chats/?cliente=" + chatEntityRepository.findById(id).get().getClienteByClienteIdCliente().getIdCliente();
     }
@@ -98,22 +99,30 @@ public class ChatController {
 
     @GetMapping("/filtrarPorActivo")
     String doFiltrarChatsPorActividad(@RequestParam("filtro") String filtro, Model model) {
-        List<ChatEntity> chats = null;
-        if (filtro.equals("Abiertos")) {
-            chats = chatEntityRepository.findAllByActivo((byte) 1);
-        } else if (filtro.equals("Cerrados")) {
-            chats = chatEntityRepository.findAllByActivo((byte) 0);
-        } else if (filtro.equals("OrdenPrimeroAbiertos")) {
-            Sort sortByActivo = Sort.by("activo").descending();
-            chats = chatEntityRepository.findAll(sortByActivo);
-        } else if (filtro.equals("OrdenPrimeroCerrados")) {
-            Sort sortByActivo = Sort.by("activo").ascending();
-            chats = chatEntityRepository.findAll(sortByActivo);
-        } else if (filtro.equals("OrdenAlfabeticoAsistente")) {
-            Sort sortByAsistente = Sort.by("usuarioByAsistenteId.primerNombre").ascending();
-            chats = chatEntityRepository.findAll(sortByAsistente);
-        } else {
-            return "redirect:/chats/asistente";
+        List<ChatEntity> chats;
+        switch (filtro) {
+            case "Abiertos":
+                chats = chatEntityRepository.findAllByActivo((byte) 1);
+                break;
+            case "Cerrados":
+                chats = chatEntityRepository.findAllByActivo((byte) 0);
+                break;
+            case "OrdenPrimeroAbiertos": {
+                Sort sortByActivo = Sort.by("activo").descending();
+                chats = chatEntityRepository.findAll(sortByActivo);
+                break;
+            }
+            case "OrdenPrimeroCerrados": {
+                Sort sortByActivo = Sort.by("activo").ascending();
+                chats = chatEntityRepository.findAll(sortByActivo);
+                break;
+            }
+            case "OrdenAlfabeticoAsistente":
+                Sort sortByAsistente = Sort.by("usuarioByAsistenteId.primerNombre").ascending();
+                chats = chatEntityRepository.findAll(sortByAsistente);
+                break;
+            default:
+                return "redirect:/chats/asistente";
         }
         model.addAttribute("chats", chats);
         return "chats";
@@ -123,8 +132,7 @@ public class ChatController {
     String doEnviarMensaje(@RequestParam("mensaje") String mensaje,
                            @RequestParam("idChat") int chat,
                            @RequestParam("idUsuario") int user,
-                           @RequestParam("rol") String rol,
-                           Model model) {
+                           @RequestParam("rol") String rol) {
         MensajeEntity mens = new MensajeEntity();
         if (rol.equals("Asistente")) {
             UsuarioEntity userEmisor = usuarioEntityRepository.findById(user).get();

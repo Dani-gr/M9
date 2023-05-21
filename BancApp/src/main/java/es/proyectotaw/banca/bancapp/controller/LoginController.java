@@ -323,6 +323,7 @@ public class LoginController {
      *
      * @return redirección al login
      */
+    @SuppressWarnings("MagicNumber")
     @GetMapping("/reset")
     String doInitBBDD() {
         // Direcciones

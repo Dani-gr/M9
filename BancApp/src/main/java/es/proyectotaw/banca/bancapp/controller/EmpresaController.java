@@ -3,9 +3,10 @@ package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.*;
 import es.proyectotaw.banca.bancapp.entity.*;
-import es.proyectotaw.banca.bancapp.ui.*;
+import es.proyectotaw.banca.bancapp.ui.FiltroAsociadosEmpresa;
+import es.proyectotaw.banca.bancapp.ui.FiltroOperacionesEmpresa;
+import es.proyectotaw.banca.bancapp.ui.OrdenarOperacionesEmpresa;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 // María
+@SuppressWarnings({"SpringMVCViewInspection", "unused", "ClassWithTooManyMethods"})
 @Controller
 @RequestMapping("/empresa")
 public class EmpresaController {
@@ -67,55 +69,55 @@ public class EmpresaController {
     }
 
     @PostMapping("/filtrarAsociados")
-    public String doFiltrarAsociados(@ModelAttribute("filtroAsociadosEmpresa")FiltroAsociadosEmpresa filtro,
-                                     Model model, HttpSession session){
+    public String doFiltrarAsociados(@ModelAttribute("filtroAsociadosEmpresa") FiltroAsociadosEmpresa filtro,
+                                     Model model, HttpSession session) {
         return procesarFiltradoAsociados(filtro, model, session);
     }
 
     @GetMapping("/filtrarAsociados")
-    public String procesarFiltradoAsociados(FiltroAsociadosEmpresa filtro, Model model, HttpSession session){
+    public String procesarFiltradoAsociados(FiltroAsociadosEmpresa filtro, Model model, HttpSession session) {
         EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
         List<UsuarioEntity> usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresa(empresa.getIdEmpresa());
         List<UsuarioEntity> usuariosBloqueados = usuarioEntityRepository.findUsuariosBloqueadosByEmpresa(empresa.getIdEmpresa());
         model.addAttribute("filtroAsociadosEmpresa", filtro);
 
-        if (filtro == null || filtro.getNombreRol().equals("ninguno") && filtro.getContieneCadena().equals("") && filtro.getOrdenAsociados().equals("ninguno"))
+        if (filtro == null || filtro.getNombreRol().equals("ninguno") && filtro.getContieneCadena().isEmpty() && filtro.getOrdenAsociados().equals("ninguno"))
             return "redirect:/empresa/";
 
-        if (!filtro.getNombreRol().equals("ninguno")){
-            if(filtro.getContieneCadena().equals("")){
-                if(filtro.getOrdenAsociados().equals("ninguno")){
-                    if (filtro.getNombreRol().equals("socio")){
+        if (!filtro.getNombreRol().equals("ninguno")) {
+            if (filtro.getContieneCadena().isEmpty()) {
+                if (filtro.getOrdenAsociados().equals("ninguno")) {
+                    if (filtro.getNombreRol().equals("socio")) {
                         RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
                         usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRol(empresa.getIdEmpresa(), rolSocio);
-                    } else if (filtro.getNombreRol().equals("autorizado")){
+                    } else if (filtro.getNombreRol().equals("autorizado")) {
                         RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
                         usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRol(empresa.getIdEmpresa(), rolAutorizado);
                     }
                 } else {
-                    if (filtro.getNombreRol().equals("socio")){
+                    if (filtro.getNombreRol().equals("socio")) {
                         RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
                         usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolOrderByApellido(empresa.getIdEmpresa(), rolSocio);
-                    } else if (filtro.getNombreRol().equals("autorizado")){
+                    } else if (filtro.getNombreRol().equals("autorizado")) {
                         RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
                         usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolOrderByApellido(empresa.getIdEmpresa(), rolAutorizado);
                     }
                 }
 
             } else {
-                if (filtro.getOrdenAsociados().equals("ninguno")){
-                    if (filtro.getNombreRol().equals("socio")){
+                if (filtro.getOrdenAsociados().equals("ninguno")) {
+                    if (filtro.getNombreRol().equals("socio")) {
                         RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
                         usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolAndCadena(empresa.getIdEmpresa(), rolSocio, filtro.getContieneCadena());
-                    } else if (filtro.getNombreRol().equals("autorizado")){
+                    } else if (filtro.getNombreRol().equals("autorizado")) {
                         RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
                         usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolAndCadena(empresa.getIdEmpresa(), rolAutorizado, filtro.getContieneCadena());
                     }
                 } else {
-                    if (filtro.getNombreRol().equals("socio")){
+                    if (filtro.getNombreRol().equals("socio")) {
                         RolEntity rolSocio = rolEntityRepository.findByNombre("socio").orElseThrow();
                         usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolAndCadenaOrderByApellido(empresa.getIdEmpresa(), rolSocio, filtro.getContieneCadena());
-                    } else if (filtro.getNombreRol().equals("autorizado")){
+                    } else if (filtro.getNombreRol().equals("autorizado")) {
                         RolEntity rolAutorizado = rolEntityRepository.findByNombre("autorizado").orElseThrow();
                         usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndRolAndCadenaOrderByApellido(empresa.getIdEmpresa(), rolAutorizado, filtro.getContieneCadena());
                     }
@@ -123,15 +125,12 @@ public class EmpresaController {
 
             }
         } else {
-            if (filtro.getContieneCadena().equals("")){
+            if (filtro.getContieneCadena().isEmpty())
                 usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaOrderByApellido(empresa.getIdEmpresa());
-            } else {
-                if (filtro.getOrdenAsociados().equals("ninguno")){
-                    usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndCadena(empresa.getIdEmpresa(), filtro.getContieneCadena());
-                } else {
-                    usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndCadenaOrderByApellido(empresa.getIdEmpresa(), filtro.getContieneCadena());
-                }
-            }
+            else if (filtro.getOrdenAsociados().equals("ninguno"))
+                usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndCadena(empresa.getIdEmpresa(), filtro.getContieneCadena());
+            else
+                usuariosAsociados = usuarioEntityRepository.findUsuariosByEmpresaAndCadenaOrderByApellido(empresa.getIdEmpresa(), filtro.getContieneCadena());
         }
 
 
@@ -233,38 +232,32 @@ public class EmpresaController {
         String urlTo = "operaciones";
 
         if (filtro == null || (filtro.getFechaFiltro() == null && filtro.getNombreOperacion().equals("ninguno"))) {
-            model.addAttribute("operaciones",operaciones);
+            model.addAttribute("operaciones", operaciones);
             return "redirect:/empresa/operaciones";
         } else if (!filtro.getNombreOperacion().equals("ninguno") && filtro.getFechaFiltro() == null) {
             String nombre = filtro.getNombreOperacion();
-                if (nombre.equals("Transferencia")) {
-                    List<OperacionEntity> transferencias = new ArrayList<>();
-                    for (OperacionEntity operacion : operaciones) {
-                        if (!operacion.getTransferenciasByIdOperacion().isEmpty()) {
-                            transferencias.add(operacion);
-                        }
-                    }
-                    operaciones.clear();
-                    model.addAttribute("operaciones", transferencias);
-                } else if (nombre.equals("Cambio de divisa")) {
-                    List<OperacionEntity> cambioDivisas = new ArrayList<>();
-                    for (OperacionEntity operacion : operaciones) {
-                        if (!operacion.getCambDivisasByIdOperacion().isEmpty()) {
-                            cambioDivisas.add(operacion);
-                        }
-                    }
-                    operaciones.clear();
-                    model.addAttribute("operaciones", cambioDivisas);
-                } else {
-                    List<OperacionEntity> extracciones = new ArrayList<>();
-                    for (OperacionEntity operacion : operaciones) {
-                        if (!operacion.getExtraccionsByIdOperacion().isEmpty()) {
-                            extracciones.add(operacion);
-                        }
-                    }
-                    operaciones.clear();
-                    model.addAttribute("operaciones", extracciones);
+            if (nombre.equals("Transferencia")) {
+                List<OperacionEntity> transferencias = new ArrayList<>();
+                for (OperacionEntity operacion : operaciones) {
+                    if (!operacion.getTransferenciasByIdOperacion().isEmpty()) transferencias.add(operacion);
                 }
+                operaciones.clear();
+                model.addAttribute("operaciones", transferencias);
+            } else if (nombre.equals("Cambio de divisa")) {
+                List<OperacionEntity> cambioDivisas = new ArrayList<>();
+                for (OperacionEntity operacion : operaciones) {
+                    if (!operacion.getCambDivisasByIdOperacion().isEmpty()) cambioDivisas.add(operacion);
+                }
+                operaciones.clear();
+                model.addAttribute("operaciones", cambioDivisas);
+            } else {
+                List<OperacionEntity> extracciones = new ArrayList<>();
+                for (OperacionEntity operacion : operaciones) {
+                    if (!operacion.getExtraccionsByIdOperacion().isEmpty()) extracciones.add(operacion);
+                }
+                operaciones.clear();
+                model.addAttribute("operaciones", extracciones);
+            }
 
         } else if (!filtro.getNombreOperacion().equals("ninguno") && filtro.getFechaFiltro() != null) {
             operaciones = operacionEntityRepository.getOperacionesByNumeroCuentaAndFecha(numCuenta, Date.valueOf(filtro.getFechaFiltro()));
@@ -272,27 +265,21 @@ public class EmpresaController {
             if (nombre.equals("Transferencia")) {
                 List<OperacionEntity> transferencias = new ArrayList<>();
                 for (OperacionEntity operacion : operaciones) {
-                    if (!operacion.getTransferenciasByIdOperacion().isEmpty()) {
-                        transferencias.add(operacion);
-                    }
+                    if (!operacion.getTransferenciasByIdOperacion().isEmpty()) transferencias.add(operacion);
                 }
                 operaciones.clear();
                 model.addAttribute("operaciones", transferencias);
             } else if (nombre.equals("Cambio de divisa")) {
                 List<OperacionEntity> cambioDivisas = new ArrayList<>();
                 for (OperacionEntity operacion : operaciones) {
-                    if (!operacion.getCambDivisasByIdOperacion().isEmpty()) {
-                        cambioDivisas.add(operacion);
-                    }
+                    if (!operacion.getCambDivisasByIdOperacion().isEmpty()) cambioDivisas.add(operacion);
                 }
                 operaciones.clear();
                 model.addAttribute("operaciones", cambioDivisas);
             } else {
                 List<OperacionEntity> extracciones = new ArrayList<>();
                 for (OperacionEntity operacion : operaciones) {
-                    if (!operacion.getExtraccionsByIdOperacion().isEmpty()) {
-                        extracciones.add(operacion);
-                    }
+                    if (!operacion.getExtraccionsByIdOperacion().isEmpty()) extracciones.add(operacion);
                 }
                 operaciones.clear();
                 model.addAttribute("operaciones", extracciones);
@@ -315,17 +302,17 @@ public class EmpresaController {
         return this.procesarOrdenado(filtro, orden, model, session);
     }
 
-    protected String procesarOrdenado(FiltroOperacionesEmpresa filtro, OrdenarOperacionesEmpresa orden,
-                                      Model model, HttpSession session) {
+    private String procesarOrdenado(FiltroOperacionesEmpresa filtro, OrdenarOperacionesEmpresa orden,
+                                    Model model, HttpSession session) {
 
         EmpresaEntity empresa = (EmpresaEntity) session.getAttribute("empresa");
         Integer numCuenta = empresa.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta();
         List<OperacionEntity> operaciones = operacionEntityRepository.getOperacionesByNumeroCuenta(numCuenta);
 
-        if (orden == null || orden.getOpcionSeleccionada().equals("ninguno")){
-            model.addAttribute("operaciones",operaciones);
+        if (orden == null || orden.getOpcionSeleccionada().equals("ninguno")) {
+            model.addAttribute("operaciones", operaciones);
             return "redirect:/empresa/operaciones";
-        } else if (orden.getOpcionSeleccionada().equals("cantidad")){
+        } else if (orden.getOpcionSeleccionada().equals("cantidad")) {
             List<OperacionEntity> operacionesOrdenadas = operacionEntityRepository.getOperacionesByNumeroCuentaOrderByCantidad(numCuenta);
             operaciones.clear();
             model.addAttribute("operaciones", operacionesOrdenadas);

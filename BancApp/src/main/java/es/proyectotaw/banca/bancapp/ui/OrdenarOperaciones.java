@@ -1,10 +1,8 @@
 package es.proyectotaw.banca.bancapp.ui;
-
-import java.sql.Date;
-
+@SuppressWarnings("unused")
 public class OrdenarOperaciones {
 
-    boolean cantidad;
+    private boolean cantidad;
 
     public OrdenarOperaciones() {
         cantidad = false;
