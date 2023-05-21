@@ -1,10 +1,7 @@
 package es.proyectotaw.banca.bancapp.controller;
 
 import es.proyectotaw.banca.bancapp.dao.*;
-import es.proyectotaw.banca.bancapp.entity.ClienteEntity;
-import es.proyectotaw.banca.bancapp.entity.CuentaEntity;
-import es.proyectotaw.banca.bancapp.entity.CuentasSospechosasEntity;
-import es.proyectotaw.banca.bancapp.entity.RolusuarioEntity;
+import es.proyectotaw.banca.bancapp.entity.*;
 import es.proyectotaw.banca.bancapp.ui.FiltroClientes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -47,6 +46,9 @@ public class GestorController {
     @PostMapping("/filtrar")
     public String doFiltrar(@ModelAttribute("filtroClientes") FiltroClientes filtroClientes,
                             Model model, HttpSession session) {
+        if(filtroClientes.getLimInfSaldo() == null && filtroClientes.getCiudad().isEmpty()){
+            return "redirect:/gestor/";
+        }
         return procesarFiltradoClientes(model, filtroClientes, session);
     }
 
@@ -235,4 +237,58 @@ public class GestorController {
         model.addAttribute("empresa", c);
         return "gestorEmpresaView";
     }
+
+    @GetMapping("/operaciones")
+    public String doMostrarOperaciones(@RequestParam("id") Integer id, Model model, HttpSession session){
+        if (session.getAttribute("usuario") == null) return "redirect:/";
+
+        ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
+        model.addAttribute("cliente", c);
+        model.addAttribute("operaciones", c.getCuentasByIdCliente().get(0).getOperacionsByNumCuenta());
+        return "OperacionesClienteGestorView";
+    }
+
+
+    @GetMapping("/operaciones/ordenar")
+    public String doMostrarOperacionesOrdenadas(@RequestParam("id") Integer id, Model model, HttpSession session){
+        if (session.getAttribute("usuario") == null) return "redirect:/";
+
+        ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
+        model.addAttribute("cliente", c);
+
+        List<OperacionEntity> operaciones = c.getCuentasByIdCliente().get(0).getOperacionsByNumCuenta();
+        Collections.sort(operaciones, (o1, o2) -> o2.getFecha().compareTo(o1.getFecha()));
+
+        model.addAttribute("operaciones", operaciones);
+        return "OperacionesClienteGestorView";
+    }
+
+    @PostMapping("/operaciones/filtrar")
+    public String doFiltrarOperaciones(@RequestParam("id") Integer id, Model model, HttpSession session,
+                                       @RequestParam("tipo") String tipo){
+        if (session.getAttribute("usuario") == null) return "redirect:/";
+
+        ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
+        List<OperacionEntity> ops = c.getCuentasByIdCliente().get(0).getOperacionsByNumCuenta();
+        List<OperacionEntity> filtrada;
+
+        switch (tipo){
+            case "t" : filtrada = ops.stream().filter(op -> op.getTransferenciasByIdOperacion() != null &&
+                    !op.getTransferenciasByIdOperacion().isEmpty() && op.getTransferenciasByIdOperacion().get(0) != null).toList();
+                    break;
+            case "cd" : filtrada = ops.stream().filter(op -> op.getCambDivisasByIdOperacion() != null &&
+                    !op.getCambDivisasByIdOperacion().isEmpty() && op.getCambDivisasByIdOperacion().get(0) != null).toList();
+                    break;
+            case "e" : filtrada = ops.stream().filter(op -> op.getExtraccionsByIdOperacion() != null &&
+                    !op.getExtraccionsByIdOperacion().isEmpty() && op.getExtraccionsByIdOperacion().get(0) != null).toList();
+                    break;
+            default: filtrada = ops;
+                    break;
+        }
+
+        model.addAttribute("cliente", c);
+        model.addAttribute("operaciones", filtrada);
+        return "OperacionesClienteGestorView";
+    }
+
 }

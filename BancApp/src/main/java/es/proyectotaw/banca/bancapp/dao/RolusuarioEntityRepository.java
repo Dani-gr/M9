@@ -20,7 +20,7 @@ public interface RolusuarioEntityRepository extends JpaRepository<RolusuarioEnti
         Bloqueado = 2 -> bloqueado y solicita desbloqueo
      */
     @Query("select r from RolusuarioEntity r where r.bloqueado = 2")
-    List<RolEntity> findRolesSolicitantesDeActivar();
+    List<RolusuarioEntity> findRolesSolicitantesDeActivar();
 
     @Query("select rolusuariosById.rolByIdrol from RolusuarioEntity rolusuariosById " +
             "where rolusuariosById.usuarioByIdusuario = :user and rolusuariosById.empresaByIdempresa is null")
