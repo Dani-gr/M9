@@ -122,7 +122,9 @@ public class GestorController {
         ClienteEntity c = this.clienteEntityRepository.findById(id).orElse(null);
 
         if (c != null) {
-            List<UsuarioEntity> usuariosAsociados = c.getUsuariosByIdCliente();
+            List<UsuarioEntity> usuariosAsociados = c.getUsuariosByIdCliente().stream()
+                    .filter(u -> u.getRolusuariosById() != null && !u.getRolusuariosById().isEmpty() &&
+                            u.getRolusuariosById().stream().anyMatch(r -> r.getEmpresaByIdempresa() != null) ).toList();
             for (UsuarioEntity u : usuariosAsociados) {
                 u.setClienteByCliente(null);
             }
