@@ -123,11 +123,15 @@ public class LoginController {
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
 
-            // Creo al socio/autorizado
+            UsuarioEntity user = usuarioEntityRepository.findByEmailIgnoreCase(email).orElse(null);
+            if (user == null) {
+                model.addAttribute("error", "El usuario ya está registrado");
+                return "registro";
+            }
+
             UsuarioEntity usuarioEmpresa = new UsuarioEntity();
             usuarioEmpresa.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
-            // TODO check for existing users
             ClienteEntity cliente = new ClienteEntity();
             DireccionEntity direccion = new DireccionEntity();
             direccion.construct(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
@@ -148,10 +152,14 @@ public class LoginController {
 
             session.setAttribute("empresa", empresa);
         } else {
+            UsuarioEntity user = usuarioEntityRepository.findByEmailIgnoreCase(email).orElse(null);
+            if (user == null) {
+                model.addAttribute("error", "El usuario ya está registrado");
+                return "registro";
+            }
+
             UsuarioEntity usuario = new UsuarioEntity();
             usuario.construct(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
-
-            // TODO check for existing users
 
             ClienteEntity cliente = new ClienteEntity();
             DireccionEntity direccion = new DireccionEntity();
@@ -183,12 +191,8 @@ public class LoginController {
                         @ModelAttribute("cifEmpresa") String cif,
                         @ModelAttribute("user") String email,
                         @ModelAttribute("pass") String password) {
-        /* TODO:
-            - Testear algún gestor / socio
-         */
 
         if (session.getAttribute("usuario") != null) return "redirect:/menu";
-
 
         model.addAttribute("error", "Credenciales incorrectas");
         model.addAttribute("entidad", entidad);

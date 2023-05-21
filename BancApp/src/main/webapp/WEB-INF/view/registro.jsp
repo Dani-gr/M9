@@ -38,6 +38,12 @@
     </div>
     <div class="card-body">
         <h4 class="card-title">Registrarse</h4>
+        <jsp:useBean id="error" scope="request" type="java.lang.String"/>
+        <c:if test="${!error.blank}">
+            <p style="color:red;">
+                    ${error}
+            </p>
+        </c:if>
         <form action="/registro" method="post" class="text-start">
             <jsp:useBean id="cifEmpresa" scope="request" type="java.lang.String"/>
             <c:choose>
