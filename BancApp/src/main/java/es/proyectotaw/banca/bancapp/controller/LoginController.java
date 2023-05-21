@@ -153,7 +153,7 @@ public class LoginController {
             session.setAttribute("empresa", empresa);
         } else {
             UsuarioEntity user = usuarioEntityRepository.findByEmailIgnoreCase(email).orElse(null);
-            if (user == null) {
+            if (user != null) {
                 model.addAttribute("error", "El usuario ya está registrado");
                 return "registro";
             }
