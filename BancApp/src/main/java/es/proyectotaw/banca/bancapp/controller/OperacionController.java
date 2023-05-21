@@ -19,7 +19,7 @@ import java.util.List;
  * <ul>
  *      <li>Daniel García Rodríguez: 100%</li>
  * </ul>
- * <p>
+ *
  * General:
  *
  * @author Nuria Rodríguez Tortosa 40%
@@ -63,11 +63,9 @@ public class OperacionController {
             var bloqueos = rolusuarios.stream().filter(
                     ru -> empresa.equals(ru.getEmpresaByIdempresa())
             ).map(RolusuarioEntityDTO::getBloqueado).toList();
-            // TODO test socio bloqueado
             if (bloqueos.contains((byte) 1) || bloqueos.contains((byte) 2)) return true;
         }
 
-        // TODO test cuentaAsociada
         return rolusuarios.stream().map(RolusuarioEntityDTO::getCuentaAsociada).anyMatch(
                 cuenta -> cuenta.getActiva().equals((byte) 0) || cuenta.getActiva().equals((byte) 2)
         );

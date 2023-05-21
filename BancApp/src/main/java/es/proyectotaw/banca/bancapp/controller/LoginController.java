@@ -13,6 +13,12 @@ import java.sql.Date;
 import java.util.List;
 
 /**
+ * Conversión a DTO:
+ * <ul>
+ *      <li>Daniel García Rodríguez: 100%</li>
+ * </ul>
+ *
+ * General:
  * @author Daniel García Rodríguez 70%
  * @author Nuria Rodríguez Tortosa 30%
  */
@@ -297,6 +303,7 @@ public class LoginController {
      *
      * @return redirección al login
      */
+    @SuppressWarnings("MagicNumber")
     @GetMapping("/reset")
     String doInitBBDD() {
         // Direcciones
