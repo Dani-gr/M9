@@ -11,7 +11,7 @@
 </head>
     <body>
 
-        <jsp:include page="cabeceraMenu.jsp"></jsp:include>
+        <jsp:include page="cabeceraMenuGestor.jsp"></jsp:include>
 
         <div class="container">
 
@@ -57,7 +57,7 @@
                                     </tr>
                                     <tr>
                                         <td>SALDO MÍNIMO:</td>
-                                        <td><form:input class="form-control" path="limInfSaldo" type="number" /></td>
+                                        <td><form:input class="form-control" path="limInfSaldo" step="any" type="number"/></td>
                                     </tr>
                                 </table>
                                 <form:button class="btn btn-primary">FILTRAR</form:button>
@@ -90,7 +90,7 @@
 
                         <td>
                             <%
-                                boolean esEmpresa = !c.getEmpresasByIdCliente().isEmpty()  &&  c.getEmpresasByIdCliente().get(0) != null;
+                                boolean esEmpresa = c.getEmpresasByIdCliente() != null && !c.getEmpresasByIdCliente().isEmpty()  &&  c.getEmpresasByIdCliente().get(0) != null;
                             %>
                             <%= (esEmpresa) ?
                                     "<a class=\"btn btn-dark\" href='/gestor/empresa?id=" + c.getIdCliente() + "'>VER EMPRESA</a>" :

@@ -10,10 +10,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RolusuarioEntityRepository extends JpaRepository<RolusuarioEntity, Integer> {
-    /*Estado de los roles
-        Bloqueado = 0 -> no bloqueado
-        Bloqueado = 1 -> bloqueado
-        Bloqueado = 2 -> bloqueado y solicita desbloqueo
+    /*
+     * Estado de los roles
+     * Bloqueado = 0 -> no bloqueado
+     * Bloqueado = 1 -> bloqueado
+     * Bloqueado = 2 -> bloqueado y solicita desbloqueo
      */
     @Query("select r from RolusuarioEntity r where r.bloqueado = 2")
     List<RolEntity> findRolesSolicitantesDeActivar();

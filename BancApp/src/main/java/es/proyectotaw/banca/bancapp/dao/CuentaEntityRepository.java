@@ -20,6 +20,9 @@ public interface CuentaEntityRepository extends JpaRepository<CuentaEntity, Inte
     @Query("select c from CuentaEntity c where c.activa = 2")
     List<CuentaEntity> getCuentasPendientesDeActivar();
 
+    @Query("select c from CuentaEntity c where SIZE(c.operacionsByNumCuenta) > 0 ")
+    List<CuentaEntity> getCuentasConOperaciones();
+
     default boolean esUltimaOperacionHace30Dias(List<OperacionEntity> operaciones) {
         // Ordenar la lista de operaciones por fecha en orden descendente
         operaciones.sort((o1, o2) -> o2.getFecha().compareTo(o1.getFecha()));
@@ -32,7 +35,7 @@ public interface CuentaEntityRepository extends JpaRepository<CuentaEntity, Inte
     }
 
     default List<CuentaEntity> getCuentasConUltimaOperacionHace30Dias() {
-        List<CuentaEntity> cuentas = findAll();
+        List<CuentaEntity> cuentas = getCuentasConOperaciones();
         List<CuentaEntity> cuentasConUltimaOperacionHace30Dias = new ArrayList<>();
 
         for (CuentaEntity cuenta : cuentas) {

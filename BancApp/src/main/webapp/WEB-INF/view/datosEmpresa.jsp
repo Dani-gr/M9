@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-
+<% double saldo = (double) request.getAttribute("saldo");%>
 <% // María %>
 <html>
 <head>
@@ -15,7 +15,8 @@
 <div class="m-3">&nbsp;</div>
 <div class="card text-center w-50" style="margin: 5% auto auto;">
     <div class="card-body">
-        <h4 class="card-title">Mis datos</h4>
+        <h3 class="card-title">Mis datos</h3>
+        <h4 class="bold">Saldo: <%=saldo%>€</h4>
         <c:if test="${not empty mensaje}">
             <div class="alert alert-success">${mensaje}</div>
         </c:if>
