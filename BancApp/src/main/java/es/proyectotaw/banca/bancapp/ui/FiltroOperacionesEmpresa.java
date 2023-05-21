@@ -2,14 +2,14 @@ package es.proyectotaw.banca.bancapp.ui;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
 import java.time.LocalDate;
-
+@SuppressWarnings("unused")
 public class FiltroOperacionesEmpresa {
 
-    String nombreOperacion;
+    private String nombreOperacion;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private
     LocalDate fechaFiltro;
 
     public FiltroOperacionesEmpresa() {

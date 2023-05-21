@@ -59,6 +59,4 @@ public interface UsuarioEntityRepository extends JpaRepository<UsuarioEntity, In
     List<UsuarioEntity> findUsuariosByEmpresaAndRolAndCadenaOrderByApellido(@Param("idEmpresa") Integer idEmpresa, @Param("rol") RolEntity rol, @Param("cadena") String cadena);
 
 
-
-
 }

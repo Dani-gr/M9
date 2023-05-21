@@ -1,7 +1,5 @@
 package es.proyectotaw.banca.bancapp.ui;
-
-import java.util.List;
-
+@SuppressWarnings("unused")
 public class FiltroAsociadosEmpresa {
 
 
@@ -12,8 +10,10 @@ public class FiltroAsociadosEmpresa {
 
     private String ordenAsociados;
 
-    public FiltroAsociadosEmpresa(){
-        this.nombreRol = null; this.contieneCadena = null; this.ordenAsociados = null;
+    public FiltroAsociadosEmpresa() {
+        this.nombreRol = null;
+        this.contieneCadena = null;
+        this.ordenAsociados = null;
     }
 
     public String getNombreRol() {

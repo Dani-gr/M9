@@ -1,10 +1,10 @@
 package es.proyectotaw.banca.bancapp.ui;
-
+@SuppressWarnings("unused")
 public class FiltroOperaciones {
 
-    Double cantidadFiltro;
+    private Double cantidadFiltro;
 
-    String nombreOperacion;
+    private String nombreOperacion;
 
     public FiltroOperaciones() {
         cantidadFiltro = (double) 0;

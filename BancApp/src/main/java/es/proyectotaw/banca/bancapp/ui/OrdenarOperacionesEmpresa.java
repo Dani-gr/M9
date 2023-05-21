@@ -9,7 +9,7 @@ public class OrdenarOperacionesEmpresa {
     public String getOpcionSeleccionada() {
         return opcionSeleccionada;
     }
-
+    @SuppressWarnings("unused")
     public void setOpcionSeleccionada(String opcionSeleccionada) {
         this.opcionSeleccionada = opcionSeleccionada;
     }

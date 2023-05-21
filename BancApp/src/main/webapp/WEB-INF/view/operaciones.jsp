@@ -14,7 +14,7 @@
 
 %>
 <head>
-<title>Operaciones</title>
+    <title>Operaciones</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
@@ -38,16 +38,16 @@
         <button>Filtrar</button>
     </form:form>
 
-        <%--@elvariable id="ordenarOpEmpresa" type="es.proyectotaw.banca.bancapp.ui.OrdenarOperacionesEmpresa"--%>
-        <form:form action="/empresa/ordenar" method="post" modelAttribute="ordenarOpEmpresa">
-            Ordenar por: <br/>
-            Nombre de operación:
-            <form:select multiple="false" path="opcionSeleccionada">
-                <form:option value="ninguno" label="------"/>
-                <form:option value="cantidad" label="Cantidad"/>
-            </form:select>
-            <button>Filtrar</button>
-        </form:form>
+    <%--@elvariable id="ordenarOpEmpresa" type="es.proyectotaw.banca.bancapp.ui.OrdenarOperacionesEmpresa"--%>
+    <form:form action="/empresa/ordenar" method="post" modelAttribute="ordenarOpEmpresa">
+        Ordenar por: <br/>
+        Nombre de operación:
+        <form:select multiple="false" path="opcionSeleccionada">
+            <form:option value="ninguno" label="------"/>
+            <form:option value="cantidad" label="Cantidad"/>
+        </form:select>
+        <button>Filtrar</button>
+    </form:form>
     <h3>Lista de operaciones</h3>
     <table class="table p-3" border="1">
         <thead>
@@ -62,20 +62,20 @@
             for (OperacionEntity operacion : operaciones) {
         %>
         <tr>
-            <td><%if (!operacion.getTransferenciasByIdOperacion().isEmpty()){%>
+            <td><%if (!operacion.getTransferenciasByIdOperacion().isEmpty()) {%>
                 Transferencia
-              <% } else if (!operacion.getExtraccionsByIdOperacion().isEmpty()) { %>
-                  Extracción
-              <% } else {%>
+                <% } else if (!operacion.getExtraccionsByIdOperacion().isEmpty()) { %>
+                Extracción
+                <% } else {%>
                 Cambio de divisa
-              <%}%></td>
-            <td><%if (!operacion.getTransferenciasByIdOperacion().isEmpty()){%>
+                <%}%></td>
+            <td><%if (!operacion.getTransferenciasByIdOperacion().isEmpty()) {%>
                 <%=operacion.getTransferenciasByIdOperacion().get(0).getCantidad()%>
-                    <% } else if (!operacion.getExtraccionsByIdOperacion().isEmpty()) { %>
+                <% } else if (!operacion.getExtraccionsByIdOperacion().isEmpty()) { %>
                 <%=operacion.getExtraccionsByIdOperacion().get(0).getCantidad()%>
-                    <% } else {%>
+                <% } else {%>
                 <%=operacion.getCambDivisasByIdOperacion().get(0).getCantidad()%>
-                <%}%> </td>
+                <%}%></td>
             <td><%=operacion.getFecha()%>
         </tr>
         <%

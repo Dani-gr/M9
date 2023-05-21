@@ -3,6 +3,7 @@ package es.proyectotaw.banca.bancapp.ui;
 /**
  * @author Carlos Castaño Moreno
  */
+@SuppressWarnings("unused")
 public class FiltroClientes {
 
     private Double limInfSaldo;

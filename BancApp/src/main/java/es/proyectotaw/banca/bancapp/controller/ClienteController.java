@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /*
  * Nuria Rodríguez Tortosa 90%
@@ -69,15 +70,9 @@ public class ClienteController {
             CambDivisaEntity cambio = cambDivisaEntityRepository.findByOperation(ope.getIdOperacion());
             TransferenciaEntity trans = transferenciaEntityRepository.findByOperation(ope.getIdOperacion());
             ExtraccionEntity extra = extraccionEntityRepository.findByOperation(ope.getIdOperacion());
-            if (cambio != null) {
-                cambios.add(cambio);
-            } else {
-                if (trans != null) {
-                    transs.add(trans);
-                } else {
-                    if (extra != null) extras.add(extra);
-                }
-            }
+            if (cambio != null) cambios.add(cambio);
+            else if (trans != null) transs.add(trans);
+            else if (extra != null) extras.add(extra);
         }
 
         model.addAttribute("filtro", new FiltroOperaciones());
@@ -100,12 +95,10 @@ public class ClienteController {
                                       Model model, HttpSession session) {
         if (session.getAttribute("usuario") == null) return "redirect:/";
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-        List<OperacionEntity> operaciones = new ArrayList<>();
         List<CambDivisaEntity> cambios = new ArrayList<>();
         List<TransferenciaEntity> transs = new ArrayList<>();
         List<ExtraccionEntity> extras = new ArrayList<>();
         String urlTo = "operacionesCliente";
-        //lo de la session
         if (filtro == null || (filtro.getCantidadFiltro() == 0 && filtro.getNombreOperacion().equals("ninguno"))) {
             filtro = new FiltroOperaciones();
             urlTo = "redirect:/cliente/verOperaciones";
@@ -139,7 +132,7 @@ public class ClienteController {
                         List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                         for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
                             for (TransferenciaEntity trans : transferencias) {
-                                if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == trans.getOperacionByOperacion().getIdOperacion()) {
+                                if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), trans.getOperacionByOperacion().getIdOperacion())) {
                                     transs.add(transferenciaEntityRepository.findByOperation(ope.getIdOperacion()));
                                 }
                             }
@@ -149,7 +142,7 @@ public class ClienteController {
                             List<CambDivisaEntity> cambiose = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                             for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
                                 for (CambDivisaEntity cambio : cambiose) {
-                                    if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == cambio.getOperacionByOperacion().getIdOperacion()) {
+                                    if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), cambio.getOperacionByOperacion().getIdOperacion())) {
                                         cambios.add(cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()));
                                     }
                                 }
@@ -158,7 +151,7 @@ public class ClienteController {
                             List<ExtraccionEntity> extracciones = extraccionEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                             for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
                                 for (ExtraccionEntity extraccion : extracciones) {
-                                    if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == extraccion.getOperacionByOperacion().getIdOperacion()) {
+                                    if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), extraccion.getOperacionByOperacion().getIdOperacion())) {
                                         extras.add(extraccionEntityRepository.findByOperation(ope.getIdOperacion()));
                                     }
                                 }
@@ -171,7 +164,7 @@ public class ClienteController {
                     List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                     for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
                         for (TransferenciaEntity trans : transferencias) {
-                            if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == trans.getOperacionByOperacion().getIdOperacion()) {
+                            if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), trans.getOperacionByOperacion().getIdOperacion())) {
                                 transs.add(transferenciaEntityRepository.findByOperation(ope.getIdOperacion()));
                             }
                         }
@@ -180,7 +173,7 @@ public class ClienteController {
                     List<CambDivisaEntity> cambiose = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                     for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
                         for (CambDivisaEntity cambio : cambiose) {
-                            if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == cambio.getOperacionByOperacion().getIdOperacion()) {
+                            if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), cambio.getOperacionByOperacion().getIdOperacion())) {
                                 cambios.add(cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()));
                             }
                         }
@@ -189,7 +182,7 @@ public class ClienteController {
                     List<ExtraccionEntity> extracciones = extraccionEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
                     for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
                         for (ExtraccionEntity extraccion : extracciones) {
-                            if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null && ope.getIdOperacion() == extraccion.getOperacionByOperacion().getIdOperacion()) {
+                            if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), extraccion.getOperacionByOperacion().getIdOperacion())) {
                                 extras.add(extraccionEntityRepository.findByOperation(ope.getIdOperacion()));
                             }
                         }
@@ -213,8 +206,8 @@ public class ClienteController {
         return this.procesarOrdenado(orden, model, session);
     }
 
-    protected String procesarOrdenado(OrdenarOperaciones orden,
-                                      Model model, HttpSession session) {
+    private String procesarOrdenado(OrdenarOperaciones orden,
+                                    Model model, HttpSession session) {
         if (session.getAttribute("usuario") == null) return "redirect:/";
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
         List<CambDivisaEntity> cambios = new ArrayList<>();
@@ -222,7 +215,7 @@ public class ClienteController {
         List<ExtraccionEntity> extras = new ArrayList<>();
         String urlTo = "operacionesCliente";
 
-        if(orden == null || !orden.getCantidad()) {
+        if (orden == null || !orden.getCantidad()) {
             orden = new OrdenarOperaciones();
             urlTo = "redirect:/cliente/verOperaciones";
         } else {
@@ -232,15 +225,9 @@ public class ClienteController {
                 CambDivisaEntity cambio = cambDivisaEntityRepository.findByOperation(ope.getIdOperacion());
                 TransferenciaEntity trans = transferenciaEntityRepository.findByOperation(ope.getIdOperacion());
                 ExtraccionEntity extra = extraccionEntityRepository.findByOperation(ope.getIdOperacion());
-                if (cambio != null) {
-                    cambios.add(cambio);
-                } else {
-                    if (trans != null) {
-                        transs.add(trans);
-                    } else {
-                        if (extra != null) extras.add(extra);
-                    }
-                }
+                if (cambio != null) cambios.add(cambio);
+                else if (trans != null) transs.add(trans);
+                else if (extra != null) extras.add(extra);
             }
         }
 
@@ -254,7 +241,7 @@ public class ClienteController {
     }
 
     @PostMapping("/guardar")
-    public String doGuardarPerfil(Model model, HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute("usuario") UsuarioEntity usur) {
+    public String doGuardarPerfil(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute("usuario") UsuarioEntity usur) {
         //si es particular
         usuarioEntityRepository.saveAndFlush(usur);
         redirectAttributes.addFlashAttribute("mensaje", "Los datos se han guardado correctamente");

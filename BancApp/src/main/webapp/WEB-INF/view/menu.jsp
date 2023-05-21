@@ -72,7 +72,8 @@ Autor: Andres Perez Garcia Porcentaje: 20%
                             </div>
                         </div>
                     </c:if>
-                    <c:set scope="page" var="puedeSerBloqueado" value="${(nombresRoles.contains(\"socio\") || nombresRoles.contains(\"autorizado\")) && usuario.getRolusuariosById().get(0).getBloqueado() == 1}"/>
+                    <c:set scope="page" var="puedeSerBloqueado"
+                           value="${(nombresRoles.contains(\"socio\") || nombresRoles.contains(\"autorizado\")) && usuario.getRolusuariosById().get(0).getBloqueado() == 1}"/>
                     <c:if test="${puedeSerBloqueado}">
                         <div class="row">
                             <div class="col pt-3">

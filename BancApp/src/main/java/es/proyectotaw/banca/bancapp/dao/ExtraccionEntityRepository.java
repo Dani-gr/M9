@@ -1,7 +1,6 @@
 package es.proyectotaw.banca.bancapp.dao;
 
 import es.proyectotaw.banca.bancapp.entity.ExtraccionEntity;
-import es.proyectotaw.banca.bancapp.entity.TransferenciaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestParam;

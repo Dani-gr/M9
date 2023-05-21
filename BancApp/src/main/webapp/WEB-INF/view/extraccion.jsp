@@ -16,7 +16,8 @@
 <h1>Datos de la extracción:</h1>
 <jsp:useBean id="error" scope="request" type="java.lang.String"/>
 <c:if test="${not null and not empty error}">
-    <h4 style="color:red"><%=error%></h4>
+    <h4 style="color:red"><%=error%>
+    </h4>
 </c:if>
 <%--@elvariable id="extraer" type="es.proyectotaw.banca.bancapp.entity.ExtraccionEntity"--%>
 <form:form action="/operacion/guardarExtraccion" modelAttribute="extraer" method="post">

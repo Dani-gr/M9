@@ -2,7 +2,7 @@
 Autor: Andres Perez Garcia
 -->
 <%@ page import="es.proyectotaw.banca.bancapp.entity.UsuarioEntity" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
@@ -69,7 +69,8 @@ Autor: Andres Perez Garcia
                             <td>Abierto</td>
                             <td><a href="detallesChat/${chat.id}" class="btn btn-secondary">Entrar</a></td>
                             <c:if test="<%=usuario.getClienteByCliente()!=null%>">
-                                <td><a href="/chats/cerrarChat/${chat.id}" class="btn btn-warning">Cerrar asistencia</a></td>
+                                <td><a href="/chats/cerrarChat/${chat.id}" class="btn btn-warning">Cerrar asistencia</a>
+                                </td>
                             </c:if>
                         </c:if>
                         <c:if test="${chat.activo == 0}">
@@ -88,7 +89,6 @@ Autor: Andres Perez Garcia
         </div>
     </div>
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
