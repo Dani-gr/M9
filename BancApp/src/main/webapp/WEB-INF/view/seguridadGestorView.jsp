@@ -65,11 +65,12 @@
                     </tr>
                     <%
                         for(TransferenciaEntity t : transferencias){ %>
-                            <th> <%= t.getOperacionByOperacion().getIdOperacion() %> </th>
-                            <th> <%= t.getCantidad() %> </th>
-                            <th> <%= t.getOperacionByOperacion().getCuentaByCuentaRealiza().getNumCuenta()%> </th>
-                            <th> <%= t.getIbanDestino() %> </th>
-                            <th>
+                        <tr>
+                            <td> <%= t.getOperacionByOperacion().getIdOperacion() %> </td>
+                            <td> <%= t.getCantidad() %> </td>
+                            <td> <%= t.getOperacionByOperacion().getCuentaByCuentaRealiza().getNumCuenta()%> </td>
+                            <td> <%= t.getIbanDestino() %> </td>
+                            <td>
                                 <%
                                     if(t.getOperacionByOperacion().getCuentaByCuentaRealiza().getActiva() == 0){
                                 %>
@@ -82,7 +83,8 @@
                                 <%
                                     }
                                 %>
-                            </th>
+                            </td>
+                        </tr>
                     <%  }   %>
                 </table>
 
