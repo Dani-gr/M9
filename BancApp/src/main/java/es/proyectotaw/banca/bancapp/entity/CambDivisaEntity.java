@@ -94,7 +94,7 @@ public class CambDivisaEntity {
 
     public CambDivisaEntityDTO toDTO() {
         return new CambDivisaEntityDTO(
-                idDivisa, origen, destino, cantidad, operacionByOperacion.toDTO()
+                idDivisa, origen, destino, cantidad, operacionByOperacion == null ? null : operacionByOperacion.toDTO()
         );
     }
 }

@@ -13,11 +13,14 @@ import java.util.Objects;
  */
 @SuppressWarnings("unused")
 public class EmpresaEntityDTO implements Serializable {
-    private final Integer idEmpresa;
-    private final Integer cif;
-    private final List<ClientesEmpresaEntityDTO> clientesEmpresasByIdEmpresa;
-    private final ClienteEntityDTO clienteByCliente;
-    private final List<RolusuarioEntityDTO> rolusuariosByIdEmpresa;
+    private Integer idEmpresa;
+    private Integer cif;
+    private List<ClientesEmpresaEntityDTO> clientesEmpresasByIdEmpresa;
+    private ClienteEntityDTO clienteByCliente;
+    private List<RolusuarioEntityDTO> rolusuariosByIdEmpresa;
+
+    public EmpresaEntityDTO() {
+    }
 
     public EmpresaEntityDTO(Integer idEmpresa, Integer cif, List<ClientesEmpresaEntityDTO> clientesEmpresasByIdEmpresa, ClienteEntityDTO clienteByCliente, List<RolusuarioEntityDTO> rolusuariosByIdEmpresa) {
         this.idEmpresa = idEmpresa;
@@ -31,20 +34,40 @@ public class EmpresaEntityDTO implements Serializable {
         return idEmpresa;
     }
 
+    public void setIdEmpresa(Integer idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
     public Integer getCif() {
         return cif;
+    }
+
+    public void setCif(Integer cif) {
+        this.cif = cif;
     }
 
     public List<ClientesEmpresaEntityDTO> getClientesEmpresasByIdEmpresa() {
         return clientesEmpresasByIdEmpresa;
     }
 
+    public void setClientesEmpresasByIdEmpresa(List<ClientesEmpresaEntityDTO> clientesEmpresasByIdEmpresa) {
+        this.clientesEmpresasByIdEmpresa = clientesEmpresasByIdEmpresa;
+    }
+
     public ClienteEntityDTO getClienteByCliente() {
         return clienteByCliente;
     }
 
+    public void setClienteByCliente(ClienteEntityDTO clienteByCliente) {
+        this.clienteByCliente = clienteByCliente;
+    }
+
     public List<RolusuarioEntityDTO> getRolusuariosByIdEmpresa() {
         return rolusuariosByIdEmpresa;
+    }
+
+    public void setRolusuariosByIdEmpresa(List<RolusuarioEntityDTO> rolusuariosByIdEmpresa) {
+        this.rolusuariosByIdEmpresa = rolusuariosByIdEmpresa;
     }
 
     @Override

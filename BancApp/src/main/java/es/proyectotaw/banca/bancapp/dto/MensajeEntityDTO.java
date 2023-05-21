@@ -13,11 +13,14 @@ import java.util.Objects;
  */
 @SuppressWarnings("unused")
 public class MensajeEntityDTO implements Serializable {
-    private final Integer idMensaje;
-    private final Timestamp fechaHora;
-    private final String contenido;
-    private final ChatEntityDTO chatByChat;
-    private final UsuarioEntityDTO usuarioByEmisor;
+    private Integer idMensaje;
+    private Timestamp fechaHora;
+    private String contenido;
+    private ChatEntityDTO chatByChat;
+    private UsuarioEntityDTO usuarioByEmisor;
+
+    public MensajeEntityDTO() {
+    }
 
     public MensajeEntityDTO(Integer idMensaje, Timestamp fechaHora, String contenido, ChatEntityDTO chatByChat, UsuarioEntityDTO usuarioByEmisor) {
         this.idMensaje = idMensaje;
@@ -31,20 +34,40 @@ public class MensajeEntityDTO implements Serializable {
         return idMensaje;
     }
 
+    public void setIdMensaje(Integer idMensaje) {
+        this.idMensaje = idMensaje;
+    }
+
     public Timestamp getFechaHora() {
         return fechaHora;
+    }
+
+    public void setFechaHora(Timestamp fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
     public String getContenido() {
         return contenido;
     }
 
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+
     public ChatEntityDTO getChatByChat() {
         return chatByChat;
     }
 
+    public void setChatByChat(ChatEntityDTO chatByChat) {
+        this.chatByChat = chatByChat;
+    }
+
     public UsuarioEntityDTO getUsuarioByEmisor() {
         return usuarioByEmisor;
+    }
+
+    public void setUsuarioByEmisor(UsuarioEntityDTO usuarioByEmisor) {
+        this.usuarioByEmisor = usuarioByEmisor;
     }
 
     @Override

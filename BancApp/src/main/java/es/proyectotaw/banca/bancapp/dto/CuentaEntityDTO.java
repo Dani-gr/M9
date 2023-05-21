@@ -11,13 +11,17 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class CuentaEntityDTO implements Serializable {
-    private final Integer numCuenta;
-    private final Double saldo;
-    private final Byte activa;
-    private final ClienteEntityDTO clienteByCliente;
-    private final List<OperacionEntityDTO> operacionsByNumCuenta;
-    private final List<TransferenciaEntityDTO> transferenciasRecibidasByNumCuenta;
+    private Integer numCuenta;
+    private Double saldo;
+    private Byte activa;
+    private ClienteEntityDTO clienteByCliente;
+    private List<OperacionEntityDTO> operacionsByNumCuenta;
+    private List<TransferenciaEntityDTO> transferenciasRecibidasByNumCuenta;
+
+    public CuentaEntityDTO() {
+    }
 
     public CuentaEntityDTO(Integer numCuenta, Double saldo, Byte activa, ClienteEntityDTO clienteByCliente, List<OperacionEntityDTO> operacionsByNumCuenta, List<TransferenciaEntityDTO> transferenciasRecibidasByNumCuenta) {
         this.numCuenta = numCuenta;
@@ -32,24 +36,48 @@ public class CuentaEntityDTO implements Serializable {
         return numCuenta;
     }
 
+    public void setNumCuenta(Integer numCuenta) {
+        this.numCuenta = numCuenta;
+    }
+
     public Double getSaldo() {
         return saldo;
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
     }
 
     public Byte getActiva() {
         return activa;
     }
 
+    public void setActiva(Byte activa) {
+        this.activa = activa;
+    }
+
     public ClienteEntityDTO getClienteByCliente() {
         return clienteByCliente;
+    }
+
+    public void setClienteByCliente(ClienteEntityDTO clienteByCliente) {
+        this.clienteByCliente = clienteByCliente;
     }
 
     public List<OperacionEntityDTO> getOperacionsByNumCuenta() {
         return operacionsByNumCuenta;
     }
 
+    public void setOperacionsByNumCuenta(List<OperacionEntityDTO> operacionsByNumCuenta) {
+        this.operacionsByNumCuenta = operacionsByNumCuenta;
+    }
+
     public List<TransferenciaEntityDTO> getTransferenciasRecibidasByNumCuenta() {
         return transferenciasRecibidasByNumCuenta;
+    }
+
+    public void setTransferenciasRecibidasByNumCuenta(List<TransferenciaEntityDTO> transferenciasRecibidasByNumCuenta) {
+        this.transferenciasRecibidasByNumCuenta = transferenciasRecibidasByNumCuenta;
     }
 
     @Override

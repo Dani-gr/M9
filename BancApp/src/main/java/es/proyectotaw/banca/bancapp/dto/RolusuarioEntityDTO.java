@@ -10,12 +10,16 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class RolusuarioEntityDTO implements Serializable {
-    private final Integer id;
-    private final Byte bloqueado;
-    private final RolEntityDTO rolByIdrol;
-    private final UsuarioEntityDTO usuarioByIdusuario;
-    private final EmpresaEntityDTO empresaByIdempresa;
+    private Integer id;
+    private Byte bloqueado;
+    private RolEntityDTO rolByIdrol;
+    private UsuarioEntityDTO usuarioByIdusuario;
+    private EmpresaEntityDTO empresaByIdempresa;
+
+    public RolusuarioEntityDTO() {
+    }
 
     public RolusuarioEntityDTO(Integer id, Byte bloqueado, RolEntityDTO rolByIdrol, UsuarioEntityDTO usuarioByIdusuario, EmpresaEntityDTO empresaByIdempresa) {
         this.id = id;
@@ -29,20 +33,40 @@ public class RolusuarioEntityDTO implements Serializable {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Byte getBloqueado() {
         return bloqueado;
+    }
+
+    public void setBloqueado(Byte bloqueado) {
+        this.bloqueado = bloqueado;
     }
 
     public RolEntityDTO getRolByIdrol() {
         return rolByIdrol;
     }
 
+    public void setRolByIdrol(RolEntityDTO rolByIdrol) {
+        this.rolByIdrol = rolByIdrol;
+    }
+
     public UsuarioEntityDTO getUsuarioByIdusuario() {
         return usuarioByIdusuario;
     }
 
+    public void setUsuarioByIdusuario(UsuarioEntityDTO usuarioByIdusuario) {
+        this.usuarioByIdusuario = usuarioByIdusuario;
+    }
+
     public EmpresaEntityDTO getEmpresaByIdempresa() {
         return empresaByIdempresa;
+    }
+
+    public void setEmpresaByIdempresa(EmpresaEntityDTO empresaByIdempresa) {
+        this.empresaByIdempresa = empresaByIdempresa;
     }
 
     @Override
@@ -81,5 +105,9 @@ public class RolusuarioEntityDTO implements Serializable {
         rolusuarioEntity.setRolByIdrol(rolByIdrol.toEntity());
 
         return rolusuarioEntity;
+    }
+
+    public CuentaEntityDTO getCuentaAsociada() {
+        return this.toEntity().getCuentaAsociada().toDTO();
     }
 }

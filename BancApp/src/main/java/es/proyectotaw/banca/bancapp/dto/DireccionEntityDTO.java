@@ -11,16 +11,20 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class DireccionEntityDTO implements Serializable {
-    private final Integer id;
-    private final String calle;
-    private final Integer numero;
-    private final String plantaPuertaOficina;
-    private final String ciudad;
-    private final String region;
-    private final String pais;
-    private final String codpostal;
-    private final List<ClienteEntityDTO> clientesById;
+    private Integer id;
+    private String calle;
+    private Integer numero;
+    private String plantaPuertaOficina;
+    private String ciudad;
+    private String region;
+    private String pais;
+    private String codpostal;
+    private List<ClienteEntityDTO> clientesById;
+
+    public DireccionEntityDTO() {
+    }
 
     public DireccionEntityDTO(Integer id, String calle, Integer numero, String plantaPuertaOficina, String ciudad, String region, String pais, String codpostal, List<ClienteEntityDTO> clientesById) {
         this.id = id;
@@ -38,36 +42,72 @@ public class DireccionEntityDTO implements Serializable {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getCalle() {
         return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
     }
 
     public Integer getNumero() {
         return numero;
     }
 
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
     public String getPlantaPuertaOficina() {
         return plantaPuertaOficina;
+    }
+
+    public void setPlantaPuertaOficina(String plantaPuertaOficina) {
+        this.plantaPuertaOficina = plantaPuertaOficina;
     }
 
     public String getCiudad() {
         return ciudad;
     }
 
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
     public String getRegion() {
         return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getPais() {
         return pais;
     }
 
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
     public String getCodpostal() {
         return codpostal;
     }
 
+    public void setCodpostal(String codpostal) {
+        this.codpostal = codpostal;
+    }
+
     public List<ClienteEntityDTO> getClientesById() {
         return clientesById;
+    }
+
+    public void setClientesById(List<ClienteEntityDTO> clientesById) {
+        this.clientesById = clientesById;
     }
 
     @Override

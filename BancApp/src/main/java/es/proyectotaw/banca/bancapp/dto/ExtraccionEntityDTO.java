@@ -10,10 +10,14 @@ import java.util.Objects;
  *
  * @author Daniel García Rodríguez (method {@link #toEntity()})
  */
+@SuppressWarnings("unused")
 public class ExtraccionEntityDTO implements Serializable {
-    private final Integer idExtraccion;
-    private final Double cantidad;
-    private final OperacionEntityDTO operacionByOperacion;
+    private Integer idExtraccion;
+    private Double cantidad;
+    private OperacionEntityDTO operacionByOperacion;
+
+    public ExtraccionEntityDTO() {
+    }
 
     public ExtraccionEntityDTO(Integer idExtraccion, Double cantidad, OperacionEntityDTO operacionByOperacion) {
         this.idExtraccion = idExtraccion;
@@ -25,12 +29,24 @@ public class ExtraccionEntityDTO implements Serializable {
         return idExtraccion;
     }
 
+    public void setIdExtraccion(Integer idExtraccion) {
+        this.idExtraccion = idExtraccion;
+    }
+
     public Double getCantidad() {
         return cantidad;
     }
 
+    public void setCantidad(Double cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public OperacionEntityDTO getOperacionByOperacion() {
         return operacionByOperacion;
+    }
+
+    public void setOperacionByOperacion(OperacionEntityDTO operacionByOperacion) {
+        this.operacionByOperacion = operacionByOperacion;
     }
 
     @Override
