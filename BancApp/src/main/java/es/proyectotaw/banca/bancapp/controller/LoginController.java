@@ -96,7 +96,7 @@ public class LoginController {
         Date sqlFechaNacimiento = new Date(fechaNacimiento.getTime());
 
         if (email == null || password == null || email.isBlank() || password.isBlank()) return "registro";
-        //TODO añadir control de errores para los parámetros que no deberían ser nulos
+
         String urlTo = "enespera";
         if ("empresa".equals(entidad)) {
             if (cif == null || cif.isBlank()) return "registro";
@@ -120,10 +120,16 @@ public class LoginController {
                 urlTo = "redirect:/registro?entidad=empresa&cif=" + cif;
             }
 
+            UsuarioEntityDTO user = usuarioService.buscaEmail(email);
+            if (user == null) {
+                model.addAttribute("error", "El usuario ya existe");
+
+                return "registro";
+            }
+
             // Creo al socio/autorizado
             UsuarioEntityDTO usuarioEmpresa = usuarioService.creaUsuario(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
-            // TODO check for existing users
             ClienteEntityDTO cliente = new ClienteEntityDTO();
             DireccionEntityDTO direccion = direccionService.creaDireccion(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
             direccionService.guardar(direccion);
@@ -143,9 +149,15 @@ public class LoginController {
 
             session.setAttribute("empresa", empresa);
         } else {
+            UsuarioEntityDTO user = usuarioService.buscaEmail(email);
+            if (user == null) {
+                model.addAttribute("error", "El usuario ya existe");
+
+                return "registro";
+            }
+
             UsuarioEntityDTO usuario = usuarioService.creaUsuario(NIF, nombre, segundoNombre, primerApellido, segundoApellido, sqlFechaNacimiento, email, password);
 
-            // TODO check for existing users
 
             ClienteEntityDTO cliente = new ClienteEntityDTO();
             DireccionEntityDTO direccion = direccionService.creaDireccion(calle, Integer.valueOf(numero), planta, ciudad, region, pais, postal);
@@ -176,9 +188,6 @@ public class LoginController {
                         @ModelAttribute("cifEmpresa") String cif,
                         @ModelAttribute("user") String email,
                         @ModelAttribute("pass") String password) {
-        /* TODO:
-            - Testear algún gestor / socio
-         */
 
         if (session.getAttribute("usuario") != null) return "redirect:/menu";
 
