@@ -60,7 +60,7 @@ public class ClienteController {
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
         ClienteEntity cliente = usuario.getClienteByCliente();
         CuentaEntity cuenta = cliente.getCuentasByIdCliente().get(0);
-        List<OperacionEntity> operaciones = cuenta.getOperacionsByNumCuenta();
+        List<OperacionEntity> operaciones = operacionEntityRepository.getOperacionesByNumeroCuenta(cuenta.getNumCuenta());
 
         List<CambDivisaEntity> cambios = new ArrayList<>();
         List<TransferenciaEntity> transs = new ArrayList<>();
@@ -107,20 +107,20 @@ public class ClienteController {
                 String nombre = filtro.getNombreOperacion();
                 if (filtro.getCantidadFiltro() == 0) {
                     if (nombre.equals("Transferencia")) {
-                        for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                        for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                             if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null) {
                                 transs.add(transferenciaEntityRepository.findByOperation(ope.getIdOperacion()));
                             }
                         }
                     } else {
                         if (nombre.equals("Cambio de divisa")) {
-                            for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                            for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                                 if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null) {
                                     cambios.add(cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()));
                                 }
                             }
                         } else {
-                            for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                            for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                                 if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null) {
                                     extras.add(extraccionEntityRepository.findByOperation(ope.getIdOperacion()));
                                 }
@@ -130,7 +130,7 @@ public class ClienteController {
                 } else {
                     if (nombre.equals("Transferencia")) {
                         List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                        for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                        for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                             for (TransferenciaEntity trans : transferencias) {
                                 if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), trans.getOperacionByOperacion().getIdOperacion())) {
                                     transs.add(transferenciaEntityRepository.findByOperation(ope.getIdOperacion()));
@@ -140,7 +140,7 @@ public class ClienteController {
                     } else {
                         if (nombre.equals("Cambio de divisa")) {
                             List<CambDivisaEntity> cambiose = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                            for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                            for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                                 for (CambDivisaEntity cambio : cambiose) {
                                     if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), cambio.getOperacionByOperacion().getIdOperacion())) {
                                         cambios.add(cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()));
@@ -149,7 +149,7 @@ public class ClienteController {
                             }
                         } else {
                             List<ExtraccionEntity> extracciones = extraccionEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                            for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                            for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                                 for (ExtraccionEntity extraccion : extracciones) {
                                     if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), extraccion.getOperacionByOperacion().getIdOperacion())) {
                                         extras.add(extraccionEntityRepository.findByOperation(ope.getIdOperacion()));
@@ -162,7 +162,7 @@ public class ClienteController {
             } else {
                 if (filtro.getCantidadFiltro() != 0) {
                     List<TransferenciaEntity> transferencias = transferenciaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                    for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                    for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                         for (TransferenciaEntity trans : transferencias) {
                             if (transferenciaEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), trans.getOperacionByOperacion().getIdOperacion())) {
                                 transs.add(transferenciaEntityRepository.findByOperation(ope.getIdOperacion()));
@@ -171,7 +171,7 @@ public class ClienteController {
                     }
 
                     List<CambDivisaEntity> cambiose = cambDivisaEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                    for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                    for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                         for (CambDivisaEntity cambio : cambiose) {
                             if (cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), cambio.getOperacionByOperacion().getIdOperacion())) {
                                 cambios.add(cambDivisaEntityRepository.findByOperation(ope.getIdOperacion()));
@@ -180,7 +180,7 @@ public class ClienteController {
                     }
 
                     List<ExtraccionEntity> extracciones = extraccionEntityRepository.filtrarPorCantidad(filtro.getCantidadFiltro());
-                    for (OperacionEntity ope : usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getOperacionsByNumCuenta()) {
+                    for (OperacionEntity ope : operacionEntityRepository.getOperacionesByNumeroCuenta(usuario.getClienteByCliente().getCuentasByIdCliente().get(0).getNumCuenta())) {
                         for (ExtraccionEntity extraccion : extracciones) {
                             if (extraccionEntityRepository.findByOperation(ope.getIdOperacion()) != null && Objects.equals(ope.getIdOperacion(), extraccion.getOperacionByOperacion().getIdOperacion())) {
                                 extras.add(extraccionEntityRepository.findByOperation(ope.getIdOperacion()));
